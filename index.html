@@ -17,6 +17,7 @@
     <div class="nav-group"><div class="nav-label">Biblioteca mea</div><nav class="nav" aria-label="Biblioteca mea">
             <button class="active" data-page="search" aria-label="Caută fotografii" title="Caută fotografii"><span class="ico" aria-hidden="true">⌕</span><span class="nav-copy"><b>Caută fotografii</b><small>Găsește o persoană</small></span></button>
  <button data-page="people" aria-label="Persoane salvate" title="Persoane salvate"><span class="ico" aria-hidden="true">♡</span><span class="nav-copy"><b>Persoane salvate</b><small>Profiluri pentru căutare</small></span></button>
+ <button data-page="plan" aria-label="Abonament" title="Abonament"><span class="ico" aria-hidden="true">★</span><span class="nav-copy"><b>Abonament</b><small id="navPlanSub">Gratuit · 1 persoană</small></span></button>
     </nav></div>
     <div class="nav-group"><div class="nav-label">Gestionare</div><nav class="nav" aria-label="Preferințe">
       <button data-page="settings" aria-label="Setări" title="Setări"><span class="ico" aria-hidden="true">⚙</span><span class="nav-copy"><b>Setări</b><small>Album și date</small></span></button>
@@ -121,13 +122,27 @@
     <div class="section-title"><div><h2>Profilurile tale</h2><p>Alege un profil pentru a începe o căutare sau șterge-l dacă nu mai ai nevoie de el.</p></div><span class="pill" id="peopleCount">0 persoane</span></div>
     <div class="person-manage" id="managePeople"><div class="empty">Nu ai salvat persoane încă.</div></div>
   </section>
+  <section class="page" id="page-plan">
+    <div class="page-heading"><p>Alege câte persoane vrei să poți căuta. Poți anula oricând.</p></div>
+    <article class="card plan-status">
+      <div class="plan-status-main"><span class="plan-ico" aria-hidden="true">★</span><div><div class="eyebrow">Abonamentul tău</div><h3 id="planName">Gratuit</h3><p class="sub" id="planSummary">1 persoană · folosești 0</p></div></div>
+      <div class="plan-meter"><div class="plan-meter-bar"><i id="planMeterFill"></i></div><small class="sub" id="planMeterText"></small></div>
+    </article>
+    <div class="pw-billing" id="ppBilling" role="group" aria-label="Facturare"><button type="button" class="pw-bill" data-billing="monthly">Lunar</button><button type="button" class="pw-bill" data-billing="yearly">Anual <span class="pw-save">–37%</span></button></div>
+    <div class="pw-plans" id="ppPlans"></div>
+    <article class="card">
+      <div class="card-head"><div><h3>Ai deja o cheie de licență?</h3><p class="sub">După abonare primești cheia automat pe email.</p></div></div>
+      <div class="pw-key-row"><input id="ppKey" type="text" placeholder="Lipește cheia de licență" autocomplete="off" spellcheck="false"><button class="button primary small" type="button" id="ppActivate">Activează</button></div>
+      <small class="sub" id="ppKeyMsg"></small>
+    </article>
+    <p class="mini-note">Plata și facturarea sunt gestionate de Lemon Squeezy. Poți anula oricând din emailul de confirmare. Pozele tale rămân pe dispozitiv indiferent de plan.</p>
+  </section>
   <section class="page" id="page-settings">
     <div class="page-heading"><p>Aspectul aplicației și datele salvate pe acest dispozitiv.</p></div>
     <article class="card" id="appearanceCard"><div class="card-head"><div><h3>Aspect</h3><p class="sub">Se salvează pe acest dispozitiv.</p></div></div>
       <div class="setting-row"><div><b>Mod</b><p>Întunecat, luminos sau după sistem.</p></div><div class="seg" role="group" aria-label="Mod"><button type="button" class="seg-btn" data-m="dark">☾ Întunecat</button><button type="button" class="seg-btn" data-m="light">☀ Luminos</button><button type="button" class="seg-btn" data-m="auto">◐ Auto</button></div></div>
       <div class="setting-row"><div><b>Culoare</b><p>Butoane și accente.</p></div><div class="swatches" id="accentSwatches" role="group" aria-label="Culori"></div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
-      <div class="setting-row"><div><b>Abonamentul tău</b><p id="planSummary">Gratuit · 1 persoană</p></div><button class="button primary small" type="button" id="planBtn">Vezi abonamentele</button></div>
       <div class="setting-row"><div><b>Ghid rapid</b><p>3 pași, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
     </article>
     <article class="card">

@@ -724,3 +724,14 @@ html[data-mode=light] .preview-stage{background:#111}
 .person-chip.locked{opacity:.75;border-style:dashed}
 .person-chip.locked img{filter:grayscale(1)}
 .pw-billing{display:inline-flex;gap:2px}
+
+/* ===== Pagina Abonament ===== */
+#page-plan .pw-plans{margin:16px 0 18px}
+#page-plan .pw-billing{margin-top:4px}
+.plan-status{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.plan-status-main{display:flex;align-items:center;gap:14px}
+.plan-status h3{margin:2px 0;font:700 26px Georgia,serif}
+.plan-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--accent-soft);color:var(--accent-text);font-size:24px}
+.plan-meter{min-width:240px;flex:0 1 340px;display:flex;flex-direction:column;gap:6px}
+.plan-meter-bar{height:10px;border-radius:999px;background:var(--s4);overflow:hidden}
+.plan-meter-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-h));transition:width .4s ease}
