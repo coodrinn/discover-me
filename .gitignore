@@ -11,3 +11,7 @@ desktop.ini
 *.png
 *.heic
 *.zip
+
+# Chei private (nu le urca niciodata)
+*.pem
+*.key

@@ -37,13 +37,13 @@
   // pasii din dashboard se bifeaza singuri
   const num=id=>parseInt(String(($(id)||{}).textContent||'0').replace(/\D/g,''),10)||0;
   function steps(){
-    const d=[num('statPhotos')>0,num('statPeople')>0,num('statMatches')>0];
+    const d=[num('statPeople')>0,num('statPhotos')>0,num('statMatches')>0];
     d.forEach((v,i)=>{const el=$('step'+(i+1));if(el){el.classList.toggle('done',v);el.classList.toggle('current',!v&&d.slice(0,i).every(Boolean))}});
   }
   ['statPhotos','statPeople','statMatches'].forEach(id=>{if($(id))new MutationObserver(steps).observe($(id),{childList:true,characterData:true,subtree:true})});steps();
   document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const n=document.querySelector('.nav button[data-page="'+b.dataset.go+'"]');if(n)n.click()});
   // ghid rapid
-  const T=[['1 / 3','▧  Alege albumul','Selectează folderul cu poze. Pozele rămân pe dispozitivul tău.'],['2 / 3','♡  Adaugă o persoană','3 poze clare cu fața ei. Atât.'],['3 / 3','⌕  Apasă pe persoană','Vezi pozele în care apare, bifează-le și descarcă-le.']];
+  const T=[['1 / 3','♡  Adaugă persoana','3 poze clare cu fața celui pe care îl cauți.'],['2 / 3','▧  Alege albumul','Folderul cu poze. Pozele rămân pe dispozitivul tău.'],['3 / 3','⌕  Gata','Căutarea pornește singură. Bifează pozele bune și descarcă-le.']];
   let ti=0;const dlg=$('tourDlg');
   function draw(){const [n,t,x]=T[ti];$('tourNo').textContent=n;$('tourTitle').textContent=t;$('tourText').textContent=x;$('tourDots').replaceChildren(...T.map((_,i)=>{const e=document.createElement('i');if(i===ti)e.className='on';return e}));$('tourBack').disabled=ti===0;$('tourNext').textContent=ti===T.length-1?'Gata':'Înainte'}
   function open(){ti=0;draw();if(!dlg.open)dlg.showModal()}

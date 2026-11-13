@@ -34,7 +34,9 @@ discover-me/
     ├── storage.js          # IndexedDB: index, persoane, setări
     ├── album.js            # Citirea folderelor și a fișierelor imagine
     ├── faces.js            # Detectarea fețelor (face-api) și indiciul de ținută
-    └── matching.js         # Potrivirea fețelor: distanțe, scor de consens, praguri
+    ├── matching.js         # Potrivirea fețelor: distanțe, scor de consens, praguri
+    └── license.js          # Planuri, prețuri, verificarea cheilor de licență
+tools/license/              # Generarea cheilor de licență (rulează doar la tine, cu Node.js)
 ```
 
 Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi interfața.
@@ -49,6 +51,26 @@ Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi
 4. **Ținuta**, adică culorile hainelor, este doar un indiciu secundar.
 5. **Învățare.** Când confirmi un rezultat incert („✓ E persoana”), fața este adăugată în profil
    și căutarea găsește mai multe poze.
+
+## Planuri și licențe
+
+| Plan | Persoane | Preț |
+|---|---|---|
+| Gratuit | 1 | 0 € |
+| Plus | 5 | 4,99 € (plată unică) |
+| Pro | nelimitat | 9,99 € (plată unică) |
+
+Prețurile și linkurile de plată sunt în `engine/license.js` (`PLANS`, `CHECKOUT_LINKS`).
+
+Licențele sunt chei semnate digital (`DM1-...`) și se verifică local, fără server:
+
+```bash
+node tools/license/keygen.js                      # o singură dată: creează cheia privată în ~/.discover-me/
+node tools/license/issue.js plus client@email.ro  # după o plată: afișează cheia pentru client
+```
+
+**Cheia privată (`~/.discover-me/license-private.pem`) nu se pune niciodată pe GitHub.**
+Fără ea nu mai poți emite chei care să funcționeze, iar dacă ajunge la altcineva, oricine poate genera chei.
 
 ## Tehnologii
 

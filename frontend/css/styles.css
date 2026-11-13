@@ -687,3 +687,25 @@ html[data-ui=vibrant] .topbar h1{background:linear-gradient(120deg,var(--ink) 30
 html[data-mode=light] .fx-glow{mix-blend-mode:multiply;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 55%,transparent) 0,transparent 60%)}
 
 @media(prefers-reduced-motion:reduce){.fx-ripple,.fx-glow{display:none}.fx-spring{animation:none}}
+
+
+/* ===== Planuri / plată ===== */
+#paywall{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;max-width:min(760px,calc(100vw - 24px));width:100%}
+#paywall::backdrop{background:rgba(0,0,0,.55)}
+.pw{position:relative;padding:26px}
+.pw h3{font:700 24px/1.15 Georgia,serif;margin:0 0 6px}
+.pw-close{position:absolute;top:14px;right:14px}
+.pw-plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.pw-plan{position:relative;display:flex;flex-direction:column;gap:4px;padding:18px 16px 16px;border:1px solid var(--line);border-radius:16px;background:var(--s3)}
+.pw-plan b{font-size:15px}
+.pw-plan strong{font-size:30px;font-weight:800;line-height:1.1;color:var(--accent-text)}
+.pw-plan span{font-size:13px;font-weight:600}
+.pw-plan small{color:var(--muted);font-size:11.5px;margin-bottom:10px}
+.pw-plan .button{margin-top:auto}
+.pw-plan.best{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.pw-plan.current{opacity:.8}
+.pw-badge{position:absolute;top:-10px;left:14px;padding:3px 9px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:10.5px!important;font-weight:800!important}
+.pw-key summary{cursor:pointer;font-weight:700;font-size:13px}
+.pw-key-row{display:flex;gap:8px;margin:10px 0 6px}
+.pw-key-row input{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--s-in,var(--s1));color:var(--ink);font:13px ui-monospace,monospace}
+@media(max-width:640px){.pw-plans{grid-template-columns:1fr}.pw{padding:20px}}

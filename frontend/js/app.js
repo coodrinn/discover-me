@@ -69,12 +69,12 @@ async function startIndex(){if(!engineReady){toast('Aplicația încă se pregăt
    done++;if(done%5===0||i===total-1){const pct=Math.round((i+1)/total*100);$('scanPercent').textContent=pct+'%';$('scanBar').style.width=pct+'%';$('scanLabel').textContent=`Indexate ${fmt(i+1)} din ${fmt(total)}`;$('scanStatus').textContent=`${fmt(reused)} din cache · ${fmt(failed)} erori · ${Math.round((performance.now()-started)/1000)} secunde`;updateStats();await new Promise(r=>setTimeout(r,0))}
   }
   if(writes.length)await storePutMany('photos',writes);await rebuildIndexedEntries();if(pauseRequested){$('scanLabel').textContent='Indexare întreruptă';$('scanStatus').textContent=`Progres salvat. Apasă „Reia indexarea” pentru a continua.`;toast('Indexarea a fost pusă în pauză. Progresul este salvat.')}else{$('scanLabel').textContent='Indexare completă';$('scanPercent').textContent='100%';$('scanBar').style.width='100%';$('scanStatus').textContent=`${fmt(indexedEntries.length)} fotografii indexate · ${fmt(indexedEntries.reduce((n,p)=>n+p.faces.length,0))} fețe · ${fmt(reused)} rezultate reutilizate din cache · ${failed} erori.`;toast('Indexarea albumului s-a încheiat. Poți căuta acum.')}
- }catch(e){console.error(e);toast('A apărut o eroare la indexare. Progresul deja salvat nu se pierde.')}finally{busy=false;$('deepScan').disabled=false;$('pauseScan').hidden=true;$('startIndex').hidden=false;$('startIndex').textContent=pauseRequested?'▶ Reia indexarea':'↻ Verifică fotografiile noi';$('startIndex').onclick=startIndex;updateSearchControls();updateStats();if(returnToSearchAfterIndex&&!pauseRequested&&activeFiles.length&&indexedEntries.length>=activeFiles.length){returnToSearchAfterIndex=false;navigate('search');toast('Albumul este pregătit. Acum poți alege persoana.')}}}
+ }catch(e){console.error(e);toast('A apărut o eroare la indexare. Progresul deja salvat nu se pierde.')}finally{busy=false;$('deepScan').disabled=false;$('pauseScan').hidden=true;$('startIndex').hidden=false;$('startIndex').textContent=pauseRequested?'▶ Reia indexarea':'↻ Verifică fotografiile noi';$('startIndex').onclick=startIndex;updateSearchControls();updateStats();if(returnToSearchAfterIndex&&!pauseRequested&&activeFiles.length&&indexedEntries.length>=activeFiles.length){returnToSearchAfterIndex=false;navigate('search');if(selectedPersonId&&referenceDescriptors.length>=2)runSearch();else toast('Albumul este pregătit. Alege persoana.')}}}
 $('pauseScan').onclick=()=>{pauseRequested=true;$('pauseScan').disabled=true;$('pauseScan').textContent='Se oprește după fotografia curentă…'};
 async function rebuildIndexedEntries(){const all=await storeAll('photos');const activeKeys=new Set(activeFiles.map(x=>fileKey(x.file,x.path,currentAlbumName||'Album')));const map=new Map(all.filter(x=>activeKeys.has(x.key)).map(x=>[x.key,x]));indexedEntries=activeFiles.map(item=>{const key=fileKey(item.file,item.path,currentAlbumName||'Album'),row=map.get(key);return row?{...row,file:item.file,handle:item.handle}:null}).filter(Boolean);indexRevision++;searchScoreCache.clear();updateStats()}
 function updateStats(){const faces=indexedEntries.reduce((n,p)=>n+(p.faces||[]).length,0);$('statPhotos').textContent=fmt(activeFiles.length);$('statAlbum').textContent=currentAlbumName||'Niciun album conectat';$('statFaces').textContent=fmt(faces);$('statPeople').textContent=fmt(people.length);$('statMatches').textContent=fmt(latestHits.length);$('settingsIndex').textContent=`${fmt(indexedEntries.length)} fotografii · ${fmt(faces)} fețe indexate`;}
 
-$('referenceFiles').addEventListener('change',async e=>{const files=[...e.target.files||[]];e.target.value='';if(!files.length)return;if(!engineReady){toast('Aplicația încă se pregătește.');return}await processReferences(files)});
+$('referenceFiles').addEventListener('change',async e=>{const files=[...e.target.files||[]];e.target.value='';if(!files.length)return;if(!canAddPerson()){openPaywall();return}if(!engineReady){toast('Aplicația încă se pregătește.');return}await processReferences(files)});
 // Când într-o poză sunt mai multe fețe, utilizatorul alege persoana (în loc ca poza să fie respinsă).
 function pickFace(canvas,faces,name){
   return new Promise(resolve=>{
@@ -139,6 +139,7 @@ async function processReferences(files){
 }
 $('clearRefs').onclick=()=>{draftDescriptors=[];draftThumbs=[];draftFileKeys.clear();$('referenceFiles').value='';$('refPreview').hidden=true;$('refThumb').removeAttribute('src');$('refThumb').hidden=true;$('refChips').replaceChildren();$('referenceCount').textContent='0 / 3 fotografii valide';$('referenceRequirementText').textContent='Mai adaugă cel puțin 3 fotografii.';$('refStatus').textContent='Selectează minimum 3 fotografii pentru a crea profilul.';$('savePerson').disabled=true};
 $('savePerson').onclick=async()=>{
+  if(!canAddPerson()){openPaywall();return}
   if(draftDescriptors.length<3){toast('Pentru a salva o persoană sunt necesare cel puțin 3 fotografii valide.');return}
   const name=$('personName').value.trim()||`Persoana ${people.length+1}`;
   const p={id:crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random(),name,thumb:draftThumbs[0],descs:draftDescriptors.map(x=>Float32Array.from(x)),referenceSpread:referenceSpread(draftDescriptors),createdAt:Date.now()};
@@ -159,6 +160,7 @@ function renderPeople(){
     const acts=document.createElement('div');acts.className='actions';const use=document.createElement('button');use.className='button soft small';use.textContent='Caută';use.onclick=()=>{selectPerson(p.id);navigate('search')};
     const del=document.createElement('button');del.className='button danger small';del.textContent='Șterge';del.onclick=()=>deletePerson(p.id);acts.append(use,del);c.append(pic,d,acts);manage.append(c);
   });
+  if(typeof renderPlan==='function'&&typeof license!=='undefined')renderPlan();
   $('peopleCount').textContent=`${people.length} ${people.length===1?'persoană':'persoane'}`;
   const sel=$('searchPersonSelect'),old=sel.value;sel.replaceChildren(new Option('Selectează o persoană salvată…',''));
   people.forEach(person=>sel.add(new Option(person.name,person.id)));
@@ -175,16 +177,16 @@ async function deletePerson(id){if(!confirm('Ștergi acest profil facial de pe d
 $('searchPersonSelect').onchange=e=>selectPerson(e.target.value);
 function searchPrerequisiteState(){
   if(!engineReady)return $('engineStatus')?.textContent==='Nu s-a putut porni'?'engineError':'engine';
+  if(!people.length)return 'people';
   if(!activeFiles.length)return 'album';
   if(!indexedEntries.length)return 'index';
-  if(!people.length)return 'people';
   return 'ready';
 }
 function renderSearchFlow(){
   const state=searchPrerequisiteState();
   const gate=$('searchGateCard'),form=$('searchControlsCard');
   if(!gate||!form)return state;
-  gate.hidden=state==='ready';form.hidden=state!=='ready';
+  gate.hidden=state==='ready';form.hidden=!people.length||state==='engine'||state==='engineError';const bar=$('albumBar');if(bar)bar.hidden=!activeFiles.length;
   const steps={album:$('searchStepAlbum'),person:$('searchStepPerson'),find:$('searchStepFind')};
   Object.values(steps).forEach(el=>el.classList.remove('current','done'));
   const setDone=(key,done)=>steps[key].classList.toggle('done',done);
@@ -192,9 +194,9 @@ function renderSearchFlow(){
   const config={
     engine:{step:1,current:'album',symbol:'◌',kicker:'PREGĂTIM APLICAȚIA',title:'Mai avem puțin și putem începe',text:'Se încarcă instrumentele necesare pentru pregătirea albumului. Nu trebuie să faci nimic acum.',progress:'Așteaptă câteva momente…',action:'',secondary:''},
     engineError:{step:1,current:'album',symbol:'↻',kicker:'APLICAȚIA NU A PORNIT',title:'Nu am putut pregăti căutarea',text:'Verifică dacă ai conexiune la internet, apoi reîncarcă aplicația pentru a descărca din nou componentele necesare.',progress:'Fotografiile și profilurile tale locale nu sunt șterse.',action:'Reîncarcă aplicația',secondary:''},
-    album:{step:1,current:'album',symbol:'▧',kicker:'PASUL 1 DIN 3',title:'Alege albumul cu fotografii',text:'Mai întâi conectează folderul în care se află fotografiile. După aceea pregătim albumul, apoi vei alege persoana pe care o cauți.',progress:'Fotografiile rămân pe dispozitivul tău.',action:'Alege albumul',secondary:''},
-    index:{step:1,current:'album',symbol:'◷',kicker:'PASUL 1 DIN 3',title:'Albumul este conectat. Pregătim fotografiile.',text:'Pentru a nu rata imagini, terminăm mai întâi indexarea albumului. Poți continua de unde ai rămas; fotografiile deja pregătite nu sunt analizate din nou.',progress:`${fmt(indexedEntries.length)} din ${fmt(activeFiles.length)} fotografii pregătite.`,action:'Pregătește albumul',secondary:'Vezi albumul'},
-    people:{step:2,current:'person',symbol:'♡',kicker:'PASUL 2 DIN 3',title:'Creează primul profil',text:'Albumul este pregătit. Acum adaugă cel puțin 3 fotografii clare ale persoanei pe care vrei să o găsești.',progress:'Profilurile se creează în secțiunea „Persoane salvate”.',action:'Creează un profil',secondary:''}
+    people:{step:1,current:'person',symbol:'♡',kicker:'PASUL 1 DIN 2',title:'Pe cine cauți?',text:'Adaugă 3 fotografii clare cu fața persoanei. Apoi alegi albumul în care o căutăm.',progress:'Durează mai puțin de un minut.',action:'Adaugă persoana',secondary:''},
+    album:{step:2,current:'album',symbol:'▧',kicker:'PASUL 2 DIN 2',title:'Unde o căutăm?',text:'Alege folderul cu fotografii. Îl pregătim o singură dată, apoi căutarea pornește singură.',progress:'Fotografiile rămân pe dispozitivul tău.',action:'Alege albumul',secondary:''},
+    index:{step:2,current:'album',symbol:'◷',kicker:'PASUL 2 DIN 2',title:'Pregătim albumul…',text:'Căutarea pornește automat când primele fotografii sunt gata. Fotografiile deja pregătite nu mai sunt analizate a doua oară.',progress:`${fmt(indexedEntries.length)} din ${fmt(activeFiles.length)} fotografii pregătite.`,action:'Pregătește albumul',secondary:''}
   };
   const c=config[state];
   if(state==='ready'){
@@ -217,7 +219,9 @@ function renderSearchFlow(){
     $('searchGateAction').dataset.action=state;
   }
   $('searchPageRun').disabled=!(state==='ready'&&engineReady&&referenceDescriptors.length>=2&&!!selectedPersonId&&!busy);
-  $('searchPersonSelect').disabled=state!=='ready'||busy;
+  $('searchPersonSelect').disabled=!people.length||busy;
+  const card=$('searchControlsCard');card.querySelectorAll('.search-control-actions,.search-options,.mini-note').forEach(el=>el.hidden=state!=='ready');
+  if(state!=='ready'&&people.length){const who=people.find(p=>p.id===selectedPersonId)?.name;$('searchSelectionNote').textContent=who?`${who} e selectată. ${state==='index'?'Căutarea pornește când albumul e pregătit.':'Acum alege albumul mai jos.'}`:'Apasă pe persoana pe care o cauți.'}
   return state;
 }
 function updateSearchControls(){renderSearchFlow();renderPersonChips();
@@ -226,12 +230,12 @@ function renderPersonChips(){
   const box=$('personChips');if(!box)return;box.replaceChildren();
   const ready=searchPrerequisiteState()==='ready';
   for(const p of people){
-    const b=document.createElement('button');b.type='button';b.className='person-chip'+(p.id===selectedPersonId?' on':'');b.setAttribute('role','listitem');b.setAttribute('aria-pressed',p.id===selectedPersonId);b.disabled=!ready||busy;
+    const b=document.createElement('button');b.type='button';b.className='person-chip'+(p.id===selectedPersonId?' on':'');b.setAttribute('role','listitem');b.setAttribute('aria-pressed',p.id===selectedPersonId);b.disabled=busy&&ready;
     const im=document.createElement('img');im.src=p.thumb;im.alt='';const n=document.createElement('span');n.textContent=p.name;
     const sm=document.createElement('small');sm.textContent=p.descs.length+' ipostaze';n.append(sm);
-    b.append(im,n);b.onclick=()=>{selectPerson(p.id);if(!$('searchPageRun').disabled)runSearch()};box.append(b);
+    b.append(im,n);b.onclick=()=>{selectPerson(p.id);const st=searchPrerequisiteState();if(st==='ready'){if(!$('searchPageRun').disabled)runSearch()}else if(st==='album')connectDirectory();else if(st==='index')toast('Caut imediat ce albumul e pregătit.')};box.append(b);
   }
-  const add=document.createElement('button');add.type='button';add.className='person-chip add';add.innerHTML='<span class="plus">＋</span><span>Persoană nouă<small>3 poze clare</small></span>';add.onclick=()=>{returnToSearchAfterPersonCreation=true;navigate('people')};box.append(add);
+  const add=document.createElement('button');add.type='button';add.className='person-chip add';add.innerHTML='<span class="plus">＋</span><span>Persoană nouă<small>3 poze clare</small></span>';add.onclick=()=>{if(!canAddPerson()){openPaywall();return}returnToSearchAfterPersonCreation=true;navigate('people')};box.append(add);
 }
 // Învățare din confirmări: utilizatorul confirmă o potrivire, iar fața devine referință suplimentară.
 async function teachProfile(hit){
@@ -360,5 +364,34 @@ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>navigate(b.dat
   document.body.dataset.wallpaper='none';
 })();
 async function migrateLegacyPeople(){try{if((await storeAll('people')).length)return;const raw=localStorage.getItem('ch_people');if(!raw)return;const old=JSON.parse(raw);if(!Array.isArray(old))return;let migrated=0;for(const p of old){const list=Array.isArray(p.descs)&&p.descs.length?p.descs:[p.desc??p.descriptor??p.faceDescriptor??p.embedding];const descs=list.map(x=>Float32Array.from(x||[],Number)).filter(x=>x.length===128&&Array.from(x).every(Number.isFinite));if(!descs.length||!p.thumb)continue;await storePut('people',{id:String(p.id??('legacy-'+migrated)),name:String(p.name||('Persoana '+(migrated+1))),thumb:p.thumb,descs,createdAt:Date.now(),migratedFrom:'discover.me 1.x'});migrated++}if(migrated)$('engineNote').textContent=`Am transferat ${migrated} profiluri de persoane din versiunea anterioară. Indexul albumului trebuie creat separat în versiunea 2.0.`}catch(e){console.warn('Migrarea profilurilor vechi nu a reușit',e)}}
-async function boot(){try{await openDB();await migrateLegacyPeople();await loadPeople();await restoreAlbum()}catch(e){console.error(e);toast('Stocarea locală nu este disponibilă în acest browser.')}initEngine()}
+async function boot(){try{await openDB();await migrateLegacyPeople();await loadPeople();await loadLicense();renderPlan();updateSearchControls();await restoreAlbum()}catch(e){console.error(e);toast('Stocarea locală nu este disponibilă în acest browser.')}initEngine()}
 window.addEventListener('beforeunload',clearObjectUrls);boot();
+
+// ===== Planuri și plată =====
+function planLabel(){const p=PLANS[license.plan]||PLANS.free;return `${p.name} · ${p.people===Infinity?'persoane nelimitate':p.people+(p.people===1?' persoană':' persoane')}`}
+function renderPlan(){const s=$('planSummary');if(s)s.textContent=`${planLabel()} · folosești ${people.length}`;const b=$('planBtn');if(b)b.textContent=license.plan==='pro'?'Ai planul Pro ✓':'Vezi planurile';if(b)b.disabled=license.plan==='pro'}
+function openPaywall(reason){
+  const d=$('paywall'),box=$('pwPlans');box.replaceChildren();
+  $('pwReason').textContent=reason||(people.length>=peopleLimit()?`Planul ${PLANS[license.plan].name} include ${peopleLimit()} ${peopleLimit()===1?'persoană':'persoane'}. Alege un plan ca să adaugi mai multe. Plătești o singură dată.`:'Plătești o singură dată, fără abonament.');
+  for(const p of Object.values(PLANS)){
+    const c=document.createElement('div');c.className='pw-plan'+(p.id==='plus'?' best':'')+(p.id===license.plan?' current':'');
+    c.innerHTML=`${p.id==='plus'?'<span class="pw-badge">Recomandat</span>':''}<b>${p.name}</b><strong>${p.price}</strong><span>${p.people===Infinity?'Persoane nelimitate':p.people+(p.people===1?' persoană':' persoane')}</span><small>${p.note}</small>`;
+    const btn=document.createElement('button');btn.type='button';btn.className='button '+(p.id==='plus'?'primary':'soft')+' small';
+    if(p.id===license.plan){btn.textContent='Planul tău';btn.disabled=true}
+    else if(p.id==='free'||(license.plan==='pro')){btn.textContent='—';btn.disabled=true}
+    else{btn.textContent='Cumpără';btn.onclick=()=>{const url=CHECKOUT_LINKS[p.id];if(url)window.open(url,'_blank','noopener');else toast('Plata online nu este încă activată. Revino curând.')}}
+    c.append(btn);box.append(c);
+  }
+  $('pwKeyMsg').textContent='Cheia o primești pe email după plată.';
+  if(!d.open)d.showModal();
+}
+$('pwClose').onclick=()=>$('paywall').close();
+$('paywall').addEventListener('click',e=>{if(e.target===$('paywall'))$('paywall').close()});
+$('planBtn').onclick=()=>openPaywall();
+$('pwActivate').onclick=async()=>{
+  const msg=$('pwKeyMsg'),btn=$('pwActivate');btn.disabled=true;msg.textContent='Verific cheia…';
+  const l=await activateLicense($('pwKey').value);btn.disabled=false;
+  if(!l){msg.textContent='Cheia nu este validă. Verifică să o fi copiat complet (începe cu DM1-).';return}
+  $('pwKey').value='';renderPlan();updateSearchControls();$('paywall').close();
+  toast(`Mulțumim! Planul ${PLANS[l.plan].name} este activ.`);
+};

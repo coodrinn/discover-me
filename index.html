@@ -46,8 +46,8 @@
       </article>
       <article class="card" id="stepsCard"><div class="card-head"><div><h3>Primii pași</h3><p class="sub">Se bifează singuri pe măsură ce avansezi.</p></div><button class="button soft small" id="tourBtn" type="button">Cum funcționează?</button></div>
 <div class="model-list">
-<div class="model" id="step1"><div class="step-no">01</div><div class="model-text"><b>Alege un album</b><small>Folderul cu fotografiile tale.</small></div></div>
-<div class="model" id="step2"><div class="step-no">02</div><div class="model-text"><b>Creează o persoană</b><small>Adaugă 3 fotografii clare ale ei.</small></div><button class="button soft small" type="button" data-go="people">Deschide</button></div>
+<div class="model" id="step1"><div class="step-no">01</div><div class="model-text"><b>Adaugă persoana</b><small>3 fotografii clare ale ei.</small></div><button class="button soft small" type="button" data-go="people">Deschide</button></div>
+<div class="model" id="step2"><div class="step-no">02</div><div class="model-text"><b>Alege albumul</b><small>Folderul cu fotografiile tale.</small></div></div>
 <div class="model" id="step3"><div class="step-no">03</div><div class="model-text"><b>Caută fotografii</b><small>Alege persoana și apasă Caută.</small></div><button class="button soft small" type="button" data-go="search">Deschide</button></div>
 </div></article>
     </div>
@@ -61,24 +61,12 @@
   </section>
 
   <section class="page active" id="page-search">
-    <div class="page-heading"><h2>Caută o persoană</h2><p>Alege albumul și persoana. Restul se face automat.</p></div>
-<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small></div><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
+    <div class="page-heading"><h2>Caută o persoană</h2><p>Întâi alegi persoana, apoi albumul. Restul se face automat.</p></div>
 <ol class="search-steps" id="searchSteps" aria-label="Pașii căutării">
       <li id="searchStepAlbum" class="current"><span class="step-circle">1</span><span><b>Album</b><small>Conectează și pregătește</small></span></li>
       <li id="searchStepPerson"><span class="step-circle">2</span><span><b>Persoană</b><small>Alege un profil salvat</small></span></li>
       <li id="searchStepFind"><span class="step-circle">3</span><span><b>Rezultate</b><small>Vezi fotografiile găsite</small></span></li>
     </ol>
-    <article class="card search-gate" id="searchGateCard" aria-live="polite">
-      <div class="gate-symbol" id="searchGateSymbol">▧</div>
-      <div class="gate-copy">
-        <div class="gate-kicker" id="searchGateKicker">PASUL 1 DIN 3</div>
-        <h3 id="searchGateTitle">Alege albumul cu fotografii</h3>
-        <p id="searchGateText">Mai întâi conectăm folderul în care se află fotografiile. După aceea îl pregătim pentru căutare.</p>
-        <div class="gate-progress-note" id="searchGateProgress"></div>
-        <div class="gate-actions"><button class="button primary" id="searchGateAction" type="button">Alege albumul</button><button class="button soft" id="searchGateSecondary" type="button" hidden>Vezi albumul</button></div>
-      </div>
-      <div class="gate-decoration" aria-hidden="true">✧</div>
-    </article>
     <article class="card search-controls-card" id="searchControlsCard" hidden>
       <div class="card-head"><div><h3>Pe cine cauți?</h3><p class="sub">Apasă pe o persoană – căutarea pornește imediat.</p></div></div>
       <div class="person-chips" id="personChips" role="list"></div>
@@ -92,6 +80,18 @@
       <div class="progress-wrap match-progress" id="matchProgressWrap2" hidden><div class="progress-meta"><span id="matchProgressLabel2" aria-live="polite">Pregătesc căutarea…</span><b id="matchProgressPct2">0%</b></div><div class="progress"><i id="matchProgressBar2"></i></div></div>
       <p class="mini-note">Poți verifica fiecare fotografie înainte să o descarci sau să o incluzi în arhivă.</p>
     </article>
+    <article class="card search-gate" id="searchGateCard" aria-live="polite">
+      <div class="gate-symbol" id="searchGateSymbol">▧</div>
+      <div class="gate-copy">
+        <div class="gate-kicker" id="searchGateKicker">PASUL 1 DIN 3</div>
+        <h3 id="searchGateTitle">Alege albumul cu fotografii</h3>
+        <p id="searchGateText">Mai întâi conectăm folderul în care se află fotografiile. După aceea îl pregătim pentru căutare.</p>
+        <div class="gate-progress-note" id="searchGateProgress"></div>
+        <div class="gate-actions"><button class="button primary" id="searchGateAction" type="button">Alege albumul</button><button class="button soft" id="searchGateSecondary" type="button" hidden>Vezi albumul</button></div>
+      </div>
+      <div class="gate-decoration" aria-hidden="true">✧</div>
+    </article>
+<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small></div><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
     <div class="results-head" id="resultsHead2" hidden><div><h3>Rezultatele tale</h3><p id="resultSummary2"></p></div><div class="result-actions"><button class="button soft small" id="selectAll2">Selectează toate</button><button class="button primary small" id="exportZip2">↓ Export ZIP</button></div></div><div class="result-grid" id="resultsGrid2"></div><div class="load-more" id="moreWrap2" hidden><button class="button soft small" id="more2">Încarcă următoarele fotografii</button></div><div class="no-results" id="resultsEmpty2">Conectează mai întâi un album pentru a începe.</div>
   </section>
   <section class="page" id="page-people">
@@ -133,6 +133,7 @@
           <button type="button" class="ui-style" data-ui="vibrant" role="radio"><span class="ui-demo"><i></i><i></i></span><b>Vibrant</b><small>Gradient și strălucire la atingere</small></button>
         </div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
+      <div class="setting-row"><div><b>Planul tău</b><p id="planSummary">Gratuit · 1 persoană</p></div><button class="button primary small" type="button" id="planBtn">Vezi planurile</button></div>
       <div class="setting-row"><div><b>Ghid rapid</b><p>3 pași, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
     </article>
     <article class="card">
@@ -148,6 +149,17 @@
 <dialog id="tourDlg" aria-labelledby="tourTitle"><div class="tour"><div class="tour-no" id="tourNo"></div><h3 id="tourTitle"></h3><p id="tourText"></p><div class="tour-dots" id="tourDots"></div><div class="row tour-actions"><button class="button ghost small" type="button" id="tourSkip">Omite</button><span style="flex:1"></span><button class="button soft small" type="button" id="tourBack">Înapoi</button><button class="button primary small" type="button" id="tourNext">Înainte</button></div></div></dialog>
 </div>
 <dialog id="previewDialog" aria-label="Galeria fotografiilor găsite"><div class="modal-head"><div class="preview-heading"><b id="previewTitle">Fotografie</b><span id="previewCounter" class="preview-counter" aria-live="polite">1 / 1</span></div><button class="button ghost small" id="previewClose" type="button">Închide ✕</button></div><div class="modal-body preview-stage"><button class="preview-nav preview-prev" id="previewPrev" type="button" aria-label="Fotografia anterioară" title="Fotografia anterioară">‹</button><img id="previewImage" class="preview-img" alt="Fotografie găsită"><button class="preview-nav preview-next" id="previewNext" type="button" aria-label="Fotografia următoare" title="Fotografia următoare">›</button></div><div class="modal-foot"><span id="previewMeta" class="sub"></span><button class="button soft small" id="previewTeach" type="button" title="Adaugă această ipostază în profil, ca să găsească mai multe poze">✓ E persoana – învață</button><a id="previewDownload" class="button primary small" download>Descarcă</a></div></dialog>
+<dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
+  <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
+  <h3 id="pwTitle">Caută mai multe persoane</h3>
+  <p class="sub" id="pwReason">Alege planul potrivit. Plătești o singură dată, fără abonament.</p>
+  <div class="pw-plans" id="pwPlans"></div>
+  <details class="pw-key"><summary>Am deja o cheie de licență</summary>
+    <div class="pw-key-row"><input id="pwKey" type="text" placeholder="DM1-…" autocomplete="off" spellcheck="false"><button class="button primary small" type="button" id="pwActivate">Activează</button></div>
+    <small class="sub" id="pwKeyMsg">Cheia o primești pe email după plată.</small>
+  </details>
+  <p class="mini-note">Pozele tale rămân pe dispozitiv indiferent de plan.</p>
+</div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.js"></script>
 <!-- Motorul (rulează local, în browser) -->
@@ -157,6 +169,7 @@
 <script src="engine/album.js"></script>
 <script src="engine/faces.js"></script>
 <script src="engine/matching.js"></script>
+<script src="engine/license.js"></script>
 <!-- Interfața -->
 <script src="frontend/js/app.js"></script>
 
