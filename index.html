@@ -127,7 +127,7 @@
       <div class="setting-row"><div><b>Mod</b><p>Întunecat, luminos sau după sistem.</p></div><div class="seg" role="group" aria-label="Mod"><button type="button" class="seg-btn" data-m="dark">☾ Întunecat</button><button type="button" class="seg-btn" data-m="light">☀ Luminos</button><button type="button" class="seg-btn" data-m="auto">◐ Auto</button></div></div>
       <div class="setting-row"><div><b>Culoare</b><p>Butoane și accente.</p></div><div class="swatches" id="accentSwatches" role="group" aria-label="Culori"></div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
-      <div class="setting-row"><div><b>Planul tău</b><p id="planSummary">Gratuit · 1 persoană</p></div><button class="button primary small" type="button" id="planBtn">Vezi planurile</button></div>
+      <div class="setting-row"><div><b>Abonamentul tău</b><p id="planSummary">Gratuit · 1 persoană</p></div><button class="button primary small" type="button" id="planBtn">Vezi abonamentele</button></div>
       <div class="setting-row"><div><b>Ghid rapid</b><p>3 pași, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
     </article>
     <article class="card">
@@ -157,14 +157,15 @@
 </div></dialog>
 <dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
   <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
-  <h3 id="pwTitle">Caută mai multe persoane</h3>
+  <h3 id="pwTitle">Abonamente discover.me</h3>
   <p class="sub" id="pwReason">Alege planul potrivit. Plătești o singură dată, fără abonament.</p>
+  <div class="pw-billing seg" id="pwBilling" role="group" aria-label="Facturare"><button type="button" class="pw-bill" data-billing="monthly">Lunar</button><button type="button" class="pw-bill" data-billing="yearly">Anual <span class="pw-save">–37%</span></button></div>
   <div class="pw-plans" id="pwPlans"></div>
   <details class="pw-key"><summary>Am deja o cheie de licență</summary>
     <div class="pw-key-row"><input id="pwKey" type="text" placeholder="Lipește cheia de licență" autocomplete="off" spellcheck="false"><button class="button primary small" type="button" id="pwActivate">Activează</button></div>
     <small class="sub" id="pwKeyMsg">Cheia o primești automat pe email după plată.</small>
   </details>
-  <p class="mini-note">Pozele tale rămân pe dispozitiv indiferent de plan.</p>
+  <p class="mini-note">Plata și facturarea sunt gestionate de Lemon Squeezy. Poți anula oricând din emailul de confirmare. Pozele tale rămân pe dispozitiv indiferent de plan.</p>
 </div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.js"></script>

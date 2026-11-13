@@ -712,3 +712,15 @@ html[data-mode=light] .nav button.active{background:var(--accent-soft)}
 html[data-mode=light] .preview-nav{background:#ffffffe6;color:var(--ink);border-color:var(--line)}
 html[data-mode=light] .preview-stage{background:#111}
 @media(max-width:760px){html[data-mode=light] .sidebar{border-top-color:var(--line);background:var(--s2)}}
+
+/* ===== Abonamente ===== */
+.pw-billing{margin:14px 0 4px;background:var(--s3);border-radius:999px;padding:4px}
+.pw-billing .pw-bill{border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer}
+.pw-billing .pw-bill[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.pw-save{display:inline-block;margin-left:4px;padding:1px 6px;border-radius:999px;background:color-mix(in srgb,var(--accent) 22%,transparent);font-size:11px}
+.pw-billing .pw-bill[aria-pressed="true"] .pw-save{background:rgba(0,0,0,.18)}
+.pw-plan strong em{font-style:normal;font-size:14px;font-weight:700;color:var(--muted);margin-left:3px}
+.pw-plan .pw-sub{margin:-2px 0 6px!important}
+.person-chip.locked{opacity:.75;border-style:dashed}
+.person-chip.locked img{filter:grayscale(1)}
+.pw-billing{display:inline-flex;gap:2px}

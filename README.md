@@ -52,31 +52,34 @@ Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi
 5. **Învățare.** Când confirmi un rezultat incert („✓ E persoana”), fața este adăugată în profil
    și căutarea găsește mai multe poze.
 
-## Planuri și licențe
+## Abonamente
 
-| Plan | Persoane | Preț |
-|---|---|---|
-| Gratuit | 1 | 0 € |
-| Plus | 5 | 4,99 € (plată unică) |
-| Pro | nelimitat | 9,99 € (plată unică) |
+| Plan | Persoane | Lunar | Anual |
+|---|---|---|---|
+| Gratuit | 1 | 0 € | 0 € |
+| Plus | 3 | 1,99 € | 14,99 € (–37%) |
+| Pro | nelimitat | 3,99 € | 29,99 € (–37%) |
+
+Prețurile se schimbă în `engine/license.js` (`PLANS`). Când un abonament expiră, aplicația revine la Gratuit:
+profilurile rămân salvate, dar cele peste limită apar blocate până la reînnoire.
 
 ### Activarea plăților (Lemon Squeezy)
 
-Lemon Squeezy încasează plata, se ocupă de TVA în UE și trimite automat clientului cheia de licență pe email.
-Aplicația verifică cheia direct la Lemon Squeezy, din browser, fără server.
+Lemon Squeezy încasează abonamentele, se ocupă de TVA în UE, reînnoiește automat și trimite clientului
+cheia de licență pe email. Aplicația verifică cheia direct la Lemon Squeezy, din browser, fără server.
 
 1. Creează un cont pe [lemonsqueezy.com](https://www.lemonsqueezy.com) și un magazin.
-2. Creează două produse, **discover.me Plus** (4,99 €) și **discover.me Pro** (9,99 €), plată unică,
-   cu opțiunea **License keys** activată (de ex. limită de 3 activări).
-3. Opțional: la fiecare produs setează *Redirect URL* la adresa aplicației cu `?activate=1`
-   (de ex. `https://NUMELE-TĂU.github.io/discover-me/?activate=1`), ca clientul să ajungă direct la activare.
+2. Creează două produse de tip **Subscription**: **discover.me Plus** și **discover.me Pro**,
+   fiecare cu două variante: **Lunar** și **Anual**. Activează **License keys** (de ex. limită de 3 activări).
+3. Opțional: setează *Redirect URL* la adresa aplicației cu `?activate=1`
+   (de ex. `https://NUMELE-TĂU.github.io/discover-me/?activate=1`).
 4. Completează în `engine/license.js`, la `PAYMENTS`:
    - `storeId`: ID-ul magazinului (Settings → Stores);
-   - `checkout`: linkurile de checkout ale celor două produse;
-   - `productIds`: ID-urile produselor.
+   - `productIds`: ID-urile celor două produse;
+   - `checkout`: linkul de checkout pentru fiecare variantă (lunar/anual).
 
-Cheile sunt acceptate **doar** dacă vin din magazinul tău și din produsele configurate.
-O dată pe săptămână, aplicația reverifică cheia; dacă a fost rambursată sau dezactivată, revine la planul gratuit.
+Cheile sunt acceptate **doar** dacă vin din magazinul tău și din produsele configurate. Aplicația reverifică
+abonamentul zilnic. Dacă e anulat, expirat sau rambursat, revine la Gratuit; fără internet, mai are 5 zile de grație.
 
 ### Chei emise manual (opțional)
 
@@ -84,7 +87,8 @@ Pentru vânzări directe sau cadouri poți emite chei semnate (`DM1-...`), verif
 
 ```bash
 node tools/license/keygen.js                      # o singură dată: creează cheia privată în ~/.discover-me/
-node tools/license/issue.js plus client@email.ro  # afișează cheia pentru client
+node tools/license/issue.js plus client@email.ro      # cheie fără expirare
+node tools/license/issue.js pro client@email.ro 30    # cheie valabilă 30 de zile
 ```
 
 **Cheia privată (`~/.discover-me/license-private.pem`) nu se pune niciodată pe GitHub.**

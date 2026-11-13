@@ -231,11 +231,11 @@ function renderPersonChips(){
   const box=$('personChips');if(!box)return;box.replaceChildren();
   const ready=searchPrerequisiteState()==='ready';
   for(const p of people){
-    const b=document.createElement('button');b.type='button';b.className='person-chip'+(p.id===selectedPersonId?' on':'');b.setAttribute('role','listitem');b.setAttribute('aria-pressed',p.id===selectedPersonId);b.disabled=busy&&ready;
+    const locked=!isPersonUnlocked(p.id);const b=document.createElement('button');b.type='button';b.className='person-chip'+(p.id===selectedPersonId?' on':'')+(locked?' locked':'');b.setAttribute('role','listitem');b.setAttribute('aria-pressed',p.id===selectedPersonId);b.disabled=busy&&ready;
     const im=document.createElement('img');im.src=p.thumb;im.alt='';const n=document.createElement('span');n.textContent=p.name;
-    const sm=document.createElement('small');sm.textContent=p.descs.length+' ipostaze';n.append(sm);
+    const sm=document.createElement('small');sm.textContent=locked?'🔒 necesită abonament':p.descs.length+' ipostaze';n.append(sm);
     const pen=document.createElement('span');pen.className='chip-edit';pen.textContent='✎';pen.title='Editează';pen.setAttribute('role','button');pen.setAttribute('aria-label','Editează '+p.name);pen.onclick=e=>{e.stopPropagation();openPersonEditor(p.id)};
-    b.append(im,n,pen);b.onclick=()=>{selectPerson(p.id);const st=searchPrerequisiteState();if(st==='ready'){if(!$('searchPageRun').disabled)runSearch()}else if(st==='album')connectDirectory();else if(st==='index')toast('Caut imediat ce albumul e pregătit.')};box.append(b);
+    b.append(im,n,pen);b.onclick=()=>{if(locked){openPaywall(`„${p.name}” nu e inclusă în planul ${PLANS[license.plan].name}. Abonează-te ca să o cauți din nou; profilul a rămas salvat.`);return}selectPerson(p.id);const st=searchPrerequisiteState();if(st==='ready'){if(!$('searchPageRun').disabled)runSearch()}else if(st==='album')connectDirectory();else if(st==='index')toast('Caut imediat ce albumul e pregătit.')};box.append(b);
   }
   const add=document.createElement('button');add.type='button';add.className='person-chip add';add.innerHTML='<span class="plus">＋</span><span>Persoană nouă<small>3 poze clare</small></span>';add.onclick=()=>{if(!canAddPerson()){openPaywall();return}returnToSearchAfterPersonCreation=true;navigate('people')};box.append(add);
 }
@@ -295,6 +295,7 @@ async function runSearch(){
   const readiness=searchPrerequisiteState();
   if(readiness!=='ready'){updateSearchControls();toast(readiness==='album'?'Alege mai întâi un album.':readiness==='index'?'Pregătește albumul înainte de căutare.':readiness==='people'?'Creează mai întâi un profil.':'Aplicația încă se pregătește.');return}
   if(busy||!referenceDescriptors.length||!indexedEntries.length)return;
+  if(selectedPersonId&&!isPersonUnlocked(selectedPersonId)){openPaywall();return}
   if(referenceDescriptors.length<2){toast('Acest profil are prea puține fotografii de referință. Adaugă cel puțin încă una pentru o potrivire mai sigură.');return}
   busy=true;updateSearchControls();
   const started=performance.now(),policy=getMatchPolicy(),refs=referenceDescriptors.map(x=>x instanceof Float32Array?x:Float32Array.from(x)),queryKey=`${MATCH_ALGORITHM_VERSION}|${indexRevision}|${querySignature()}`;
@@ -322,7 +323,7 @@ async function runSearch(){
 // --- Rezultate live: în timp ce albumul se indexează, pozele cu persoana apar imediat ---
 const live={sig:'',rows:[],seen:new Set(),last:0,count:0};
 function liveAdd(entry){
-  if(!selectedPersonId||referenceDescriptors.length<2)return;
+  if(!selectedPersonId||referenceDescriptors.length<2||!isPersonUnlocked(selectedPersonId))return;
   const sig=querySignature();if(live.sig!==sig){live.sig=sig;live.rows=[];live.seen=new Set();live.count=0}
   if(live.seen.has(entry.key))return;live.seen.add(entry.key);
   live.rows.push(scoreEntry(entry,referenceDescriptors));
@@ -390,23 +391,36 @@ async function boot(){try{await openDB();await migrateLegacyPeople();await loadP
 window.addEventListener('beforeunload',clearObjectUrls);boot();
 
 // ===== Planuri și plată =====
-function planLabel(){const p=PLANS[license.plan]||PLANS.free;return `${p.name} · ${p.people===Infinity?'persoane nelimitate':p.people+(p.people===1?' persoană':' persoane')}`}
-function renderPlan(){const s=$('planSummary');if(s)s.textContent=`${planLabel()} · folosești ${people.length}`;const b=$('planBtn');if(b)b.textContent=license.plan==='pro'?'Ai planul Pro ✓':'Vezi planurile';if(b)b.disabled=license.plan==='pro'}
+let billing='yearly';
+const personsTxt=n=>n===Infinity?'Persoane nelimitate':n+(n===1?' persoană':' persoane');
+function planLabel(){const p=PLANS[license.plan]||PLANS.free;return `${p.name} · ${personsTxt(p.people).toLowerCase()}`}
+function renderPlan(){
+  const s=$('planSummary'),b=$('planBtn');
+  if(s)s.textContent=`${planLabel()} · folosești ${people.length}${license.plan!=='free'&&license.expiresAt?' · activ până pe '+fmtDate(license.expiresAt):''}`;
+  if(b){b.textContent=license.plan==='free'?'Vezi abonamentele':license.plan==='pro'?'Abonamentul tău':'Schimbă abonamentul';b.disabled=false}
+}
+function onLicenseChanged(){renderPlan();renderPeople();updateSearchControls()}
 function openPaywall(reason){
   const d=$('paywall'),box=$('pwPlans');box.replaceChildren();
-  $('pwReason').textContent=reason||(people.length>=peopleLimit()?`Planul ${PLANS[license.plan].name} include ${peopleLimit()} ${peopleLimit()===1?'persoană':'persoane'}. Alege un plan ca să adaugi mai multe. Plătești o singură dată.`:'Plătești o singură dată, fără abonament.');
+  $('pwReason').textContent=reason||(people.length>=peopleLimit()&&license.plan!=='pro'?`Planul ${PLANS[license.plan].name} include ${personsTxt(peopleLimit()).toLowerCase()}. Abonează-te ca să cauți mai multe persoane. Poți anula oricând.`:'Abonament lunar sau anual. Poți anula oricând.');
+  document.querySelectorAll('#pwBilling button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.billing===billing)));
   for(const p of Object.values(PLANS)){
     const c=document.createElement('div');c.className='pw-plan'+(p.id==='plus'?' best':'')+(p.id===license.plan?' current':'');
-    c.innerHTML=`${p.id==='plus'?'<span class="pw-badge">Recomandat</span>':''}<b>${p.name}</b><strong>${p.price}</strong><span>${p.people===Infinity?'Persoane nelimitate':p.people+(p.people===1?' persoană':' persoane')}</span><small>${p.note}</small>`;
+    const per=p.id==='free'?'':billing==='yearly'?' / an':' / lună';
+    const sub=p.id==='free'?'pentru totdeauna':billing==='yearly'?`adică ${(parseFloat(p.price.yearly.replace(',','.'))/12).toFixed(2).replace('.',',')} € / lună`:'facturat lunar';
+    c.innerHTML=`${p.id==='plus'?'<span class="pw-badge">Recomandat</span>':''}<b>${p.name}</b><strong>${p.price[billing]}<em>${per}</em></strong><small class="pw-sub">${sub}</small><span>${personsTxt(p.people)}</span><small>${p.note}</small>`;
     const btn=document.createElement('button');btn.type='button';btn.className='button '+(p.id==='plus'?'primary':'soft')+' small';
-    if(p.id===license.plan){btn.textContent='Planul tău';btn.disabled=true}
-    else if(p.id==='free'||(license.plan==='pro')){btn.textContent='—';btn.disabled=true}
-    else{btn.textContent='Cumpără';btn.onclick=()=>{const url=CHECKOUT_LINKS[p.id];if(!url){toast('Plata online nu este încă activată. Revino curând.');return}window.open(url,'_blank','noopener');$('paywall').querySelector('.pw-key').open=true;$('pwKeyMsg').textContent='După plată primești cheia pe email. Lipește-o aici și apasă Activează.'}}
+    if(p.id===license.plan){btn.textContent=p.id==='free'?'Planul tău':'Abonamentul tău ✓';btn.disabled=true}
+    else if(p.id==='free'){btn.textContent='—';btn.disabled=true}
+    else{btn.textContent=license.plan==='free'?'Abonează-te':'Schimbă pe '+p.name;btn.onclick=()=>{
+      const url=PAYMENTS.checkout[p.id]?.[billing];if(!url){toast('Plata online nu este încă activată. Revino curând.');return}
+      window.open(url,'_blank','noopener');$('paywall').querySelector('.pw-key').open=true;$('pwKeyMsg').textContent='După plată primești cheia pe email. Lipește-o aici și apasă Activează.'}}
     c.append(btn);box.append(c);
   }
-  $('pwKeyMsg').textContent='Cheia o primești pe email după plată.';
+  $('pwKeyMsg').textContent=license.plan!=='free'&&license.expiresAt?`Abonament activ până pe ${fmtDate(license.expiresAt)}; se reînnoiește automat dacă nu îl anulezi.`:'Cheia o primești automat pe email după abonare.';
   if(!d.open)d.showModal();
 }
+document.querySelectorAll('#pwBilling button').forEach(b=>b.onclick=()=>{billing=b.dataset.billing;openPaywall($('pwReason').textContent)});
 $('pwClose').onclick=()=>$('paywall').close();
 $('paywall').addEventListener('click',e=>{if(e.target===$('paywall'))$('paywall').close()});
 $('planBtn').onclick=()=>openPaywall();
