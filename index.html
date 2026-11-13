@@ -91,7 +91,7 @@
       </div>
       <div class="gate-decoration" aria-hidden="true">✧</div>
     </article>
-<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small></div><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
+<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small></div><button class="button soft small" type="button" id="abLinks">🔗 Din linkuri</button><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
     <div class="results-head" id="resultsHead2" hidden><div><h3>Rezultatele tale</h3><p id="resultSummary2"></p></div><div class="result-actions"><button class="button soft small" id="selectAll2">Selectează toate</button><button class="button primary small" id="exportZip2">↓ Export ZIP</button></div></div><div class="result-grid" id="resultsGrid2"></div><div class="load-more" id="moreWrap2" hidden><button class="button soft small" id="more2">Încarcă următoarele fotografii</button></div><div class="no-results" id="resultsEmpty2">Conectează mai întâi un album pentru a începe.</div>
   </section>
   <section class="page" id="page-people">
@@ -184,6 +184,16 @@
   <p class="mini-note" id="peMsg" aria-live="polite"></p>
   <div class="pe-actions"><button class="button danger small" type="button" id="peDelete">Șterge persoana</button><span style="flex:1"></span><button class="button primary" type="button" id="peSave">Salvează</button></div>
 </div></dialog>
+<dialog id="linkDialog" aria-labelledby="ldTitle"><div class="pe">
+  <div class="pe-head"><h3 id="ldTitle">Album din linkuri</h3><button class="button ghost small" type="button" id="ldClose" aria-label="Închide">✕</button></div>
+  <p class="sub" style="margin:0">Lipește linkuri directe către poze (care se termină de obicei în <b>.jpg</b>, <b>.png</b> sau <b>.webp</b>), câte unul pe rând.</p>
+  <textarea id="ldText" rows="8" spellcheck="false" placeholder="https://exemplu.ro/poze/nunta-001.jpg&#10;https://exemplu.ro/poze/nunta-002.jpg"></textarea>
+  <div class="ld-row"><small class="sub" id="ldCount">0 linkuri</small><label class="check ld-append"><input type="checkbox" id="ldAppend"> Adaugă la albumul din linkuri existent</label></div>
+  <div class="progress-wrap" id="ldProgressWrap" hidden><div class="progress-meta"><span id="ldProgressLabel">Descarc pozele…</span><b id="ldProgressPct">0%</b></div><div class="progress"><i id="ldProgressBar"></i></div></div>
+  <div class="ld-errors" id="ldErrors" hidden></div>
+  <small class="sub">Pozele se descarcă doar în browserul tău. Unele site-uri nu permit descărcarea din alte pagini; acele linkuri vor fi sărite.</small>
+  <div class="pe-actions"><span style="flex:1"></span><button class="button primary" type="button" id="ldGo" disabled>Încarcă pozele</button></div>
+</div></dialog>
 <dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
   <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
   <h3 id="pwTitle">Abonamente discover.me</h3>
@@ -206,6 +216,7 @@
 <script src="engine/faces.js"></script>
 <script src="engine/matching.js"></script>
 <script src="engine/license.js"></script>
+<script src="engine/links.js"></script>
 <!-- Interfața -->
 <script src="frontend/js/app.js"></script>
 

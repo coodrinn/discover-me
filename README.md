@@ -36,11 +36,19 @@ discover-me/
     ├── album.js            # Citirea folderelor și a fișierelor imagine
     ├── faces.js            # Detectarea fețelor (face-api) și indiciul de ținută
     ├── matching.js         # Potrivirea fețelor: distanțe, scor de consens, praguri
+    ├── links.js            # Album din linkuri directe către poze
     └── license.js          # Planuri, prețuri, verificarea cheilor de licență
 tools/license/              # Generarea cheilor de licență (rulează doar la tine, cu Node.js)
 ```
 
 Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi interfața.
+
+## Album din linkuri
+
+Pe lângă un folder de pe calculator, albumul poate fi o listă de **linkuri directe către poze**
+(`https://…/poza.jpg`), lipite câte unul pe rând (butonul „🔗 Din linkuri”). Pozele se descarcă în browser
+și sunt tratate exact ca un album din folder; lista se păstrează și albumul revine la următoarea deschidere.
+Merge doar cu site-uri care permit descărcarea din alte pagini (CORS); linkurile care nu merg sunt afișate cu motivul.
 
 ## Cum funcționează căutarea
 
