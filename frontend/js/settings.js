@@ -39,15 +39,7 @@
   }
   ['statPhotos','statPeople','statMatches'].forEach(id=>{if($(id))new MutationObserver(steps).observe($(id),{childList:true,characterData:true,subtree:true})});steps();
   document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const n=document.querySelector('.nav button[data-page="'+b.dataset.go+'"]');if(n)n.click()});
-  // ghid rapid
-  const T=[['1 / 3','♡  Adaugă persoana','3 poze clare cu fața celui pe care îl cauți.'],['2 / 3','▧  Alege albumul','Folderul cu poze. Pozele rămân pe dispozitivul tău.'],['3 / 3','⌕  Gata','Căutarea pornește singură. Bifează pozele bune și descarcă-le.']];
-  let ti=0;const dlg=$('tourDlg');
-  function draw(){const [n,t,x]=T[ti];$('tourNo').textContent=n;$('tourTitle').textContent=t;$('tourText').textContent=x;$('tourDots').replaceChildren(...T.map((_,i)=>{const e=document.createElement('i');if(i===ti)e.className='on';return e}));$('tourBack').disabled=ti===0;$('tourNext').textContent=ti===T.length-1?'Gata':'Înainte'}
-  function open(){ti=0;draw();if(!dlg.open)dlg.showModal()}
-  function close(){put('dm-tour','1');if(dlg.open)dlg.close()}
-  $('tourNext').onclick=()=>{if(ti===T.length-1)close();else{ti++;draw()}};$('tourBack').onclick=()=>{if(ti>0){ti--;draw()}};$('tourSkip').onclick=close;dlg.addEventListener('cancel',()=>put('dm-tour','1'));
-  $('tourBtn').onclick=open;$('tourBtn2').onclick=open;
-  if(!get('dm-tour'))setTimeout(open,700);
+  // tutorialul de la prima pornire este în frontend/js/space.js
   const syncAlbum=()=>{const n=($('albumName')||{}).textContent||'Niciun album',c=($('fileCount')||{}).textContent||'';$('abName').textContent=n;$('abCount').textContent=/^0\b/.test(c)?'Alege folderul cu fotografii':c};
   ['albumName','fileCount'].forEach(id=>{if($(id))new MutationObserver(syncAlbum).observe($(id),{childList:true,characterData:true,subtree:true})});syncAlbum();
   $('abChange').onclick=()=>{const b=$('chooseFolder');if(b)b.click()};

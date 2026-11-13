@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="frontend/css/styles.css"><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%20aria-hidden%3D%22true%22%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%2221%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%2343c653%22%20stroke-width%3D%225%22/%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%2217%22%20r%3D%224.6%22%20fill%3D%22%23111711%22/%3E%3Cpath%20d%3D%22M12.5%2029C14%2024%2017.5%2022.5%2021%2022.5S28%2024%2029.5%2029Z%22%20fill%3D%22%23111711%22/%3E%3Cpath%20d%3D%22M32.5%2032.5%2043%2043%22%20stroke%3D%22%2343c653%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
 </head>
 <body>
-<div id="scene" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
 <div class="app">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="15" fill="none" stroke="var(--pink)" stroke-width="5"/><circle cx="21" cy="17" r="4.6" fill="var(--ink)"/><path d="M12.5 29C14 24 17.5 22.5 21 22.5S28 24 29.5 29Z" fill="var(--ink)"/><path d="M32.5 32.5 43 43" stroke="var(--pink)" stroke-width="5.5" stroke-linecap="round"/></svg></div><div><div class="brand-name">discover<span>.</span>me</div><small>momentele tale, regăsite</small></div></div>
@@ -143,7 +142,7 @@
       <div class="setting-row"><div><b>Mod</b><p>Întunecat, luminos sau după sistem.</p></div><div class="seg" role="group" aria-label="Mod"><button type="button" class="seg-btn" data-m="dark">☾ Întunecat</button><button type="button" class="seg-btn" data-m="light">☀ Luminos</button><button type="button" class="seg-btn" data-m="auto">◐ Auto</button></div></div>
       <div class="setting-row"><div><b>Culoare</b><p>Butoane și accente.</p></div><div class="swatches" id="accentSwatches" role="group" aria-label="Culori"></div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
-      <div class="setting-row"><div><b>Ghid rapid</b><p>3 pași, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
+      <div class="setting-row"><div><b>Tutorial</b><p>4 ecrane, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
     </article>
     <article class="card">
       <div class="card-head"><div><h3>Album și date</h3><p class="sub">Fotografiile și profilurile tale rămân salvate local, în browser.</p></div></div>
@@ -155,7 +154,18 @@
     </article>
   </section>
 </main>
-<dialog id="tourDlg" aria-labelledby="tourTitle"><div class="tour"><div class="tour-no" id="tourNo"></div><h3 id="tourTitle"></h3><p id="tourText"></p><div class="tour-dots" id="tourDots"></div><div class="row tour-actions"><button class="button ghost small" type="button" id="tourSkip">Omite</button><span style="flex:1"></span><button class="button soft small" type="button" id="tourBack">Înapoi</button><button class="button primary small" type="button" id="tourNext">Înainte</button></div></div></dialog>
+</div>
+<div id="intro" class="intro" hidden role="dialog" aria-modal="true" aria-labelledby="introTitle" tabindex="-1">
+  <div class="intro-top"><div class="intro-brand">DISCOVER<span>.</span>ME</div><button class="intro-skip" type="button" id="introSkip">Sari peste</button></div>
+  <div class="intro-progress" id="introProgress" aria-hidden="true"></div>
+  <div class="intro-visual" aria-hidden="true"><div class="orbit o1"><i></i></div><div class="orbit o2"><i></i></div><div class="orbit o3"><i></i></div><div class="planet"><span id="introIcon">◎</span></div></div>
+  <div class="intro-body">
+    <div class="intro-kick" id="introKick"></div>
+    <h1 class="intro-title" id="introTitle"></h1>
+    <p class="intro-text" id="introText"></p>
+    <div class="intro-actions"><button class="intro-btn" type="button" id="introNext">Începe</button><button class="intro-back" type="button" id="introBack" hidden>← Înapoi</button></div>
+  </div>
+  <div class="intro-foot"><span id="introNum">01 / 04</span><span>Pozele tale rămân pe dispozitivul tău</span></div>
 </div>
 <dialog id="previewDialog" aria-label="Galeria fotografiilor găsite"><div class="modal-head"><div class="preview-heading"><b id="previewTitle">Fotografie</b><span id="previewCounter" class="preview-counter" aria-live="polite">1 / 1</span></div><button class="button ghost small" id="previewClose" type="button">Închide ✕</button></div><div class="modal-body preview-stage"><button class="preview-nav preview-prev" id="previewPrev" type="button" aria-label="Fotografia anterioară" title="Fotografia anterioară">‹</button><img id="previewImage" class="preview-img" alt="Fotografie găsită"><button class="preview-nav preview-next" id="previewNext" type="button" aria-label="Fotografia următoare" title="Fotografia următoare">›</button></div><div class="modal-foot"><span id="previewMeta" class="sub"></span><button class="button soft small" id="previewTeach" type="button" title="Adaugă această ipostază în profil, ca să găsească mai multe poze">✓ E persoana – învață</button><a id="previewDownload" class="button primary small" download>Descarcă</a></div></dialog>
 <dialog id="personEditor" aria-labelledby="peTitle"><div class="pe">
@@ -196,4 +206,5 @@
 <script src="frontend/js/app.js"></script>
 
 <script src="frontend/js/settings.js"></script>
+<script src="frontend/js/space.js"></script>
 </body></html>

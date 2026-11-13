@@ -735,3 +735,83 @@ html[data-mode=light] .preview-stage{background:#111}
 .plan-meter{min-width:240px;flex:0 1 340px;display:flex;flex-direction:column;gap:6px}
 .plan-meter-bar{height:10px;border-radius:999px;background:var(--s4);overflow:hidden}
 .plan-meter-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-h));transition:width .4s ease}
+
+/* =====================================================================
+   Fundal spațial + tutorial (stil cinematic)
+   ===================================================================== */
+#spaceBg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#scene{display:none!important}
+html[data-mode] body{background:var(--s1)!important;background-image:none!important}
+main{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 10%,transparent) 0,transparent 420px),color-mix(in srgb,var(--s1) 55%,transparent)!important}
+.sidebar{background:color-mix(in srgb,var(--s1) 82%,transparent)!important}
+html[data-mode=light] main{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 10%,transparent) 0,transparent 420px),color-mix(in srgb,var(--s1) 62%,transparent)!important}
+
+.intro{position:fixed;inset:0;z-index:300;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-rows:auto auto 1fr auto;color:#fff;
+  background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.15) 100%);opacity:0;transition:opacity .45s ease;font-family:inherit}
+.intro.show{opacity:1}
+body.intro-open .app{visibility:hidden}
+body.intro-open #spaceBg{z-index:299}
+.intro-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:28px clamp(22px,5vw,64px) 0}
+.intro-brand{font-weight:800;letter-spacing:.32em;font-size:15px}
+.intro-brand span{color:var(--accent)}
+.intro-skip{background:none;border:0;color:#ffffffb3;font:700 12px/1 inherit;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;padding:10px 0}
+.intro-skip:hover{color:#fff}
+.intro-progress{grid-column:1/-1;display:flex;gap:8px;padding:22px clamp(22px,5vw,64px) 0;max-width:520px}
+.intro-progress i{flex:1;height:2px;background:#ffffff33;position:relative;overflow:hidden}
+.intro-progress i.done{background:#fff}
+.intro-progress i.on::after{content:"";position:absolute;inset:0;background:var(--accent);animation:introBar .6s cubic-bezier(.16,1,.3,1) forwards;transform-origin:left}
+@keyframes introBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.intro-body{grid-column:1;grid-row:3;align-self:center;padding:0 clamp(22px,5vw,64px);max-width:760px}
+.intro-kick{font-size:13px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.intro-title{margin:0;font-size:clamp(36px,6.2vw,84px);line-height:.98;font-weight:800;letter-spacing:-.01em;text-transform:uppercase;font-family:inherit}
+.intro-text{margin:22px 0 0;font-size:clamp(15px,1.5vw,19px);line-height:1.5;color:#ffffffc7;max-width:520px}
+.intro-actions{display:flex;align-items:center;gap:22px;margin-top:38px}
+.intro-btn{background:transparent;color:#fff;border:2px solid #fff;padding:16px 34px;font:800 13px/1 inherit;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .3s ease}
+.intro-btn::before{content:"";position:absolute;inset:0;background:#fff;transform:translateY(101%);transition:transform .35s cubic-bezier(.16,1,.3,1);z-index:-1}
+.intro-btn:hover,.intro-btn:focus-visible{color:#000}
+.intro-btn:hover::before,.intro-btn:focus-visible::before{transform:none}
+.intro-btn{isolation:isolate}
+.intro-back{background:none;border:0;color:#ffffffa6;font:700 12px/1 inherit;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.intro-back:hover{color:#fff}
+.intro-foot{grid-column:1/-1;grid-row:4;display:flex;justify-content:space-between;gap:16px;padding:0 clamp(22px,5vw,64px) 28px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#ffffff80}
+.intro-body.in>*{animation:introIn .7s cubic-bezier(.16,1,.3,1) both}
+.intro-body.in-back>*{animation:introInBack .7s cubic-bezier(.16,1,.3,1) both}
+.intro-body>*:nth-child(2){animation-delay:.06s!important}.intro-body>*:nth-child(3){animation-delay:.12s!important}.intro-body>*:nth-child(4){animation-delay:.18s!important}
+@keyframes introIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes introInBack{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+/* planeta cu orbite */
+.intro-visual{grid-column:2;grid-row:2/4;position:relative;align-self:center;justify-self:center;width:min(42vw,520px);aspect-ratio:1}
+.planet{position:absolute;inset:31%;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 28%,color-mix(in srgb,var(--accent) 55%,#fff) 0%,var(--accent) 38%,color-mix(in srgb,var(--accent) 35%,#000) 100%);
+  box-shadow:0 0 80px color-mix(in srgb,var(--accent) 55%,transparent),inset -18px -22px 50px rgba(0,0,0,.45);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.planet span{font-size:clamp(38px,5vw,64px);color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.35);font-weight:700}
+.orbit{position:absolute;border:1px solid #ffffff26;border-radius:50%;animation:spin linear infinite}
+.orbit i{position:absolute;top:-5px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#fff;box-shadow:0 0 14px #fff}
+.o1{inset:20%;animation-duration:14s}.o2{inset:8%;animation-duration:24s;animation-direction:reverse}.o3{inset:-4%;animation-duration:38s;border-style:dashed;border-color:#ffffff1a}
+.o2 i{background:var(--accent);box-shadow:0 0 16px var(--accent)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.intro[data-slide="1"] .planet{transform:scale(.9) rotate(-8deg)}
+.intro[data-slide="2"] .planet{transform:scale(1.06) rotate(6deg)}
+.intro[data-slide="3"] .planet{transform:scale(1.12)}
+@media(max-width:860px){
+  .intro{grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.8) 55%)}
+  .intro-visual{grid-column:1;grid-row:3;width:min(62vw,300px)}
+  .intro-body{grid-row:4;padding-bottom:18px}
+  .intro-foot{grid-row:5}
+  .intro-foot span:last-child{display:none}
+  .intro-actions{margin-top:26px}
+}
+@media(prefers-reduced-motion:reduce){.orbit{animation:none}.intro-body.in>*,.intro-body.in-back>*{animation:none}}
+html[data-lite] .orbit{animation:none}
+.intro-top{grid-row:1}.intro-progress{grid-row:2;grid-column:1/-1}
+.intro-visual{grid-row:3}
+.intro-btn:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+@media(max-width:860px){.intro-visual{grid-row:3}.intro-body{grid-row:4}.intro-foot{grid-row:5}}
+#spaceNebula{position:fixed;inset:-15%;z-index:0;pointer-events:none;will-change:transform;
+  background:radial-gradient(closest-side at 78% 22%,color-mix(in srgb,var(--accent) 16%,transparent),transparent),radial-gradient(closest-side at 15% 85%,color-mix(in srgb,var(--accent) 9%,transparent),transparent);
+  animation:nebulaDrift 70s ease-in-out infinite alternate}
+html[data-mode=light] #spaceNebula{opacity:.75}
+@keyframes nebulaDrift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-3%,2%,0) scale(1.06)}100%{transform:translate3d(2%,-2%,0) scale(1.02)}}
+html.space-paused #spaceNebula,html[data-lite] #spaceNebula{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){#spaceNebula{animation:none}}
+body.intro-open #spaceNebula{z-index:298}
