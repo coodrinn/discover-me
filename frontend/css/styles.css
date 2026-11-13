@@ -632,17 +632,6 @@ html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transpa
 /* ===== Setări: stiluri, comutator ===== */
 .setting-col{flex-direction:column;align-items:stretch!important;gap:12px}
 .seg{display:inline-flex;flex-wrap:wrap;gap:2px}
-.ui-styles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.ui-style{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;border-radius:16px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;text-align:left;font:inherit}
-.ui-style b{font-size:14px}.ui-style small{font-size:11.5px;color:var(--muted);line-height:1.35}
-.ui-style.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-.ui-demo{display:flex;gap:6px;width:100%;height:38px;padding:7px;border-radius:12px;background:var(--s1);margin-bottom:6px}
-.ui-demo i{flex:1;border-radius:9px;background:var(--s4)}
-.ui-demo i:first-child{background:var(--accent)}
-[data-ui=minimal] .ui-style[data-ui=clasic] .ui-demo i,.ui-style[data-ui=clasic] .ui-demo i{border-radius:9px}
-.ui-style[data-ui=minimal] .ui-demo i{border-radius:3px;box-shadow:none}
-.ui-style[data-ui=vibrant] .ui-demo i:first-child{background:linear-gradient(135deg,var(--accent),var(--accent-h));box-shadow:0 0 12px var(--accent)}
-.ui-style[data-ui=vibrant] .ui-demo i:last-child{background:transparent;border:1.5px solid var(--accent)}
 .dm-switch{position:relative;display:inline-block;width:46px;height:26px;flex:none;cursor:pointer}
 .dm-switch input{position:absolute;opacity:0;width:0;height:0}
 .dm-switch span{position:absolute;inset:0;border-radius:13px;background:var(--s5,#555);transition:background .2s}
@@ -650,7 +639,6 @@ html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transpa
 .dm-switch input:checked+span{background:var(--accent)}
 .dm-switch input:checked+span::after{transform:translateX(20px)}
 .dm-switch input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
-@media(max-width:700px){.ui-styles{grid-template-columns:1fr}.ui-style{flex-direction:row;align-items:center;flex-wrap:wrap}.ui-demo{width:70px;margin:0 6px 0 0}}
 
 /* ===== Efecte la atingere ===== */
 .fx-host{position:relative}
@@ -663,18 +651,6 @@ html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transpa
 .fx-spring{animation:fxSpring .32s cubic-bezier(.34,1.56,.64,1)}
 @keyframes fxSpring{35%{transform:scale(.92)}to{transform:scale(1)}}
 .button:active:not(:disabled),.person-chip:active:not(:disabled),.seg-btn:active{transform:scale(.97)}
-
-/* ===== Variantă: Minimal ===== */
-html[data-ui=minimal] #scene{display:none}
-html[data-ui=minimal] body{background-image:none!important}
-html[data-ui=minimal] .card,html[data-ui=minimal] .stat,html[data-ui=minimal] .manage-card,html[data-ui=minimal] .album-bar,html[data-ui=minimal] .result{box-shadow:none!important;border-radius:12px!important}
-html[data-ui=minimal] .button{border-radius:8px!important;box-shadow:none!important;transform:none!important}
-html[data-ui=minimal] .button.primary{background:var(--accent)!important;color:var(--on-accent)!important}
-html[data-ui=minimal] .nav button{border-radius:8px}
-html[data-ui=minimal] .person-chip{border-radius:10px}
-html[data-ui=minimal] .person-chip img,html[data-ui=minimal] .person-chip .plus{border-radius:8px}
-html[data-ui=minimal] .search-gate{border-radius:12px}
-html[data-ui=minimal] .gate-decoration{display:none}
 
 /* ===== Variantă: Vibrant ===== */
 html[data-ui=vibrant] .button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-h))!important;color:var(--on-accent)!important;box-shadow:0 8px 26px color-mix(in srgb,var(--accent) 45%,transparent)!important}
@@ -709,3 +685,30 @@ html[data-mode=light] .fx-glow{mix-blend-mode:multiply;background:radial-gradien
 .pw-key-row{display:flex;gap:8px;margin:10px 0 6px}
 .pw-key-row input{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--s-in,var(--s1));color:var(--ink);font:13px ui-monospace,monospace}
 @media(max-width:640px){.pw-plans{grid-template-columns:1fr}.pw{padding:20px}}
+
+/* ===== Editare persoană ===== */
+#personEditor{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;width:min(520px,calc(100vw - 24px))}
+#personEditor::backdrop{background:rgba(0,0,0,.55)}
+.pe{padding:22px;display:flex;flex-direction:column;gap:16px}
+.pe-head{display:flex;justify-content:space-between;align-items:center}.pe-head h3{margin:0;font:700 22px Georgia,serif}
+.pe-top{display:flex;gap:14px;align-items:flex-end}
+#peAvatar{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);flex:none;background:var(--s3)}
+.pe-sec{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding-top:14px;border-top:1px solid var(--line)}
+.pe-thumbs{display:flex;flex-wrap:wrap;gap:8px}
+.pe-thumb{padding:0;border:2px solid transparent;border-radius:12px;background:none;cursor:pointer;overflow:hidden;width:56px;height:56px}
+.pe-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pe-thumb.on{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
+.pe-actions{display:flex;gap:8px;align-items:center}
+.chip-edit{display:grid;place-items:center;width:26px;height:26px;margin-left:2px;border-radius:50%;font-size:13px;color:var(--muted);background:transparent;cursor:pointer}
+.chip-edit:hover{background:var(--s4);color:var(--ink)}
+.person-chip{padding-right:8px}
+
+/* ===== Mod luminos: câmpuri și suprafețe care rămăseseră negre ===== */
+html[data-mode=light] input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),html[data-mode=light] select,html[data-mode=light] textarea{background:var(--s-in);border-color:var(--line2);color:var(--ink)}
+html[data-mode=light] input::placeholder,html[data-mode=light] textarea::placeholder{color:var(--muted)}
+html[data-mode=light] .folder-drop,html[data-mode=light] .ref-drop{background:var(--s3);border-color:var(--line2)}
+html[data-mode=light] dialog{background:var(--s2);color:var(--ink);border-color:var(--line)}
+html[data-mode=light] .nav button.active{background:var(--accent-soft)}
+html[data-mode=light] .preview-nav{background:#ffffffe6;color:var(--ink);border-color:var(--line)}
+html[data-mode=light] .preview-stage{background:#111}
+@media(max-width:760px){html[data-mode=light] .sidebar{border-top-color:var(--line);background:var(--s2)}}

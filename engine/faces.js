@@ -5,11 +5,41 @@ async function warmup(){try{const c=document.createElement('canvas');c.width=c.h
 async function toCanvas(file,maxSide=1600){let b=await createImageBitmap(file,{imageOrientation:'from-image'}).catch(()=>createImageBitmap(file));const s=Math.min(1,maxSide/Math.max(b.width,b.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(b.width*s));c.height=Math.max(1,Math.round(b.height*s));c.getContext('2d',{willReadFrequently:true}).drawImage(b,0,0,c.width,c.height);b.close?.();return c}
 function faceBox(face){return face.detection.box}
 async function detectOn(source,options){return faceapi.detectAllFaces(source,options).withFaceLandmarks().withFaceDescriptors()}
-async function detectFaces(file,deep=true,predecoded=null){const c=predecoded||await toCanvas(file,deep?2000:1400),W=c.width,H=c.height,m=Math.max(W,H);let all=await detectOn(c,new faceapi.SsdMobilenetv1Options({minConfidence:.42}));
-  const small=!all.length||all.some(f=>Math.min(faceBox(f).width,faceBox(f).height)<Math.min(W,H)*.10);
+// Detectare în două etape (rapidă):
+//  1) SSD pe toată poza găsește fețele normale (cu repere faciale + descriptor).
+//  2) Doar dacă pot exista fețe mici nedetectate, SSD caută DOAR poziții (fără descriptor) în 4 bucăți;
+//     analiza completă (repere + descriptor) rulează numai pe bucățile în care apar fețe noi.
+//  Înainte: 9 bucăți, fiecare cu analiză completă, pentru orice poză fără fețe sau cu fețe mici (de ~10x mai lent).
+function overlapRatio(a,b){const ix=Math.max(0,Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)),iy=Math.max(0,Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y));return ix*iy/Math.max(1,Math.min(a.width*a.height,b.width*b.height))}
+async function findSmallFaces(c,known){
+  const W=c.width,H=c.height,n=2,k=n-(n-1)*.25,tw=Math.ceil(W/k),th=Math.ceil(H/k),out=[];
+  const tile=document.createElement('canvas');tile.width=tw;tile.height=th;const tx=tile.getContext('2d',{willReadFrequently:false});
+  const opts=new faceapi.SsdMobilenetv1Options({minConfidence:.38});
+  const edge=(b,x,y)=>(x>0&&b.x<4)||(x<n-1&&b.x+b.width>tw-4)||(y>0&&b.y<4)||(y<n-1&&b.y+b.height>th-4);
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    const ox=Math.round(x*(W-tw)/(n-1)),oy=Math.round(y*(H-th)/(n-1));
+    tx.clearRect(0,0,tw,th);tx.drawImage(c,ox,oy,tw,th,0,0,tw,th);
+    const toCanvasBox=b=>({x:b.x+ox,y:b.y+oy,width:b.width,height:b.height});
+    const seen=known.concat(out);
+    const fresh=(await faceapi.detectAllFaces(tile,opts)).filter(d=>!edge(d.box,x,y)&&!seen.some(q=>overlapRatio(toCanvasBox(d.box),faceBox(q))>.35));
+    if(!fresh.length)continue;                                   // nimic nou aici: fără analiză completă
+    for(const f of await detectOn(tile,opts)){
+      const b=faceBox(f),box=toCanvasBox(b);
+      if(edge(b,x,y)||known.concat(out).some(q=>overlapRatio(box,faceBox(q))>.35))continue;
+      out.push({detection:{score:f.detection.score,box},descriptor:f.descriptor});
+    }
+  }
+  return out;
+}
+async function detectFaces(file,deep=true,predecoded=null){
+  const c=predecoded||await toCanvas(file,deep?2000:1400),W=c.width,H=c.height,m=Math.max(W,H);
+  let all=await detectOn(c,new faceapi.SsdMobilenetv1Options({minConfidence:.42}));
   if(!all.length){const tiny=await detectOn(c,new faceapi.TinyFaceDetectorOptions({inputSize:512,scoreThreshold:.38}));if(tiny.length)all=tiny}
-  if(deep&&small&&m>=850){const n=m>=1700?3:2,k=n-(n-1)*.32,tw=Math.ceil(W/k),th=Math.ceil(H/k),tiles=[];for(let y=0;y<n;y++)for(let x=0;x<n;x++){const ox=Math.round(x*(W-tw)/(n-1)),oy=Math.round(y*(H-th)/(n-1)),tile=document.createElement('canvas');tile.width=tw;tile.height=th;tile.getContext('2d').drawImage(c,ox,oy,tw,th,0,0,tw,th);const found=await detectOn(tile,new faceapi.SsdMobilenetv1Options({minConfidence:.38}));for(const f of found){const b=faceBox(f);if((x>0&&b.x<4)||(x<n-1&&b.x+b.width>tw-4)||(y>0&&b.y<4)||(y<n-1&&b.y+b.height>th-4))continue;tiles.push({detection:{score:f.detection.score,box:{x:b.x+ox,y:b.y+oy,width:b.width,height:b.height}},descriptor:f.descriptor})}}all.push(...tiles)}
-  all.sort((a,b)=>b.detection.score-a.detection.score);const unique=[];for(const f of all){const b=faceBox(f),area=b.width*b.height;const duplicate=unique.some(q=>{const z=faceBox(q),ix=Math.max(0,Math.min(b.x+b.width,z.x+z.width)-Math.max(b.x,z.x)),iy=Math.max(0,Math.min(b.y+b.height,z.y+z.height)-Math.max(b.y,z.y));return ix*iy/Math.max(1,Math.min(area,z.width*z.height))>.5});if(!duplicate)unique.push(f)}
+  const minFace=all.length?Math.min(...all.map(f=>Math.min(faceBox(f).width,faceBox(f).height))):Infinity;
+  // A doua etapă rulează când nu s-a găsit nimic sau când există fețe mici (pot fi și altele, mai mici).
+  if(deep&&m>=850&&(!all.length||minFace<Math.min(W,H)*.10))all.push(...await findSmallFaces(c,all));
+  all.sort((a,b)=>b.detection.score-a.detection.score);const unique=[];
+  for(const f of all){const b=faceBox(f);if(!unique.some(q=>overlapRatio(b,faceBox(q))>.5))unique.push(f)}
   return {canvas:c,faces:unique.map(f=>{const b=faceBox(f);return {s:f.detection.score,m:Math.min(b.width,b.height),x:b.x,y:b.y,w:b.width,h:b.height,d:Float32Array.from(f.descriptor)}})}
 }
 // ===== Îmbrăcăminte: histogramă de culoare a zonei de sub față (torace), folosită ca indiciu secundar =====

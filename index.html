@@ -126,12 +126,6 @@
     <article class="card" id="appearanceCard"><div class="card-head"><div><h3>Aspect</h3><p class="sub">Se salvează pe acest dispozitiv.</p></div></div>
       <div class="setting-row"><div><b>Mod</b><p>Întunecat, luminos sau după sistem.</p></div><div class="seg" role="group" aria-label="Mod"><button type="button" class="seg-btn" data-m="dark">☾ Întunecat</button><button type="button" class="seg-btn" data-m="light">☀ Luminos</button><button type="button" class="seg-btn" data-m="auto">◐ Auto</button></div></div>
       <div class="setting-row"><div><b>Culoare</b><p>Butoane și accente.</p></div><div class="swatches" id="accentSwatches" role="group" aria-label="Culori"></div></div>
-      <div class="setting-row setting-col"><div><b>Stil</b><p>Alege varianta care îți place. Apasă pe orice buton ca să simți efectul.</p></div>
-        <div class="ui-styles" role="radiogroup" aria-label="Stilul interfeței">
-          <button type="button" class="ui-style" data-ui="clasic" role="radio"><span class="ui-demo"><i></i><i></i></span><b>Clasic</b><small>Rotunjit, val de lumină la atingere</small></button>
-          <button type="button" class="ui-style" data-ui="minimal" role="radio"><span class="ui-demo"><i></i><i></i></span><b>Minimal</b><small>Plat și curat, apăsare elastică · cel mai rapid</small></button>
-          <button type="button" class="ui-style" data-ui="vibrant" role="radio"><span class="ui-demo"><i></i><i></i></span><b>Vibrant</b><small>Gradient și strălucire la atingere</small></button>
-        </div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
       <div class="setting-row"><div><b>Planul tău</b><p id="planSummary">Gratuit · 1 persoană</p></div><button class="button primary small" type="button" id="planBtn">Vezi planurile</button></div>
       <div class="setting-row"><div><b>Ghid rapid</b><p>3 pași, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
@@ -149,14 +143,26 @@
 <dialog id="tourDlg" aria-labelledby="tourTitle"><div class="tour"><div class="tour-no" id="tourNo"></div><h3 id="tourTitle"></h3><p id="tourText"></p><div class="tour-dots" id="tourDots"></div><div class="row tour-actions"><button class="button ghost small" type="button" id="tourSkip">Omite</button><span style="flex:1"></span><button class="button soft small" type="button" id="tourBack">Înapoi</button><button class="button primary small" type="button" id="tourNext">Înainte</button></div></div></dialog>
 </div>
 <dialog id="previewDialog" aria-label="Galeria fotografiilor găsite"><div class="modal-head"><div class="preview-heading"><b id="previewTitle">Fotografie</b><span id="previewCounter" class="preview-counter" aria-live="polite">1 / 1</span></div><button class="button ghost small" id="previewClose" type="button">Închide ✕</button></div><div class="modal-body preview-stage"><button class="preview-nav preview-prev" id="previewPrev" type="button" aria-label="Fotografia anterioară" title="Fotografia anterioară">‹</button><img id="previewImage" class="preview-img" alt="Fotografie găsită"><button class="preview-nav preview-next" id="previewNext" type="button" aria-label="Fotografia următoare" title="Fotografia următoare">›</button></div><div class="modal-foot"><span id="previewMeta" class="sub"></span><button class="button soft small" id="previewTeach" type="button" title="Adaugă această ipostază în profil, ca să găsească mai multe poze">✓ E persoana – învață</button><a id="previewDownload" class="button primary small" download>Descarcă</a></div></dialog>
+<dialog id="personEditor" aria-labelledby="peTitle"><div class="pe">
+  <div class="pe-head"><h3 id="peTitle">Editează persoana</h3><button class="button ghost small" type="button" id="peClose" aria-label="Închide">✕</button></div>
+  <div class="pe-top"><img id="peAvatar" alt="Poza de profil"><div class="field" style="flex:1;margin:0"><label for="peName">NUME</label><input id="peName" type="text" maxlength="50" autocomplete="off"></div></div>
+  <div class="pe-sec"><b>Poza de profil</b><small class="sub">Alege una dintre pozele de referință sau încarcă alta.</small>
+    <div class="pe-thumbs" id="peThumbs"></div>
+    <label class="button soft small" for="peAvatarFile">⇪ Încarcă altă poză</label><input id="peAvatarFile" type="file" accept="image/*" hidden></div>
+  <div class="pe-sec"><b>Îmbunătățește căutarea</b><small class="sub" id="peRefs"></small>
+    <label class="button soft small" for="peRefFiles">＋ Adaugă poze de referință</label><input id="peRefFiles" type="file" accept="image/*" multiple hidden>
+    <small class="sub">Mai multe ipostaze (alt unghi, altă lumină, cu ochelari) = mai multe poze găsite.</small></div>
+  <p class="mini-note" id="peMsg" aria-live="polite"></p>
+  <div class="pe-actions"><button class="button danger small" type="button" id="peDelete">Șterge persoana</button><span style="flex:1"></span><button class="button primary" type="button" id="peSave">Salvează</button></div>
+</div></dialog>
 <dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
   <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
   <h3 id="pwTitle">Caută mai multe persoane</h3>
   <p class="sub" id="pwReason">Alege planul potrivit. Plătești o singură dată, fără abonament.</p>
   <div class="pw-plans" id="pwPlans"></div>
   <details class="pw-key"><summary>Am deja o cheie de licență</summary>
-    <div class="pw-key-row"><input id="pwKey" type="text" placeholder="DM1-…" autocomplete="off" spellcheck="false"><button class="button primary small" type="button" id="pwActivate">Activează</button></div>
-    <small class="sub" id="pwKeyMsg">Cheia o primești pe email după plată.</small>
+    <div class="pw-key-row"><input id="pwKey" type="text" placeholder="Lipește cheia de licență" autocomplete="off" spellcheck="false"><button class="button primary small" type="button" id="pwActivate">Activează</button></div>
+    <small class="sub" id="pwKeyMsg">Cheia o primești automat pe email după plată.</small>
   </details>
   <p class="mini-note">Pozele tale rămân pe dispozitiv indiferent de plan.</p>
 </div></dialog>

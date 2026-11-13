@@ -8,22 +8,19 @@
   mq.addEventListener&&mq.addEventListener('change',()=>{if(h.dataset.modePref==='auto'){resolveMode();apply()}});
   function apply(){
     document.querySelectorAll('.seg-btn').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===(h.dataset.modePref||h.dataset.mode))));
-    document.querySelectorAll('.ui-style').forEach(b=>{const on=b.dataset.ui===h.dataset.ui;b.setAttribute('aria-checked',String(on));b.classList.toggle('on',on)});
     const lt=$('liteToggle');if(lt)lt.checked=h.dataset.lite==='1';
     document.querySelectorAll('.sw').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.a===h.dataset.accent)));
     const t=document.querySelector('meta[name="theme-color"]');if(t)t.content=h.dataset.mode==='light'?'#f4f5f7':'#141414';
   }
   document.querySelectorAll('.seg-btn').forEach(b=>b.onclick=()=>{h.dataset.modePref=b.dataset.m;put('dm-mode',b.dataset.m);resolveMode();apply()});
-  document.querySelectorAll('.ui-style').forEach(b=>b.onclick=()=>{h.dataset.ui=b.dataset.ui;put('dm-ui',b.dataset.ui);apply()});
   if($('liteToggle'))$('liteToggle').onchange=e=>{if(e.target.checked)h.dataset.lite='1';else delete h.dataset.lite;put('dm-lite',e.target.checked?'1':'0')};
   // Efecte la atingere: val (Clasic), elastic (Minimal), strălucire (Vibrant)
   document.addEventListener('pointerdown',e=>{
-    const el=e.target.closest('.button,.nav button,.seg-btn,.sw,.person-chip,.ui-style,.teach-btn,.preview-nav');if(!el||el.disabled)return;
+    const el=e.target.closest('.button,.nav button,.seg-btn,.sw,.person-chip,.teach-btn,.preview-nav,.pe-thumb');if(!el||el.disabled)return;
     if(navigator.vibrate&&e.pointerType==='touch')try{navigator.vibrate(8)}catch(_){}
-    const ui=h.dataset.ui||'clasic';
-    if(ui==='minimal'||h.dataset.lite==='1'){el.classList.remove('fx-spring');void el.offsetWidth;el.classList.add('fx-spring');return}
+    if(h.dataset.lite==='1'){el.classList.remove('fx-spring');void el.offsetWidth;el.classList.add('fx-spring');return}
     const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*2.2,clip=document.createElement('span'),dot=document.createElement('span');
-    clip.className='fx-clip';dot.className=ui==='vibrant'?'fx-glow':'fx-ripple';
+    clip.className='fx-clip';dot.className='fx-glow';
     dot.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px`;
     if(getComputedStyle(el).position==='static')el.classList.add('fx-host');
     clip.append(dot);el.append(clip);setTimeout(()=>clip.remove(),650);
