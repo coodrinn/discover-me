@@ -29,7 +29,7 @@ discover-me/
 │       ├── helpers.js      # Utilitare de interfață ($, toast, fmt)
 │       ├── app.js          # Fluxul aplicației: album, indexare, persoane, căutare, rezultate
 │       ├── settings.js     # Setări (mod, culoare), efecte la atingere
-│       └── space.js        # Fundal animat (stele) și tutorialul de la prima pornire
+│       └── backdrop.js     # Fundal animat cu poze și tutorialul de la prima pornire
 └── engine/                 # Motorul (rulează local, în browser)
     ├── config.js           # Versiuni, modele, starea comună
     ├── storage.js          # IndexedDB: index, persoane, setări
