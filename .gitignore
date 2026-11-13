@@ -1,0 +1,13 @@
+# Sistem / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Poze personale de test (nu le urca pe GitHub)
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.zip
