@@ -224,6 +224,7 @@ function renderAlbumFaces(){
 }
 async function saveGroupAsPerson(g,name){
   if(!canAddPerson()){openPaywall();return}
+  if(!await requireConsent())return;
   const reps=g.reps.slice(0,8),descs=reps.map(r=>Float32Array.from(r.f.d));
   const thumbs=(await Promise.all(reps.slice(0,6).map(r=>queueCrop(()=>faceCropFromEntry(r.e,r.f))))).filter(Boolean);
   const cover=await groupThumb(g)||thumbs[0];

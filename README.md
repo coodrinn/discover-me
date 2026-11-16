@@ -15,7 +15,9 @@ Aplicația este statică, deci nu are nevoie de instalare.
   apoi deschide `http://localhost:8080`.
 
 Pentru acces persistent la un folder de poze folosește Chrome sau Edge pe desktop.
-Prima pornire descarcă modelele de recunoaștere a fețelor (este nevoie de internet).
+Modelele de recunoaștere a fețelor sunt incluse în aplicație (`vendor/face-api/`, ~12 MB), deci nu depind de niciun CDN și, după
+prima deschidere prin `http://localhost` sau `https://`, aplicația merge complet offline. Când `index.html` e deschis direct din folder
+(`file://`), browserul nu permite citirea modelelor locale și aplicația folosește CDN-ul ca plan de rezervă.
 
 **Instalare și mod offline** funcționează doar când aplicația e servită prin `http://localhost` sau `https://`
 (de ex. GitHub Pages), nu când deschizi `index.html` direct din folder. După prima deschidere, aplicația
@@ -32,10 +34,13 @@ discover-me/
 │       ├── theme-init.js   # Aplică tema salvată înainte de afișare
 │       ├── helpers.js      # Utilitare de interfață ($, toast, fmt)
 │       ├── app.js          # Fluxul aplicației: album, indexare, persoane, căutare, rezultate
+│       ├── consent.js      # Acordul de confidențialitate (o dată, înainte de primul profil)
 │       ├── extras.js       # Căutare de grup, „Nu e persoana”, sortare după dată, trimitere, „Cine apare în album?”, instalare
 │       ├── settings.js     # Setări (mod, culoare), efecte la atingere
 │       └── backdrop.js     # Fundal animat cu poze și tutorialul de la prima pornire
 │   └── icons/              # Pictogramele aplicației (PWA)
+├── vendor/face-api/        # face-api.js și modelele, incluse local (fără CDN)
+├── tests/                  # Teste automate (Node) și test de fum în browser
 └── engine/                 # Motorul (rulează local, în browser)
     ├── config.js           # Versiuni, modele, starea comună
     ├── storage.js          # IndexedDB: index, persoane, setări
@@ -126,6 +131,28 @@ node tools/license/issue.js pro client@email.ro 30    # cheie valabilă 30 de zi
 
 **Cheia privată (`~/.discover-me/license-private.pem`) nu se pune niciodată pe GitHub.**
 Fără ea nu mai poți emite chei care să funcționeze, iar dacă ajunge la altcineva, oricine poate genera chei.
+
+## Teste
+
+```bash
+npm test                 # teste unitare (Node, fără dependențe): potrivire, grupare, EXIF
+npm i --no-save puppeteer-core
+PHOTOS=C:/cale/poze npm run test:e2e   # test în Edge/Chrome headless: modele locale, acord, detectare pe poze reale
+node tools/bench-search.js 50000       # cât durează căutarea și gruparea pe 50.000 de poze
+```
+
+Referință de performanță (date sintetice, 50.000 de poze / 85.000 de fețe): căutarea după o persoană ~70 ms,
+„Cine apare în album?” ~0,6 s. Timpul mare e la prima indexare (analiza fiecărei poze), nu la căutare.
+
+## Limite cunoscute
+
+- **Limita de persoane din abonament se verifică în browser.** Aplicația rulează 100% local, fără server propriu, așa că
+  cineva cu cunoștințe tehnice o poate ocoli. Nu poate fi blocat altfel decât cu un server care ține datele; la prețurile
+  actuale e un compromis asumat. Cheile sunt verificate criptografic (semnătură ECDSA / Lemon Squeezy), dar asta nu împiedică modificarea codului local.
+- **Acuratețea depinde de modelul face-api (2018).** Pe copii mici, unghiuri laterale și lumină slabă greșește mai des decât modelele noi.
+  Înlocuirea necesită un set etichetat pentru recalibrarea pragurilor din `engine/matching.js`; până atunci pragurile sunt conservatoare
+  (rezultatele incerte merg în „de verificat”).
+- Interfața este doar în română.
 
 ## Tehnologii
 

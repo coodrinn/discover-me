@@ -218,6 +218,10 @@
         <div><strong id="setStatSize">–</strong><small>spațiu folosit</small></div>
       </div>
     </article>
+    <article class="card" id="privacyCard">
+      <div class="card-head"><div><h3>Confidențialitate</h3><p class="sub">Fețele sunt procesate doar în browser. Nu există cont și nu se trimit poze pe un server.</p></div><span class="status-tag" id="consentState">Neconfirmat încă</span></div>
+      <div class="setting-row"><div><b>Acordul de folosire</b><p>Confirmat o singură dată, înainte de primul profil. Îl poți retrage oricând.</p></div><button class="button soft small" type="button" id="consentWithdraw" hidden>Retrage acordul</button></div>
+    </article>
     <article class="card danger-zone">
       <div class="card-head"><div><h3>Ștergere</h3><p class="sub">Pozele tale originale nu sunt atinse niciodată.</p></div></div>
       <div class="setting-row"><div><b>Șterge pregătirea albumului</b><p>Albumul va trebui pregătit din nou. Persoanele salvate rămân.</p></div><button class="button danger small" id="clearIndex" type="button">Șterge pregătirea</button></div>
@@ -265,6 +269,17 @@
   <small class="sub">Pozele se descarcă doar în browserul tău. Unele site-uri nu permit descărcarea din alte pagini; acele linkuri vor fi sărite.</small>
   <div class="pe-actions"><span style="flex:1"></span><button class="button primary" type="button" id="ldGo" disabled>Încarcă pozele</button></div>
 </div></dialog>
+<dialog id="consentDialog" aria-labelledby="csTitle"><div class="pe">
+  <h3 id="csTitle">Înainte să creezi un profil</h3>
+  <p class="sub" style="margin:0">Un profil facial este o dată biometrică. discover.me îl păstrează <b>doar pe acest dispozitiv</b>: pozele și fețele nu sunt trimise nicăieri.</p>
+  <ul class="cs-list">
+    <li>Caută doar persoane pentru care ai acordul lor sau un motiv legitim (familie, evenimentul tău, propriile poze).</li>
+    <li>Nu folosi aplicația ca să urmărești sau să identifici persoane fără știrea lor.</li>
+    <li>Poți șterge oricând profilurile și tot ce a fost pregătit, din Setări.</li>
+  </ul>
+  <label class="check"><input type="checkbox" id="consentCheck"> Am înțeles și voi folosi aplicația doar în acest fel.</label>
+  <div class="pe-actions"><button class="button ghost" type="button" id="consentNo">Anulează</button><span style="flex:1"></span><button class="button primary" type="button" id="consentOk" disabled>Continuă</button></div>
+</div></dialog>
 <dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
   <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
   <h3 id="pwTitle">Abonamente discover.me</h3>
@@ -292,6 +307,7 @@
 <script src="engine/exif.js"></script>
 <script src="engine/clusters.js"></script>
 <!-- Interfața -->
+<script src="frontend/js/consent.js"></script>
 <script src="frontend/js/extras.js"></script>
 <script src="frontend/js/app.js"></script>
 
