@@ -1206,3 +1206,10 @@ body{font-size:16px}
 #consentDialog{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;width:min(520px,calc(100vw - 24px))}
 #consentDialog::backdrop{background:rgba(0,0,0,.55)}
 .cs-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;color:var(--muted,inherit);font-size:.92rem;line-height:1.45}
+
+/* Drag & drop pe toată fereastra */
+.drop-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:color-mix(in srgb,var(--bg,#111) 72%,transparent);backdrop-filter:blur(6px);pointer-events:none}
+.drop-overlay.on{display:flex}
+.drop-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:44px 56px;border:3px dashed var(--pink,#43c653);border-radius:28px;background:var(--s2,#1b1b1b);color:var(--ink,#fff);text-align:center;max-width:calc(100vw - 32px)}
+.drop-card b{font-size:1.35rem}.drop-card span{opacity:.75}.drop-ico{font-size:2.6rem;line-height:1;color:var(--pink,#43c653)}
+@media(prefers-reduced-motion:no-preference){.drop-overlay.on .drop-card{animation:dropPop .18s ease-out}@keyframes dropPop{from{transform:scale(.94);opacity:0}}}

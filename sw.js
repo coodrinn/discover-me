@@ -3,9 +3,9 @@
 //  • biblioteca și modelele de recunoaștere de pe CDN au versiune fixă: se descarcă o singură dată și se păstrează
 // Pozele tale nu trec niciodată prin acest fișier: se citesc direct de pe disc.
 'use strict';
-const SHELL_CACHE='dm-shell-v11', CDN_CACHE='dm-cdn-v1';
+const SHELL_CACHE='dm-shell-v12', CDN_CACHE='dm-cdn-v1';
 const SHELL=['./','index.html','manifest.webmanifest','frontend/css/styles.css',
-  'frontend/js/theme-init.js','frontend/js/splash.js','frontend/js/helpers.js','frontend/js/extras.js','frontend/js/consent.js','frontend/js/app.js','frontend/js/settings.js','frontend/js/backdrop.js',
+  'frontend/js/theme-init.js','frontend/js/splash.js','frontend/js/helpers.js','frontend/js/extras.js','frontend/js/consent.js','frontend/js/dropfolder.js','frontend/js/app.js','frontend/js/settings.js','frontend/js/backdrop.js',
   'engine/config.js','engine/storage.js','engine/album.js','engine/heic.js','engine/faces.js','engine/matching.js','engine/license.js','engine/links.js','engine/exif.js','engine/clusters.js',
   'frontend/icons/icon.svg','frontend/icons/icon-192.png','frontend/icons/icon-512.png'];
 const VENDOR_CACHE='dm-vendor-v1';

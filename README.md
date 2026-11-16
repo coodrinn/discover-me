@@ -69,6 +69,7 @@ Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi
 - **Sortare și filtru după dată**: cele mai noi sau cele mai vechi întâi, plus filtru pe an. Data vine din EXIF
   (pentru JPEG), altfel se folosește data fișierului.
 - **↗ Trimite**: pozele selectate merg direct în meniul de partajare al sistemului (unde browserul permite).
+- **Drag & drop**: tragi un folder (sau poze) oriunde în fereastră și devine albumul; în Chrome/Edge folderul e ținut minte, în alte browsere se citește o dată.
 - **Indexare reluabilă**: progresul se salvează pe parcurs și se afișează timpul estimat. Dacă închizi pagina,
   „Reconectează albumul” continuă de unde a rămas.
 
