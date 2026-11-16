@@ -2,7 +2,7 @@
 'use strict';
 
 async function warmup(){try{const c=document.createElement('canvas');c.width=c.height=160;const x=c.getContext('2d');x.fillStyle='#888';x.fillRect(0,0,160,160);await faceapi.detectAllFaces(c,new faceapi.SsdMobilenetv1Options({minConfidence:.45}))}catch(e){}}
-async function toCanvas(file,maxSide=1600){let b=await createImageBitmap(file,{imageOrientation:'from-image'}).catch(()=>createImageBitmap(file));const s=Math.min(1,maxSide/Math.max(b.width,b.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(b.width*s));c.height=Math.max(1,Math.round(b.height*s));c.getContext('2d',{willReadFrequently:true}).drawImage(b,0,0,c.width,c.height);b.close?.();return c}
+async function toCanvas(file,maxSide=1600){let b=await decodeImage(file);/* HEIC inclus: engine/heic.js */const s=Math.min(1,maxSide/Math.max(b.width,b.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(b.width*s));c.height=Math.max(1,Math.round(b.height*s));c.getContext('2d',{willReadFrequently:true}).drawImage(b,0,0,c.width,c.height);b.close?.();return c}
 function faceBox(face){return face.detection.box}
 async function detectOn(source,options){return faceapi.detectAllFaces(source,options).withFaceLandmarks().withFaceDescriptors()}
 // Detectare în două etape (rapidă):

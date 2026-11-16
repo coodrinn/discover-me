@@ -17,6 +17,10 @@ Aplicația este statică, deci nu are nevoie de instalare.
 Pentru acces persistent la un folder de poze folosește Chrome sau Edge pe desktop.
 Prima pornire descarcă modelele de recunoaștere a fețelor (este nevoie de internet).
 
+**Instalare și mod offline** funcționează doar când aplicația e servită prin `http://localhost` sau `https://`
+(de ex. GitHub Pages), nu când deschizi `index.html` direct din folder. După prima deschidere, aplicația
+pornește și fără internet, iar în Setări apare butonul „Instalează aplicația”.
+
 ## Structură
 
 ```
@@ -28,8 +32,10 @@ discover-me/
 │       ├── theme-init.js   # Aplică tema salvată înainte de afișare
 │       ├── helpers.js      # Utilitare de interfață ($, toast, fmt)
 │       ├── app.js          # Fluxul aplicației: album, indexare, persoane, căutare, rezultate
+│       ├── extras.js       # Căutare de grup, „Nu e persoana”, sortare după dată, trimitere, „Cine apare în album?”, instalare
 │       ├── settings.js     # Setări (mod, culoare), efecte la atingere
 │       └── backdrop.js     # Fundal animat cu poze și tutorialul de la prima pornire
+│   └── icons/              # Pictogramele aplicației (PWA)
 └── engine/                 # Motorul (rulează local, în browser)
     ├── config.js           # Versiuni, modele, starea comună
     ├── storage.js          # IndexedDB: index, persoane, setări
@@ -37,11 +43,29 @@ discover-me/
     ├── faces.js            # Detectarea fețelor (face-api) și indiciul de ținută
     ├── matching.js         # Potrivirea fețelor: distanțe, scor de consens, praguri
     ├── links.js            # Album din linkuri directe către poze
+    ├── exif.js             # Data la care a fost făcută poza (EXIF)
+    ├── clusters.js         # Gruparea fețelor din album („Cine apare în album?”)
     └── license.js          # Planuri, prețuri, verificarea cheilor de licență
+manifest.webmanifest        # Instalare ca aplicație
+sw.js                       # Service worker: pornire fără internet
 tools/license/              # Generarea cheilor de licență (rulează doar la tine, cu Node.js)
 ```
 
 Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi interfața.
+
+## Ce mai poate face
+
+- **Cine apare în album?** (pagina *Persoane salvate*): după indexare, fețele care apar în cel puțin 3 poze sunt
+  grupate automat. Scrii un nume și profilul e creat din acele fețe, fără să mai cauți 3 poze de referință.
+- **Mai multe persoane în aceeași poză**: bifează opțiunea din căutare și alege 2 sau mai multe persoane.
+  Apar doar pozele în care sunt toate, pe fețe diferite.
+- **✗ Nu e persoana**: scoate poza din rezultate și nu o mai arată pentru acel profil. Fețele foarte asemănătoare
+  cu cea respinsă sunt ascunse și ele, dar doar dintre rezultatele incerte.
+- **Sortare și filtru după dată**: cele mai noi sau cele mai vechi întâi, plus filtru pe an. Data vine din EXIF
+  (pentru JPEG), altfel se folosește data fișierului.
+- **↗ Trimite**: pozele selectate merg direct în meniul de partajare al sistemului (unde browserul permite).
+- **Indexare reluabilă**: progresul se salvează pe parcurs și se afișează timpul estimat. Dacă închizi pagina,
+  „Reconectează albumul” continuă de unde a rămas.
 
 ## Album din linkuri
 

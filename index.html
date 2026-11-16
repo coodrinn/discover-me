@@ -3,26 +3,43 @@
 <head>
 <script src="frontend/js/theme-init.js"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<meta name="color-scheme" content="dark"><meta name="theme-color" content="#111711">
-<title>discover.me 2.0 — Fotografiile tale, regăsite</title>
+<meta name="theme-color" content="#141414">
+<meta name="color-scheme" content="dark light">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="frontend/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<title>discover.me — Fotografiile tale, regăsite</title>
 <link rel="stylesheet" href="frontend/css/styles.css"><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%20aria-hidden%3D%22true%22%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%2221%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%2343c653%22%20stroke-width%3D%225%22/%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%2217%22%20r%3D%224.6%22%20fill%3D%22%23111711%22/%3E%3Cpath%20d%3D%22M12.5%2029C14%2024%2017.5%2022.5%2021%2022.5S28%2024%2029.5%2029Z%22%20fill%3D%22%23111711%22/%3E%3Cpath%20d%3D%22M32.5%2032.5%2043%2043%22%20stroke%3D%22%2343c653%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
 </head>
 <body>
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="sp-glow"></div>
+  <div class="sp-grid"></div>
+  <div class="sp-hud"><div class="sp-hud-txt"><span class="sp-hud-a">Caut în album…</span><span class="sp-hud-b">Am găsit-o ✓</span></div><div class="sp-bar"><i></i><b></b></div></div>
+  <div class="sp-lens"><div class="sp-glass"></div><span class="sp-ping"></span><span class="sp-ping"></span>
+    <svg class="sp-logo" viewBox="0 0 48 48"><circle class="sp-ring" cx="21" cy="21" r="15"/><g class="sp-person"><circle cx="21" cy="17" r="4.6"/><path d="M12.5 29C14 24 17.5 22.5 21 22.5S28 24 29.5 29Z"/></g><path class="sp-handle" d="M32.5 32.5 43 43"/></svg>
+  </div>
+  <div class="sp-brand">
+    <div class="sp-slot"><svg viewBox="0 0 48 48"><circle class="sp-ring" cx="21" cy="21" r="15"/><g class="sp-person"><circle cx="21" cy="17" r="4.6"/><path d="M12.5 29C14 24 17.5 22.5 21 22.5S28 24 29.5 29Z"/></g><path class="sp-handle" d="M32.5 32.5 43 43"/></svg></div>
+    <div class="sp-word"><span>d</span><span>i</span><span>s</span><span>c</span><span>o</span><span>v</span><span>e</span><span>r</span><span class="sp-dot">.</span><span>m</span><span>e</span></div>
+    <div class="sp-motto"><span class="sp-type">momentele tale, </span><span class="sp-found"><span class="sp-hl"></span><span class="sp-type">regăsite</span><span class="sp-lit">regăsite</span></span><i class="sp-caret"></i></div>
+    <div class="sp-wait"><div class="sp-wait-bar"><i></i></div><span>Pregătesc aplicația…</span></div>
+  </div>
+  <button class="sp-skip" type="button" tabindex="-1">Sari peste ›</button>
+</div>
+<script src="frontend/js/splash.js"></script>
 <div class="app">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="15" fill="none" stroke="var(--pink)" stroke-width="5"/><circle cx="21" cy="17" r="4.6" fill="var(--ink)"/><path d="M12.5 29C14 24 17.5 22.5 21 22.5S28 24 29.5 29Z" fill="var(--ink)"/><path d="M32.5 32.5 43 43" stroke="var(--pink)" stroke-width="5.5" stroke-linecap="round"/></svg></div><div><div class="brand-name">discover<span>.</span>me</div><small>momentele tale, regăsite</small></div></div>
   <div>
     <div class="nav-group"><div class="nav-label">Biblioteca mea</div><nav class="nav" aria-label="Biblioteca mea">
             <button class="active" data-page="search" aria-label="Caută fotografii" title="Caută fotografii"><span class="ico" aria-hidden="true">⌕</span><span class="nav-copy"><b>Caută fotografii</b><small>Găsește o persoană</small></span></button>
- <button data-page="people" aria-label="Persoane salvate" title="Persoane salvate"><span class="ico" aria-hidden="true">♡</span><span class="nav-copy"><b>Persoane salvate</b><small>Profiluri pentru căutare</small></span></button>
+ <button data-page="people" aria-label="Oameni" title="Oameni"><span class="ico" aria-hidden="true">☺</span><span class="nav-copy"><b>Oameni</b><small>Cine apare în album</small></span></button>
  <button data-page="plan" aria-label="Abonament" title="Abonament"><span class="ico" aria-hidden="true">★</span><span class="nav-copy"><b>Abonament</b><small id="navPlanSub">Gratuit · 1 persoană</small></span></button>
-    </nav></div>
-    <div class="nav-group"><div class="nav-label">Gestionare</div><nav class="nav" aria-label="Preferințe">
-      <button data-page="settings" aria-label="Setări" title="Setări"><span class="ico" aria-hidden="true">⚙</span><span class="nav-copy"><b>Setări</b><small>Album și date</small></span></button>
+      <button data-page="guide" aria-label="Ghid" title="Ghid"><span class="ico" aria-hidden="true">?</span><span class="nav-copy"><b>Ghid</b><small>Cum folosești aplicația</small></span></button>
+      <button data-page="feedback" aria-label="Feedback" title="Feedback"><span class="ico" aria-hidden="true">✎</span><span class="nav-copy"><b>Feedback</b><small>Idei și probleme</small></span></button>
+      <button data-page="settings" aria-label="Setări" title="Setări"><span class="ico" aria-hidden="true">⚙</span><span class="nav-copy"><b>Setări</b><small>Album, date, aspect</small></span></button>
     </nav></div>
   </div>
-  <div class="side-bottom"><div class="privacy"><b>♧ Fotografiile rămân la tine</b><p>Albumul este analizat pe acest dispozitiv. Fotografiile nu sunt trimise de aplicație către un server.</p></div><div class="version">discover.me · versiunea 2.0 beta</div></div>
+  <div class="side-bottom"><div class="privacy"><b>♧ Fotografiile rămân la tine</b><p>Albumul este analizat pe acest dispozitiv. Fotografiile nu sunt trimise de aplicație către un server.</p></div></div>
 </aside>
 <main>
   <header class="topbar"><div><div class="eyebrow">Bine ai revenit în spațiul tău</div><h1 id="pageTitle">Bun venit la discover.me</h1></div><div class="top-right"><span class="engine-pill"><i id="engineDot" class="dot"></i><span id="engineStatus">Pregătesc aplicația…</span></span></div></header>
@@ -31,17 +48,17 @@
     <div class="hero"><div class="hero-content"><h2>Găsește persoana în albumul tău</h2><p>Alege un album, alege o persoană și vezi toate fotografiile în care apare.</p><div class="hero-actions"><button class="button primary" id="heroFolder">＋ Alege sau schimbă albumul</button><button class="button soft" id="heroSearch">Începe o căutare →</button></div></div><div class="hero-ornament">✿</div></div>
     <div class="stats">
       <div class="stat"><div class="stat-top"><span>Fotografii în album</span><span class="stat-icon">▧</span></div><strong id="statPhotos">0</strong><small id="statAlbum">Niciun album conectat</small></div>
-      <div class="stat"><div class="stat-top"><span>Fețe indexate</span><span class="stat-icon">◎</span></div><strong id="statFaces">0</strong><small>Descriptorii salvați local</small></div>
+      <div class="stat"><div class="stat-top"><span>Fețe găsite</span><span class="stat-icon">◎</span></div><strong id="statFaces">0</strong><small>În pozele pregătite</small></div>
       <div class="stat"><div class="stat-top"><span>Persoane salvate</span><span class="stat-icon">♡</span></div><strong id="statPeople">0</strong><small>Profiluri de căutare</small></div>
-      <div class="stat"><div class="stat-top"><span>Potriviri găsite</span><span class="stat-icon">✧</span></div><strong id="statMatches">0</strong><small>În ultima căutare</small></div>
+      <div class="stat"><div class="stat-top"><span>Poze găsite</span><span class="stat-icon">✧</span></div><strong id="statMatches">0</strong><small>În ultima căutare</small></div>
     </div>
     <div class="layout">
       <article class="card">
         <div class="card-head"><div><h3>1. Alege albumul</h3><p class="sub">Alege folderul cu fotografiile tale. Nu le copiem și nu le încărcăm.</p></div><span class="step-no">01</span></div>
         <div class="folder-drop" id="dropZone"><div class="upload-icon">▧</div><div class="folder-copy"><b id="folderHeadline">Alege folderul cu fotografii</b><p id="folderHelp">Selectează folderul în care păstrezi fotografiile.</p></div><button class="button primary" id="chooseFolder">Alege folderul</button><input type="file" id="folderFallback" webkitdirectory directory multiple hidden accept="image/*"><input type="file" id="photosFallback" multiple hidden accept="image/*"></div>
         <div class="meta-row"><span class="album-name" id="albumName">Niciun album selectat</span><span id="fileCount">0 fotografii</span></div>
-        <div class="progress-wrap" id="scanProgressWrap" hidden><div class="progress-meta"><span id="scanLabel">Indexare</span><b id="scanPercent">0%</b></div><div class="progress"><i id="scanBar"></i></div><div class="statusline" id="scanStatus" aria-live="polite"></div><button class="button primary small" id="startIndex" type="button" style="margin-top:12px" hidden>▶ Indexează albumul</button><div class="row" style="margin-top:10px"><button class="button soft small" id="pauseScan">Pauză după fotografia curentă</button></div></div>
-        <p class="sub" id="engineNote" style="margin:10px 0 0" role="status"></p><div class="info" id="albumInfo">Fotografiile rămân pe dispozitivul tău. După prima pregătire, aplicația refolosește indexul salvat.</div>
+        <div class="progress-wrap" id="scanProgressWrap" hidden><div class="progress-meta"><span id="scanLabel">Pregătire</span><b id="scanPercent">0%</b></div><div class="progress"><i id="scanBar"></i></div><div class="statusline" id="scanStatus" aria-live="polite"></div><button class="button primary small" id="startIndex" type="button" style="margin-top:12px" hidden>▶ Indexează albumul</button><div class="row" style="margin-top:10px"><button class="button soft small" id="pauseScan">Pauză după fotografia curentă</button></div></div>
+        <p class="sub" id="engineNote" style="margin:10px 0 0" role="status"></p><div class="info" id="albumInfo">Fotografiile rămân pe dispozitivul tău. Pozele deja pregătite nu mai trebuie pregătite a doua oară.</div>
         <details class="search-options"><summary>Opțiuni pentru pregătirea albumului</summary><label class="mode" style="margin-top:12px"><input type="checkbox" id="deepScan" checked><span><b>Include și fețe mai mici</b><small>Util pentru fotografii de grup; pregătirea poate dura mai mult.</small></span></label></details>
       </article>
       <article class="card" id="stepsCard"><div class="card-head"><div><h3>Primii pași</h3><p class="sub">Se bifează singuri pe măsură ce avansezi.</p></div><button class="button soft small" id="tourBtn" type="button">Cum funcționează?</button></div>
@@ -61,7 +78,8 @@
   </section>
 
   <section class="page active" id="page-search">
-    <div class="page-heading"><h2>Caută o persoană</h2><p>Întâi alegi persoana, apoi albumul. Restul se face automat.</p></div>
+    <div class="page-heading"><p>Alegi albumul, apoi persoana. Restul se face automat.</p></div>
+<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small><span class="ab-prep" id="abPrep" hidden></span></div><button class="button soft small" type="button" id="abLinks">🔗 Din linkuri</button><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
 <ol class="search-steps" id="searchSteps" aria-label="Pașii căutării">
       <li id="searchStepAlbum" class="current"><span class="step-circle">1</span><span><b>Album</b><small>Conectează și pregătește</small></span></li>
       <li id="searchStepPerson"><span class="step-circle">2</span><span><b>Persoană</b><small>Alege un profil salvat</small></span></li>
@@ -70,12 +88,13 @@
     <article class="card search-controls-card" id="searchControlsCard" hidden>
       <div class="card-head"><div><h3>Pe cine cauți?</h3><p class="sub">Apasă pe o persoană – căutarea pornește imediat.</p></div></div>
       <div class="person-chips" id="personChips" role="list"></div>
+      <label class="check group-toggle"><input type="checkbox" id="groupMode"> <span><b>Mai multe persoane în aceeași poză</b><small>Bifează, apoi alege 2 sau mai multe persoane.</small></span></label>
       <div class="field sr-only" style="margin-top:0"><label for="searchPersonSelect">PERSOANA PE CARE VREI SĂ O GĂSEȘTI</label><select id="searchPersonSelect"><option value="">Selectează o persoană salvată…</option></select></div>
       <div class="search-selection-note" id="searchSelectionNote">Alege o persoană din listă pentru a activa căutarea.</div>
-      <div class="row search-control-actions" style="margin-top:13px;flex-wrap:wrap"><button class="button primary" id="searchPageRun" disabled>⌕ Caută din nou</button><button class="button soft" id="searchPagePeople">Gestionează persoane</button></div>
+      <div class="row search-control-actions" style="margin-top:13px;flex-wrap:wrap"><button class="button primary" id="searchPageRun" disabled>⌕ Caută din nou</button><button class="button soft" id="searchPagePeople">Persoanele mele</button></div>
       <details class="search-options"><summary>Opțiuni de căutare</summary>
-        <div class="field"><label for="searchAccuracy">Precizia rezultatelor</label><select id="searchAccuracy"><option value="precise" selected>Mai sigure · recomandat</option><option value="extended">Include și rezultate de verificat</option></select><small class="sub">Alege varianta mai permisivă când vrei să verifici și rezultate incerte.</small></div>
-        <div class="field"><label class="check" style="text-transform:none;letter-spacing:0"><input type="checkbox" id="useClothes" checked> Folosește și asemănarea ținutei ca indiciu</label><small class="sub">Ținuta este doar un indiciu suplimentar, nu identifică singură persoana.</small><div id="outfitInfo" class="outfit-info"></div></div>
+        <div class="field"><label for="searchAccuracy">Ce poze să-mi arate</label><select id="searchAccuracy"><option value="precise" selected>Doar pe cele sigure (recomandat)</option><option value="extended">Și pe cele de verificat</option></select><small class="sub">„De verificat” sunt pozele în care nu suntem siguri. Le confirmi tu cu ✓ sau ✗.</small></div>
+        <div class="field"><label class="check" style="text-transform:none;letter-spacing:0"><input type="checkbox" id="useClothes" checked> Ține cont și de haine</label><small class="sub">Ajută la pozele din aceeași zi. Hainele doar ajută, nu decid singure.</small><div id="outfitInfo" class="outfit-info"></div></div>
       </details>
       <div class="progress-wrap match-progress" id="matchProgressWrap2" hidden><div class="progress-meta"><span id="matchProgressLabel2" aria-live="polite">Pregătesc căutarea…</span><b id="matchProgressPct2">0%</b></div><div class="progress"><i id="matchProgressBar2"></i></div></div>
       <p class="mini-note">Poți verifica fiecare fotografie înainte să o descarci sau să o incluzi în arhivă.</p>
@@ -91,14 +110,22 @@
       </div>
       <div class="gate-decoration" aria-hidden="true">✧</div>
     </article>
-<div class="album-bar" id="albumBar"><span class="ab-ico" aria-hidden="true">▧</span><div class="ab-text"><b id="abName">Niciun album</b><small id="abCount">Alege folderul cu fotografii</small></div><button class="button soft small" type="button" id="abLinks">🔗 Din linkuri</button><button class="button soft small" type="button" id="abChange">Schimbă albumul</button></div>
-    <div class="results-head" id="resultsHead2" hidden><div><h3>Rezultatele tale</h3><p id="resultSummary2"></p></div><div class="result-actions"><button class="button soft small" id="selectAll2">Selectează toate</button><button class="button primary small" id="exportZip2">↓ Export ZIP</button></div></div><div class="result-grid" id="resultsGrid2"></div><div class="load-more" id="moreWrap2" hidden><button class="button soft small" id="more2">Încarcă următoarele fotografii</button></div><div class="no-results" id="resultsEmpty2">Conectează mai întâi un album pentru a începe.</div>
+    <div class="results-head" id="resultsHead2" hidden><div><h3>Rezultatele tale</h3><p id="resultSummary2"></p></div><div class="result-actions"><select id="resultSort" class="result-select" aria-label="Ordinea rezultatelor"><option value="match">Cele mai sigure întâi</option><option value="new">Cele mai noi întâi</option><option value="old">Cele mai vechi întâi</option></select><select id="resultYear" class="result-select" aria-label="Anul"><option value="">Toți anii</option></select><button class="button soft small" id="selectAll2">Selectează toate</button><button class="button soft small" id="shareSel" type="button" hidden>↗ Trimite</button><button class="button primary small" id="exportZip2">↓ Export ZIP</button></div></div><div class="result-chips" id="resultChips" role="group" aria-label="Filtre rezultate" hidden></div><div class="result-grid" id="resultsGrid2"></div><div class="load-more" id="moreWrap2" hidden><button class="button soft small" id="more2">Încarcă următoarele fotografii</button></div><div class="no-results" id="resultsEmpty2">Conectează mai întâi un album pentru a începe.</div>
   </section>
   <section class="page" id="page-people">
-    <div class="page-heading"><div class="eyebrow">Colecția ta</div><h2>Persoane salvate</h2><p>Creează aici profilurile persoanelor pe care vrei să le găsești în album.</p></div>
+    <div class="page-heading"><p>Persoanele care apar în album. Scrie un nume și vezi toate pozele cu persoana.</p></div>
+    <article class="card album-faces" id="albumFacesCard">
+      <div class="card-head"><div><h3>Cine apare în album?</h3><p class="sub" id="afSub">Alege un album: îți arătăm persoanele care apar în el, iar tu doar le dai un nume.</p></div><button class="button soft small" id="afRun" type="button">☺ Arată fețele</button></div>
+      <div class="progress-wrap" id="afProgress" hidden><div class="progress-meta"><span id="afLabel">Grupez fețele…</span><b id="afPct">0%</b></div><div class="progress"><i id="afBar"></i></div></div>
+      <div class="af-grid" id="afGrid"></div>
+    </article>
+    <div class="section-title"><div><h2>Persoane salvate</h2><p>Apasă „Caută” ca să vezi pozele cu persoana.</p></div><span class="pill" id="peopleCount">0 persoane</span></div>
+    <input type="search" id="peopleFilter" class="people-filter" placeholder="Caută după nume…" aria-label="Caută o persoană" hidden>
+    <div class="person-manage" id="managePeople"><div class="empty">Nu ai salvat încă pe nimeni.</div></div>
+    <details class="manual-person" id="manualPerson"><summary><b>Nu găsești persoana mai sus?</b><span>Adaug-o din 3 poze ale tale</span></summary>
     <div class="person-layout people-create-layout">
       <article class="card">
-        <div class="card-head"><div><h3>Creează un profil nou</h3><p class="sub">Ai nevoie de minimum 3 fotografii ale aceleiași persoane.</p></div><span class="step-no">01</span></div>
+        <div class="card-head"><div><h3>Adaug-o din pozele tale</h3><p class="sub">Pentru cineva care nu apare des în album: alege 3 poze clare cu fața persoanei.</p></div></div>
         <div class="field" style="margin-top:0"><label for="personName">NUMELE PERSOANEI</label><input id="personName" type="text" maxlength="50" placeholder="Ex.: Ana, Mama, Alex" autocomplete="off"></div>
         <div class="ref-drop" style="margin-top:14px">
           <div class="row" style="justify-content:space-between;align-items:center"><div><b style="font-size:12px">Fotografii de referință</b><div class="sub">Alege 3 fotografii clare, de preferat din unghiuri diferite.</div></div><label class="button soft small" for="referenceFiles">＋ Alege fotografii</label><input id="referenceFiles" type="file" accept="image/*" multiple hidden></div>
@@ -118,8 +145,7 @@
         <div class="info">Fotografiile sunt folosite pentru a pregăti profilul pe acest dispozitiv. Nu sunt încărcate de aplicație pe un server.</div>
       </article>
     </div>
-    <div class="section-title"><div><h2>Profilurile tale</h2><p>Alege un profil pentru a începe o căutare sau șterge-l dacă nu mai ai nevoie de el.</p></div><span class="pill" id="peopleCount">0 persoane</span></div>
-    <div class="person-manage" id="managePeople"><div class="empty">Nu ai salvat persoane încă.</div></div>
+    </details>
   </section>
   <section class="page" id="page-plan">
     <div class="page-heading"><p>Alege câte persoane vrei să poți căuta. Poți anula oricând.</p></div>
@@ -136,21 +162,66 @@
     </article>
     <p class="mini-note">Plata și facturarea sunt gestionate de Lemon Squeezy. Poți anula oricând din emailul de confirmare. Pozele tale rămân pe dispozitiv indiferent de plan.</p>
   </section>
+  <section class="page" id="page-guide">
+    <div class="page-heading"><p>Trei pași și ai găsit pozele cu cine vrei. Durează câteva minute.</p></div>
+    <div class="guide-steps">
+      <article class="card guide-step"><span class="gs-no">1</span><div><h3>Alege folderul cu poze</h3><p>Apasă „Alege albumul” și selectează folderul în care ții fotografiile. Poți folosi și linkuri directe către poze. Pozele nu sunt copiate și nu pleacă de pe dispozitivul tău.</p><button class="button soft small" type="button" data-go="search">Mergi la Căutare →</button></div></article>
+      <article class="card guide-step"><span class="gs-no">2</span><div><h3>Așteaptă pregătirea albumului</h3><p>Aplicația caută fețele din poze, o singură dată. Poți lăsa pagina deschisă și face altceva. Data viitoare, pozele deja pregătite nu mai sunt analizate.</p></div></article>
+      <article class="card guide-step"><span class="gs-no">3</span><div><h3>Dă nume fețelor</h3><p>În pagina Oameni vezi persoanele care apar des în album. Scrie un nume sub fața pe care o recunoști și persoana e salvată.</p><button class="button soft small" type="button" data-go="people">Mergi la Oameni →</button></div></article>
+      <article class="card guide-step"><span class="gs-no">4</span><div><h3>Apasă pe o persoană</h3><p>În Căutare, apasă pe persoana dorită și pozele apar imediat. Filtrează după an sau după „Sigure / De verificat”, apoi selectează pozele și apasă „Export ZIP” sau „Trimite”.</p></div></article>
+    </div>
+    <article class="card">
+      <div class="card-head"><div><h3>Sfaturi pentru rezultate bune</h3></div></div>
+      <ul class="guide-tips">
+        <li><b>✓ și ✗ pe poze.</b> La pozele „de verificat”, confirmă cu ✓ sau scoate cu ✗. Aplicația învață din alegerile tale.</li>
+        <li><b>Mai multe persoane în aceeași poză.</b> Bifează „Mai multe persoane în aceeași poză” și alege 2 sau mai multe persoane.</li>
+        <li><b>Persoană rară în album.</b> Dacă nu apare printre fețe, folosește „Nu găsești persoana mai sus?” și adaug-o din 3 poze clare.</li>
+        <li><b>Rezultate prea puține?</b> Din „Opțiuni de căutare” alege „Și pe cele de verificat”.</li>
+        <li><b>Telefon sau laptop lent?</b> Activează „Mod economic” din Setări.</li>
+        <li><b>Folder ținut minte.</b> În Chrome sau Edge pe desktop, folderul rămâne conectat între sesiuni.</li>
+      </ul>
+    </article>
+    <article class="card"><div class="card-head"><div><h3>Mai ai nevoie de ajutor?</h3><p class="sub">Revezi prezentarea sau ne scrii.</p></div></div>
+      <div class="set-actions"><button class="button soft small" type="button" id="guideTour">Arată ghidul pe ecran</button><button class="button soft small" type="button" data-go="feedback">Trimite feedback</button></div>
+    </article>
+  </section>
+  <section class="page" id="page-feedback">
+    <div class="page-heading"><p>Spune-ne ce îți place și ce ar putea fi mai bine.</p></div>
+    <article class="card" id="feedbackCard">
+      <div class="card-head"><div><h3>Feedback</h3><p class="sub">Ai o idee, ai găsit o problemă sau ceva nu merge cum te-ai aștepta? Scrie-ne.</p></div></div>
+      <div class="fb-types" role="group" aria-label="Tipul mesajului"><button type="button" class="seg-btn fb-type" data-t="Idee" aria-pressed="true">💡 Idee</button><button type="button" class="seg-btn fb-type" data-t="Problemă" aria-pressed="false">⚠ Problemă</button><button type="button" class="seg-btn fb-type" data-t="Mulțumire" aria-pressed="false">♡ Mulțumire</button></div>
+      <textarea id="fbText" rows="4" maxlength="1500" placeholder="Spune-ne ce crezi…"></textarea>
+      <div class="fb-foot"><small class="sub" id="fbMsg">Nu trimitem fotografiile tale, doar mesajul scris aici.</small><button class="button primary small" type="button" id="fbSend">Trimite feedback</button></div>
+    </article>
+  </section>
   <section class="page" id="page-settings">
     <div class="page-heading"><p>Aspectul aplicației și datele salvate pe acest dispozitiv.</p></div>
     <article class="card" id="appearanceCard"><div class="card-head"><div><h3>Aspect</h3><p class="sub">Se salvează pe acest dispozitiv.</p></div></div>
       <div class="setting-row"><div><b>Mod</b><p>Întunecat, luminos sau după sistem.</p></div><div class="seg" role="group" aria-label="Mod"><button type="button" class="seg-btn" data-m="dark">☾ Întunecat</button><button type="button" class="seg-btn" data-m="light">☀ Luminos</button><button type="button" class="seg-btn" data-m="auto">◐ Auto</button></div></div>
       <div class="setting-row"><div><b>Culoare</b><p>Butoane și accente.</p></div><div class="swatches" id="accentSwatches" role="group" aria-label="Culori"></div></div>
       <div class="setting-row"><div><b>Mod economic</b><p>Fără animații de fundal și efecte grele. Recomandat pe telefoane și laptopuri mai vechi.</p></div><label class="dm-switch"><input type="checkbox" id="liteToggle"><span></span></label></div>
-      <div class="setting-row"><div><b>Tutorial</b><p>4 ecrane, 20 de secunde.</p></div><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div>
+      <div class="setting-row" id="installRow" hidden><div><b>Instalează aplicația</b><p>Pictogramă pe ecran sau desktop; după prima pornire merge și fără internet.</p></div><button class="button soft small" type="button" id="installBtn">⇩ Instalează</button></div>
+      <div class="setting-row"><div><b>Tutorial</b><p>4 ecrane, 20 de secunde.</p></div><div class="row" style="justify-content:flex-end"><button class="button soft small" type="button" id="introReplay">Revezi intro-ul</button><button class="button soft small" type="button" id="tourBtn2">Arată ghidul</button></div></div>
     </article>
-    <article class="card">
-      <div class="card-head"><div><h3>Album și date</h3><p class="sub">Fotografiile și profilurile tale rămân salvate local, în browser.</p></div></div>
-      <div class="setting-row"><div><b>Pregătirea fotografiilor</b><p>Fotografiile sunt analizate local, pe acest dispozitiv.</p></div><span class="status-tag">Browser local</span></div>
-      <div class="setting-row"><div><b>Album conectat</b><p id="settingsAlbum">Niciun album conectat</p></div><button class="button soft small" id="settingsFolder">Schimbă albumul</button></div>
-      <div class="setting-row"><div><b>Album pregătit pentru căutare</b><p id="settingsIndex">0 fotografii indexate</p></div><button class="button danger small" id="clearIndex">Șterge indexul</button></div>
-      <div class="setting-row"><div><b>Profilurile salvate</b><p>Profilurile și datele necesare căutării sunt păstrate în browser.</p></div><button class="button danger small" id="clearAll">Șterge datele locale</button></div>
-      <div class="info">Pentru albumul persistent, folosește Chrome sau Edge pe desktop și acordă acces la folder. În alte browsere, poți selecta folderul din nou la fiecare sesiune; indexul de căutare rămâne salvat și va fi reutilizat după reselectare.</div>
+    <article class="card" id="albumSetCard">
+      <div class="card-head"><div><h3>Album</h3><p class="sub">Folderul sau linkurile din care căutăm persoane.</p></div></div>
+      <div class="set-album"><span class="ab-ico" aria-hidden="true">▧</span><div><b id="settingsAlbum">Niciun album conectat</b><p id="settingsAlbumCount">Alege un folder cu fotografii</p></div></div>
+      <div class="set-actions"><button class="button primary small" id="settingsFolder" type="button">Schimbă albumul</button><button class="button soft small" id="settingsLinks" type="button">🔗 Din linkuri</button></div>
+      <p class="set-hint">Chrome sau Edge pe desktop țin minte folderul între sesiuni. În alte browsere îl alegi din nou, dar pozele deja pregătite rămân ținute minte.</p>
+    </article>
+    <article class="card" id="dataSetCard">
+      <div class="card-head"><div><h3>Date pe acest dispozitiv</h3><p class="sub">Totul rămâne local, în browser. Nimic nu este trimis pe un server.</p></div><span class="status-tag">Doar local</span></div>
+      <div class="set-stats">
+        <div><strong id="setStatPhotos">0</strong><small>poze pregătite</small></div>
+        <div><strong id="setStatFaces">0</strong><small>fețe găsite</small></div>
+        <div><strong id="setStatPeople">0</strong><small>persoane salvate</small></div>
+        <div><strong id="setStatSize">–</strong><small>spațiu folosit</small></div>
+      </div>
+    </article>
+    <article class="card danger-zone">
+      <div class="card-head"><div><h3>Ștergere</h3><p class="sub">Pozele tale originale nu sunt atinse niciodată.</p></div></div>
+      <div class="setting-row"><div><b>Șterge pregătirea albumului</b><p>Albumul va trebui pregătit din nou. Persoanele salvate rămân.</p></div><button class="button danger small" id="clearIndex" type="button">Șterge pregătirea</button></div>
+      <div class="setting-row"><div><b>Șterge toate datele</b><p>Persoane salvate, pregătirea albumului și setările de căutare.</p></div><button class="button danger small" id="clearAll" type="button">Șterge tot</button></div>
     </article>
   </section>
 </main>
@@ -171,7 +242,7 @@
   </div>
   <div class="intro-foot"><span id="introNum">01 / 04</span><span>Pozele tale rămân pe dispozitivul tău</span></div>
 </div>
-<dialog id="previewDialog" aria-label="Galeria fotografiilor găsite"><div class="modal-head"><div class="preview-heading"><b id="previewTitle">Fotografie</b><span id="previewCounter" class="preview-counter" aria-live="polite">1 / 1</span></div><button class="button ghost small" id="previewClose" type="button">Închide ✕</button></div><div class="modal-body preview-stage"><button class="preview-nav preview-prev" id="previewPrev" type="button" aria-label="Fotografia anterioară" title="Fotografia anterioară">‹</button><img id="previewImage" class="preview-img" alt="Fotografie găsită"><button class="preview-nav preview-next" id="previewNext" type="button" aria-label="Fotografia următoare" title="Fotografia următoare">›</button></div><div class="modal-foot"><span id="previewMeta" class="sub"></span><button class="button soft small" id="previewTeach" type="button" title="Adaugă această ipostază în profil, ca să găsească mai multe poze">✓ E persoana – învață</button><a id="previewDownload" class="button primary small" download>Descarcă</a></div></dialog>
+<dialog id="previewDialog" aria-label="Galeria fotografiilor găsite"><div class="modal-head"><div class="preview-heading"><b id="previewTitle">Fotografie</b><span id="previewCounter" class="preview-counter" aria-live="polite">1 / 1</span></div><button class="button ghost small" id="previewClose" type="button">Închide ✕</button></div><div class="modal-body preview-stage"><button class="preview-nav preview-prev" id="previewPrev" type="button" aria-label="Fotografia anterioară" title="Fotografia anterioară">‹</button><img id="previewImage" class="preview-img" alt="Fotografie găsită"><button class="preview-nav preview-next" id="previewNext" type="button" aria-label="Fotografia următoare" title="Fotografia următoare">›</button></div><div class="modal-foot"><span id="previewMeta" class="sub"></span><button class="button soft small" id="previewReject" type="button" title="Nu e persoana: scoate poza din rezultate">✗ Nu e persoana</button><button class="button soft small" id="previewShare" type="button" hidden>↗ Trimite</button><button class="button soft small" id="previewTeach" type="button" title="Da, e persoana: aplicația învață și găsește mai multe poze">✓ Da, e persoana</button><a id="previewDownload" class="button primary small" download>Descarcă</a></div></dialog>
 <dialog id="personEditor" aria-labelledby="peTitle"><div class="pe">
   <div class="pe-head"><h3 id="peTitle">Editează persoana</h3><button class="button ghost small" type="button" id="peClose" aria-label="Închide">✕</button></div>
   <div class="pe-top"><img id="peAvatar" alt="Poza de profil"><div class="field" style="flex:1;margin:0"><label for="peName">NUME</label><input id="peName" type="text" maxlength="50" autocomplete="off"></div></div>
@@ -180,7 +251,7 @@
     <label class="button soft small" for="peAvatarFile">⇪ Încarcă altă poză</label><input id="peAvatarFile" type="file" accept="image/*" hidden></div>
   <div class="pe-sec"><b>Îmbunătățește căutarea</b><small class="sub" id="peRefs"></small>
     <label class="button soft small" for="peRefFiles">＋ Adaugă poze de referință</label><input id="peRefFiles" type="file" accept="image/*" multiple hidden>
-    <small class="sub">Mai multe ipostaze (alt unghi, altă lumină, cu ochelari) = mai multe poze găsite.</small></div>
+    <small class="sub">Mai multe poze (alt unghi, altă lumină, cu ochelari) = mai multe poze găsite.</small></div>
   <p class="mini-note" id="peMsg" aria-live="polite"></p>
   <div class="pe-actions"><button class="button danger small" type="button" id="peDelete">Șterge persoana</button><span style="flex:1"></span><button class="button primary" type="button" id="peSave">Salvează</button></div>
 </div></dialog>
@@ -207,17 +278,21 @@
   <p class="mini-note">Plata și facturarea sunt gestionate de Lemon Squeezy. Poți anula oricând din emailul de confirmare. Pozele tale rămân pe dispozitiv indiferent de plan.</p>
 </div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.js"></script>
+<!-- face-api.js se încarcă din app.js (după intro), ca pornirea motorului să nu sacadeze animația -->
 <!-- Motorul (rulează local, în browser) -->
 <script src="engine/config.js"></script>
 <script src="frontend/js/helpers.js"></script>
 <script src="engine/storage.js"></script>
 <script src="engine/album.js"></script>
+<script src="engine/heic.js"></script>
 <script src="engine/faces.js"></script>
 <script src="engine/matching.js"></script>
 <script src="engine/license.js"></script>
 <script src="engine/links.js"></script>
+<script src="engine/exif.js"></script>
+<script src="engine/clusters.js"></script>
 <!-- Interfața -->
+<script src="frontend/js/extras.js"></script>
 <script src="frontend/js/app.js"></script>
 
 <script src="frontend/js/settings.js"></script>

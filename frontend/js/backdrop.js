@@ -87,7 +87,7 @@ function draw(dt){
     if(c.y<-c.h*1.2||c.x<-c.w*2||c.x>W+c.w*2){Object.assign(c,makeCard(false))}
     const cx=c.x+px*c.depth*16,cy=c.y+py*c.depth*16;
     ctx.save();ctx.globalAlpha=light?c.alpha*.85:c.alpha;ctx.translate(cx,cy);ctx.rotate(c.rot);
-    ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=c.depth*14;ctx.shadowOffsetY=c.depth*6;
+    ctx.shadowColor=light?'rgba(16,24,40,.12)':'rgba(0,0,0,.35)';ctx.shadowBlur=c.depth*14;ctx.shadowOffsetY=c.depth*6;
     ctx.drawImage(c.canvas,-c.w/2,-c.h/2,c.w,c.h);ctx.restore();
     if(focus&&focus.card===c)drawFocus(c,cx,cy,t);
   }
@@ -119,8 +119,8 @@ window.backdrop={calm(){targetSpeed=1},lively(){targetSpeed=2.2},nudge(){speed=M
 // ================= TUTORIAL (prima pornire) =================
 const SLIDES=[
   {kick:'Bine ai venit',title:'Găsește pe oricine în mii de poze',text:'În câteva secunde. Direct în browser. Fără să urci nimic pe internet.',btn:'Începe'},
-  {kick:'01 — Persoana',title:'Adaugă 3 poze cu fața ei',text:'Clare, din unghiuri diferite. Le folosim ca să o recunoaștem.',btn:'Înainte'},
-  {kick:'02 — Albumul',title:'Alege folderul cu poze',text:'Pozele apar pe măsură ce le găsim. Nu trebuie să aștepți până la final.',btn:'Înainte'},
+  {kick:'01 — Albumul',title:'Alege folderul cu poze',text:'Îl pregătim o singură dată, direct pe dispozitivul tău.',btn:'Înainte'},
+  {kick:'02 — Oamenii',title:'Spune-ne cine e',text:'Îți arătăm fețele care apar în album. Scrii un nume și vezi toate pozele cu persoana.',btn:'Înainte'},
   {kick:'03 — Gata',title:'Bifează. Descarcă.',text:'Verifică rezultatele și descarcă-le pe toate într-o arhivă.',btn:'Hai să începem'}
 ];
 const intro=$('intro');let si=0,touchX=null;
