@@ -6,6 +6,8 @@
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),root=document.documentElement;
+// Versiunea tutorialului: o schimbi când tutorialul se schimbă, ca să-l vadă din nou toți utilizatorii, pe orice browser.
+const TOUR_KEY='dm-tour-v2';
 const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}},put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -140,7 +142,7 @@ function open(){
   requestAnimationFrame(()=>intro.classList.add('show'));setTimeout(()=>$('introNext').focus(),60);
 }
 function finish(){
-  put('dm-tour','1');intro.classList.remove('show');window.backdrop.calm();
+  put(TOUR_KEY,'1');intro.classList.remove('show');window.backdrop.calm();
   setTimeout(()=>{intro.hidden=true;document.body.classList.remove('intro-open')},450);
   // după tutorial: dacă nu există încă persoane, mergem direct la crearea primei persoane
   try{if(typeof people!=='undefined'&&!people.length&&typeof navigate==='function'){returnToSearchAfterPersonCreation=true;navigate('people')}}catch(e){}
@@ -151,5 +153,5 @@ intro.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].clientX},{pas
 intro.addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>50)go(dx<0?1:-1)},{passive:true});
 window.openIntro=open;
 ['tourBtn','tourBtn2'].forEach(id=>{const b=$(id);if(b)b.onclick=open});
-if(!get('dm-tour'))setTimeout(open,350);
+if(!get(TOUR_KEY))setTimeout(open,350);
 })();

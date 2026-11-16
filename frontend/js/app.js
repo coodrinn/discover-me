@@ -311,15 +311,15 @@ function pickHits(scoreRows,policy,useC){
   for(const faceRows of scoreRows){
     if(!faceRows?.length)continue;
     const evaluated=faceRows.map(row=>{
-      const rawLevel=classifyScore(row,policy),adj=useC?clothAdj(row.dc):0;
+      const rawLevel=levelOf(row,policy),adj=useC?clothAdj(row.dc):0;
       if(!adj)return {...row,level:rawLevel,adj:0};
-      const adjusted={...row,best:row.best+adj,support:row.support+adj,score:row.score+adj},lvl=classifyScore(adjusted,policy);let level=lvl,tag='';
+      const adjusted={...row,best:row.best+adj,support:row.support+adj,score:row.score+adj},lvl=levelOf(adjusted,policy);let level=lvl,tag='';
       if(lvl==='strong'&&rawLevel!=='strong'){level='review';tag='rescued'}       // găsită doar datorită ținutei: verificare manuală
       else if(rawLevel==='strong'&&lvl!=='strong'){level='review';tag='demoted'}  // față sigură, dar ținută diferită
       return {...adjusted,rawBest:row.best,rawSupport:row.support,level,tag,adj};
     });
     const strong=evaluated.filter(row=>row.level==='strong').sort((a,b)=>a.score-b.score);
-    const review=evaluated.filter(row=>row.level==='review'&&(policy.mode==='extended'||row.tag)).sort((a,b)=>a.score-b.score);
+    const review=evaluated.filter(row=>row.level==='review'&&(policy.mode==='extended'||row.tag||row.expanded)).sort((a,b)=>a.score-b.score);
     const chosen=strong[0]||review[0];
     if(chosen)hits.push({...chosen,selected:chosen.level==='strong'});
   }
@@ -345,6 +345,7 @@ async function runSearch(){
         if((i+1)%2000===0||i===total-1){const pct=Math.round((i+1)/Math.max(1,total)*100);paintMatchProgress(pct,`Caut · ${fmt(i+1)} din ${fmt(total)} poze`);await new Promise(resolve=>setTimeout(resolve,0))}
       }
       attachClothing(scoreRows);
+      try{expandSearch(scoreRows,refs,indexedEntries)}catch(e){console.warn('Extinderea profilului a eșuat',e)}
       if(searchScoreCache.size>=6)searchScoreCache.delete(searchScoreCache.keys().next().value);
       searchScoreCache.set(queryKey,scoreRows);
     }else paintMatchProgress(100,'Gata.');

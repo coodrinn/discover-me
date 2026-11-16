@@ -88,6 +88,8 @@ Merge doar cu site-uri care permit descărcarea din alte pagini (CORS); linkuril
 3. **Potrivire.** O față este considerată sigură doar dacă este apropiată de **cel puțin două**
    referințe (consens), ceea ce reduce rezultatele greșite.
 4. **Ținuta**, adică culorile hainelor, este doar un indiciu secundar.
+   **Extinderea profilului:** fețele foarte sigure găsite în album devin referințe suplimentare, iar restul albumului e rescorat.
+   Ce se găsește doar așa (alte unghiuri, altă lumină) apare mereu la „de verificat”, niciodată la „sigure”; lista „sigure” nu se schimbă.
 5. **Învățare.** Când confirmi un rezultat incert („✓ E persoana”), fața este adăugată în profil
    și căutarea găsește mai multe poze.
 
@@ -153,6 +155,8 @@ Referință de performanță (date sintetice, 50.000 de poze / 85.000 de fețe):
 - **Acuratețea depinde de modelul face-api (2018).** Pe copii mici, unghiuri laterale și lumină slabă greșește mai des decât modelele noi.
   Înlocuirea necesită un set etichetat pentru recalibrarea pragurilor din `engine/matching.js`; până atunci pragurile sunt conservatoare
   (rezultatele incerte merg în „de verificat”).
+- Extinderea profilului și pragurile au fost validate pe date sintetice și pe 6 poze reale, nu pe un set mare etichetat. Dacă apar potriviri greșite la „de verificat”, pragurile `EXPAND` din `engine/matching.js` se pot strânge.
+- Tutorialul de la prima pornire se arată o dată pe browser și pe adresă (stocarea e separată între Chrome, Edge, `file://` și `localhost`). Cheia `TOUR_KEY` din `backdrop.js` se schimbă când tutorialul se modifică, ca să-l vadă din nou toți.
 - Interfața este doar în română.
 
 ## Tehnologii

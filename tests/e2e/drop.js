@@ -32,9 +32,9 @@ const server=http.createServer((q,r)=>{const u=decodeURIComponent(q.url.split('?
   // 4) folder prin File System Access handle (Chrome/Edge)
   const fh=n=>({kind:'file',name:n,getFile:async()=>jpg(n)});
   const dh={kind:'directory',name:'AlbumChrome',entries:async function*(){yield['a.jpg',fh('a.jpg')];yield['b.jpg',fh('b.jpg')];yield['sub',{kind:'directory',name:'sub',entries:async function*(){yield['c.jpg',fh('c.jpg')]}}]}};
-  reset();const saved=[];const _p=storePut;
+  reset();const _put=storePut;storePut=async()=>{};
   await handleAlbumDrop({items:[{kind:'file',getAsFileSystemHandle:async()=>dh}],files:[]}).catch(e=>r.err=String(e));
-  r.handle={name:currentAlbumName,files:activeFiles.length,hasHandle:directoryHandle===dh};
+  storePut=_put;r.handle={name:currentAlbumName,files:activeFiles.length,hasHandle:directoryHandle===dh};
   // 5) folder gol -> mesaj, albumul anterior rămâne
   const before=activeFiles.length;
   await handleAlbumDrop({items:[{kind:'file',webkitGetAsEntry:()=>dirEntry('Gol',[])}],files:[]});

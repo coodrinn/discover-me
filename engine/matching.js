@@ -24,6 +24,46 @@ function faceScoreFast(face,refs){
   const best=Math.sqrt(b1),support=Math.sqrt(b2);return {best,support,score:best*.35+support*.65};
 }
 
+// ===== Extinderea profilului (query expansion) =====
+// Profilul are doar câteva referințe, făcute de obicei în aceeași poză/lumină. Aceeași persoană din alt unghi poate cădea puțin peste prag.
+// După prima trecere, fețele FOARTE sigure găsite în album (praguri strânse) devin referințe suplimentare și se rescorează restul.
+// Garanția de precizie: lista „sigure” nu se schimbă niciodată; ce apare doar datorită extinderii e marcat `expanded` și merge
+// la „de verificat” (nebifat), unde îl confirmi tu cu ✓/✗. O singură extindere, fără lanț (seed-urile vin doar din referințele reale).
+const EXPAND={seedBest:.42,seedSupport:.48,seedFaceScore:.80,seedFaceSize:80,maxSeeds:10,minNew:.15};
+function pickExpansionSeeds(scoreRows,refs){
+  const pool=refs.slice(),cand=[];
+  for(const fr of scoreRows)if(fr)for(const r of fr)
+    if(r.d&&r.best<=EXPAND.seedBest&&r.support<=EXPAND.seedSupport&&r.faceScore>=EXPAND.seedFaceScore&&r.faceSize>=EXPAND.seedFaceSize)cand.push(r);
+  cand.sort((a,b)=>b.score-a.score);                  // întâi cele de la marginea zonei sigure: aduc cea mai multă informație nouă
+  const seeds=[];
+  for(const r of cand){if(seeds.length>=EXPAND.maxSeeds)break;
+    if(pool.every(p=>descriptorDistance(p,r.d)>=EXPAND.minNew)){seeds.push(r.d);pool.push(r.d)}}
+  return seeds;
+}
+// scoreRows[i] corespunde lui entries[i]. Modifică scoreRows pe loc și întoarce numărul de rânduri aduse de extindere.
+// Se calculează cu pragul cel mai larg (extended), pentru că scorurile se păstrează în cache indiferent de modul ales;
+// la afișare, `levelOf` aplică pragul modului curent.
+function expandSearch(scoreRows,refs,entries){
+  const seeds=pickExpansionSeeds(scoreRows,refs);if(!seeds.length)return 0;
+  const wide=refs.concat(seeds),policy=MATCH_POLICIES.extended;let added=0;
+  for(let i=0;i<scoreRows.length;i++){
+    const entry=entries[i];if(!entry)continue;
+    const known=new Map((scoreRows[i]||[]).map(r=>[r.d,r])),orig=scoreRows[i]||[];let changed=false;const rows=[];
+    for(const face of entry.faces||[]){
+      const o=known.get(face.d);
+      if(o&&classifyScore(o,policy)==='strong'){rows.push(o);continue}
+      const m=faceScoreFast(face,wide);
+      if(m&&classifyScore({...m,faceScore:Number(face.s)||0,faceSize:Number(face.m)||0},policy)!=='none'){
+        rows.push({entry,...m,faceScore:Number(face.s)||0,faceSize:Number(face.m)||0,cloth:face.c||null,d:face.d,expanded:true});changed=true;added++;
+      }else if(o)rows.push(o);
+    }
+    if(changed)scoreRows[i]=rows;
+  }
+  return added;
+}
+// Un rând adus de extindere nu poate fi „sigur”: cel mult „de verificat”.
+function levelOf(row,policy){const l=classifyScore(row,policy);return row.expanded&&l==='strong'?'review':l}
+
 function classifyScore(row,policy){
   if(row.best<=policy.strongBest&&row.support<=policy.strongSupport&&row.faceScore>=.60&&row.faceSize>=48)return 'strong';
   if(row.best<=policy.reviewBest&&row.support<=policy.reviewSupport)return 'review';
