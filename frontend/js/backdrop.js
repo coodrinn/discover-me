@@ -119,13 +119,10 @@ readTheme();resize();start();
 window.backdrop={calm(){targetSpeed=1},lively(){targetSpeed=2.2},nudge(){speed=Math.max(speed,4)}};
 
 // ================= TUTORIAL (prima pornire) =================
-const SLIDES=[
-  {kick:'Bine ai venit',title:'Găsește pe oricine în mii de poze',text:'În câteva secunde. Direct în browser. Fără să urci nimic pe internet.',btn:'Începe'},
-  {kick:'01 — Albumul',title:'Alege folderul cu poze',text:'Îl pregătim o singură dată, direct pe dispozitivul tău.',btn:'Înainte'},
-  {kick:'02 — Oamenii',title:'Spune-ne cine e',text:'Îți arătăm fețele care apar în album. Scrii un nume și vezi toate pozele cu persoana.',btn:'Înainte'},
-  {kick:'03 — Gata',title:'Bifează. Descarcă.',text:'Verifică rezultatele și descarcă-le pe toate într-o arhivă.',btn:'Hai să începem'}
+const SLIDES=[   // un singur ecran: trei pași, un singur buton
+  {kick:'Bine ai venit',title:'Găsește pe oricine în mii de poze',text:'1. Alegi pozele · 2. Vezi cine apare · 3. Descarci pozele cu persoana. Totul rămâne pe dispozitivul tău.',btn:'Începe'}
 ];
-const intro=$('intro');let si=0,touchX=null;
+const intro=$('intro');let si=0,touchX=null;intro.dataset.slides=SLIDES.length;
 function render(dir){
   const s=SLIDES[si];
   $('introKick').textContent=s.kick;$('introTitle').textContent=s.title;$('introText').textContent=s.text;
@@ -144,8 +141,8 @@ function open(){
 function finish(){
   put(TOUR_KEY,'1');intro.classList.remove('show');window.backdrop.calm();
   setTimeout(()=>{intro.hidden=true;document.body.classList.remove('intro-open')},450);
-  // după tutorial: dacă nu există încă persoane, mergem direct la crearea primei persoane
-  try{if(typeof people!=='undefined'&&!people.length&&typeof navigate==='function'){returnToSearchAfterPersonCreation=true;navigate('people')}}catch(e){}
+  // după tutorial: direct la primul pas, alegerea pozelor
+  try{if(typeof navigate==='function')navigate('search')}catch(e){}
 }
 $('introNext').onclick=()=>go(1);$('introBack').onclick=()=>go(-1);$('introSkip').onclick=finish;
 intro.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1);else if(e.key==='Escape')finish()});

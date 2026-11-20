@@ -15,3 +15,7 @@ desktop.ini
 # Chei private (nu le urca niciodata)
 *.pem
 *.key
+
+# Benchmark: setul LFW și descriptorii extrași (mari, se refac cu tools/bench/extract.js)
+tools/bench/lfw/
+tools/bench/*.json

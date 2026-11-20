@@ -21,10 +21,9 @@ function requireConsent() {
   const dlg = $('consentDialog');
   if (!dlg || !dlg.showModal) return Promise.resolve(true);        // browser vechi: nu blocăm utilizatorul
   return new Promise(resolve => {
-    const ok = $('consentOk'), no = $('consentNo'), box = $('consentCheck');
-    box.checked = false; ok.disabled = true;
+    const ok = $('consentOk'), no = $('consentNo');
     const done = async (value) => {
-      box.onchange = ok.onclick = no.onclick = dlg.oncancel = null;
+      ok.onclick = no.onclick = dlg.oncancel = null;
       if (dlg.open) dlg.close();
       if (value) {
         consentGiven = true;
@@ -33,7 +32,6 @@ function requireConsent() {
       }
       resolve(value);
     };
-    box.onchange = () => { ok.disabled = !box.checked; };
     ok.onclick = () => done(true);
     no.onclick = () => done(false);
     dlg.oncancel = () => done(false);

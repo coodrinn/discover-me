@@ -16,7 +16,7 @@ const BROWSERS = [process.env.BROWSER, 'C:/Program Files (x86)/Microsoft/Edge/Ap
 const exe = BROWSERS.find(b => fs.existsSync(b));
 if (!exe) { console.error('Nu găsesc Edge/Chrome. Setează BROWSER=...'); process.exit(2); }
 
-const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' };
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' , '.wasm': 'application/wasm', '.mjs': 'text/javascript', '.onnx': 'application/octet-stream' };
 const server = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
   const f = u.startsWith('/__photos/') && PHOTOS ? path.join(PHOTOS, path.basename(u)) : path.join(APP, u === '/' ? 'index.html' : u);
@@ -42,17 +42,16 @@ const check = (ok, msg) => { console.log(`${ok ? '✔' : '✖'} ${msg}`); if (!o
   // Acordul de confidențialitate blochează crearea profilului până la confirmare
   const consent = await page.evaluate(async () => {
     const p = requireConsent(); const dlg = document.getElementById('consentDialog');
-    const opened = dlg.open, okDisabled = document.getElementById('consentOk').disabled;
+    const opened = dlg.open;
     document.getElementById('consentNo').click(); const refused = await p;
-    const p2 = requireConsent(); document.getElementById('consentCheck').checked = true; document.getElementById('consentCheck').onchange();
-    const okEnabled = !document.getElementById('consentOk').disabled; document.getElementById('consentOk').click(); const accepted = await p2;
+    const p2 = requireConsent(); document.getElementById('consentOk').click(); const accepted = await p2;
     const again = await requireConsent();                           // a doua oară nu mai întreabă
     const saved = await storeGet('settings', 'consent');
-    return { opened, okDisabled, refused, okEnabled, accepted, again, saved: !!saved, stillOpen: dlg.open };
+    return { opened, refused, accepted, again, saved: !!saved, stillOpen: dlg.open };
   });
-  check(consent.opened && consent.okDisabled, 'dialogul de acord se deschide, iar „Continuă” e blocat până la bifare');
+  check(consent.opened, 'dialogul de acord se deschide');
   check(consent.refused === false, '„Anulează” nu dă acordul');
-  check(consent.okEnabled && consent.accepted === true && consent.saved, 'după bifare acordul se salvează');
+  check(consent.accepted === true && consent.saved, 'după „Sunt de acord” acordul se salvează');
   check(consent.again === true && !consent.stillOpen, 'acordul dat nu se mai cere');
 
   if (PHOTOS) {
@@ -62,12 +61,12 @@ const check = (ok, msg) => { console.log(`${ok ? '✔' : '✖'} ${msg}`); if (!o
         const out = [];
         for (const n of names) {
           const blob = await (await fetch('/__photos/' + n)).blob();
-          const r = await detectFaces(new File([blob], n, { type: 'image/jpeg' }), true);
+          const r = await detectFacesE(new File([blob], n, { type: 'image/jpeg' }), true);
           out.push({ n, faces: r.faces.length, hasDesc: r.faces.every(f => f.d.length === 128) });
         }
         return out;
       }, files);
-      check(res.every(r => r.faces > 0 && r.hasDesc), `detectează fețe cu descriptor de 128 în toate cele ${res.length} poze (${res.map(r => r.faces).join(',')})`);
+      check(res.every(r => r.faces > 0 && r.hasDesc), `detectează fețe cu amprentă SFace (128) în toate cele ${res.length} poze (${res.map(r => r.faces).join(',')})`);
     } else console.log('… sărit: sunt necesare cel puțin 4 poze în PHOTOS');
   } else console.log('… detectarea pe poze reale sărită (setează PHOTOS=folder)');
 

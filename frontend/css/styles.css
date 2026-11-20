@@ -1213,3 +1213,137 @@ body{font-size:16px}
 .drop-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:44px 56px;border:3px dashed var(--pink,#43c653);border-radius:28px;background:var(--s2,#1b1b1b);color:var(--ink,#fff);text-align:center;max-width:calc(100vw - 32px)}
 .drop-card b{font-size:1.35rem}.drop-card span{opacity:.75}.drop-ico{font-size:2.6rem;line-height:1;color:var(--pink,#43c653)}
 @media(prefers-reduced-motion:no-preference){.drop-overlay.on .drop-card{animation:dropPop .18s ease-out}@keyframes dropPop{from{transform:scale(.94);opacity:0}}}
+
+/* =====================================================================
+   TELEFON — corecții finale (suprascriu regulile de mai sus)
+   ===================================================================== */
+@media (max-width:760px){
+  /* Bara de jos: 6 butoane egale, etichete scurte, nimic tăiat */
+  html[data-mode] .sidebar{padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
+  .nav{gap:0;justify-content:stretch}
+  html[data-mode] .nav button{flex:1 1 0;min-width:0;min-height:56px;padding:6px 1px;gap:2px;border-radius:12px}
+  .nav .ico{font-size:21px}
+  .nav-copy{min-width:0;max-width:100%}
+  .nav-copy b{font-size:10.5px!important;max-width:100%;letter-spacing:-.1px}
+  .nav-copy b[data-short]{font-size:0!important}
+  .nav-copy b[data-short]::after{content:attr(data-short);font-size:10.5px;letter-spacing:-.1px}
+
+  /* Antet: textul stă în interiorul cardului */
+  html[data-mode] .topbar{padding:14px 16px 16px!important;margin:0 0 18px!important;border-radius:18px;align-items:flex-start}
+  .topbar .eyebrow{font-size:10.5px!important;letter-spacing:1.2px;line-height:1.3}
+  .topbar h1{font-size:clamp(25px,8vw,32px);overflow-wrap:anywhere}
+
+  /* Zone de atingere ≥ 44px */
+  .seg-btn,.pw-bill,.chip,.button.small{min-height:44px}
+  .seg-btn{padding:10px 14px}
+  html[data-skin] .sw{width:44px;height:44px}
+  .swatches{gap:8px!important}
+  .dm-switch{position:relative}
+  .dm-switch::after{content:"";position:absolute;inset:-9px -4px}
+  .pcard-menu summary{width:44px;height:44px}
+  .pcard-menu{top:4px;right:4px}
+
+  /* Câmpuri ≥ 16px: iOS nu mai face zoom la atingere */
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea{font-size:16px!important}
+
+  /* Comutatoare care nu se rup pe două rânduri */
+  .seg{display:flex;flex-wrap:nowrap;width:100%;gap:4px}
+  .seg .seg-btn{flex:1 1 auto;min-width:0;padding:10px 8px;white-space:nowrap;text-align:center}
+  .pw-billing{display:flex;width:100%}
+  .pw-billing .pw-bill{flex:1 1 0;min-width:0;white-space:nowrap}
+}
+@media (max-width:360px){
+  .seg .seg-btn{font-size:12.5px;padding:10px 6px}
+  .nav .ico{font-size:19px}
+  .nav-copy b{font-size:10px!important}
+  .nav-copy b[data-short]::after{font-size:10px}
+}
+/* Mod orizontal pe telefon: bara de jos mai joasă */
+@media (max-width:900px) and (max-height:480px) and (orientation:landscape){
+  html[data-mode] .nav button{min-height:44px;flex-direction:row;gap:6px}
+  main{padding-bottom:calc(70px + env(safe-area-inset-bottom))!important}
+}
+
+/* Dialoguri pe telefon: butoanele de acțiune rămân mereu vizibile jos */
+@media (max-width:760px){
+  dialog{overscroll-behavior:contain}
+  dialog .pe{padding:18px 16px 0}
+  dialog .pe-actions{position:sticky;bottom:0;z-index:2;margin:0 -16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--s2,var(--paper,#1b1b1b));border-top:1px solid var(--line)}
+  dialog .pe-actions .button{min-height:46px}
+  .check{display:flex;align-items:flex-start;gap:12px;min-height:44px;padding:6px 0}
+  .check input[type=checkbox]{width:24px;height:24px;flex:none;margin:0}
+}
+
+/* Iconițe SVG în navigare: arată identic pe toate dispozitivele (fără emoji de sistem) */
+.nav .ico{display:inline-flex;align-items:center;justify-content:center;width:1.2em;height:1.2em;font-family:inherit}
+.nav .ico-svg{width:1em;height:1em;display:block;flex:none}
+.nav button.active .ico-svg{stroke-width:2.2}
+
+/* ---------- „Cine apare în album?”: persoane blocate pe plan ---------- */
+.af-lock-note{display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:16px;background:color-mix(in srgb,var(--accent) 10%,var(--s3))}
+.af-lock-note[hidden]{display:none}
+.af-lock-note p{margin:0;flex:1;font-size:14px;line-height:1.5;color:var(--ink)}
+.af-lock-ico{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--accent-text,var(--accent));background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.af-lock-ico svg{width:24px;height:24px}
+.af-card.locked{border-style:dashed;background:color-mix(in srgb,var(--s3) 70%,transparent)}
+.af-lock{all:unset;box-sizing:border-box;cursor:pointer;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;color:var(--muted);background:repeating-linear-gradient(135deg,var(--s4) 0 8px,color-mix(in srgb,var(--s4) 80%,var(--ink) 6%) 8px 16px);border:3px solid var(--s2);box-shadow:0 0 0 1px var(--line2);transition:color .15s,box-shadow .15s}
+.af-lock:hover,.af-lock:focus-visible{color:var(--accent-text,var(--accent));box-shadow:0 0 0 2px var(--accent)}
+.af-card.locked b{color:var(--muted)}
+@media(max-width:560px){.af-lock-note{flex-wrap:wrap}.af-lock-note p{flex-basis:calc(100% - 60px)}.af-lock-note .button{width:100%}}
+
+/* =====================================================================
+   SIMPLIFICARE: mai puțini pași și mai puține clickuri
+   ===================================================================== */
+/* Intro cu un singur ecran: fără progres, număr de ecran sau „Sari peste” (butonul „Începe” face același lucru) */
+.intro[data-slides="1"] .intro-progress,.intro[data-slides="1"] #introNum,.intro[data-slides="1"] .intro-skip,.intro[data-slides="1"] .intro-back{display:none!important}
+
+/* Navigare cu 4 elemente: Ghid și Feedback se deschid din Setări */
+.nav button[data-page="guide"],.nav button[data-page="feedback"]{display:none!important}
+.back-link{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;font-size:14px;font-weight:700;color:var(--muted)}
+.back-link:hover,.back-link:focus-visible{color:var(--ink)}
+.help-links{display:flex;flex-wrap:wrap;gap:10px}
+
+/* Pasul „Alege pozele” e singurul lucru de pe ecran: fără repetiții */
+#page-search[data-flow="album"] #resultsEmpty2,#page-search[data-flow="engine"] #resultsEmpty2,#page-search[data-flow="engineError"] #resultsEmpty2{display:none}
+/* Controalele avansate nu stau în față: „Caută din nou” și „Persoanele mele” sunt redundante (căutarea pornește la apăsarea pe persoană) */
+.search-control-actions{display:none!important}
+@media (max-width:760px){
+  .topbar .eyebrow{display:none}
+  .topbar h1{margin-top:0}
+}
+/* Mesajul scurt (toast) stă deasupra barii de navigare, nu peste ea */
+@media (max-width:760px){
+  #toast,.toast{bottom:calc(86px + env(safe-area-inset-bottom))!important}
+}
+.af-face.af-tap{cursor:pointer;transition:transform .15s,box-shadow .15s}
+.af-face.af-tap:hover,.af-face.af-tap:focus-visible{transform:scale(1.04);box-shadow:0 0 0 3px var(--accent)}
+/* Titlul paginii spune deja ce faci; fraza de sub el repeta cardul pasului */
+#page-search .page-heading{display:none}
+.search-controls-card .mini-note{display:none}
+
+/* =====================================================================
+   Liste derulante proprii: rotunjite și în culoarea de accent aleasă (vezi frontend/js/dropdown.js)
+   ===================================================================== */
+.dd{position:relative;display:inline-block;vertical-align:middle}
+.dd.block{display:block}
+.dd-native{position:absolute!important;left:0;top:0;width:1px!important;height:1px!important;opacity:0;pointer-events:none;border:0!important;padding:0!important;margin:0!important}
+.dd-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;height:40px;padding:0 14px 0 18px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--accent) 55%,transparent);background:color-mix(in srgb,var(--accent) 16%,var(--s2,#222));color:var(--accent-text,var(--ink));font:700 13.5px/1 inherit;cursor:pointer;max-width:100%;transition:background .15s,border-color .15s,box-shadow .15s}
+.dd.block .dd-btn{width:100%;height:44px;font-size:14px}
+.dd-btn:hover:not(:disabled){background:color-mix(in srgb,var(--accent) 26%,var(--s2,#222));border-color:var(--accent)}
+.dd-btn:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+.dd-btn:disabled{opacity:.5;cursor:not-allowed}
+.dd-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-chev{flex:none;color:var(--accent);transition:transform .18s ease}
+.dd.open .dd-btn{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.dd.open .dd-chev{transform:rotate(180deg)}
+.dd-list{position:absolute;z-index:90;min-width:100%;width:max-content;max-width:min(340px,calc(100vw - 24px));margin:0;padding:6px;list-style:none;border-radius:20px;border:1.5px solid color-mix(in srgb,var(--accent) 40%,var(--line));background:var(--s2,#1b1b1b);box-shadow:0 20px 48px rgba(0,0,0,.45),0 0 0 4px color-mix(in srgb,var(--accent) 10%,transparent);outline:none;animation:ddIn .14s ease-out;transform-origin:top right}
+.dd.up .dd-list{transform-origin:bottom right}
+.dd-list[hidden]{display:none}
+.dd-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border-radius:14px;font:600 14px/1.25 inherit;color:var(--ink);cursor:pointer;user-select:none;-webkit-user-select:none}
+.dd-list li .dd-check{flex:none;opacity:0;color:var(--accent)}
+.dd-list li.act{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.dd-list li.on{color:var(--accent-text,var(--accent));background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.dd-list li.on .dd-check{opacity:1}
+@keyframes ddIn{from{opacity:0;transform:translateY(-4px) scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dd-list{animation:none}.dd-chev{transition:none}}
+@media (max-width:560px){.results-head .dd{flex:1 1 150px}.results-head .dd-btn{width:100%}}

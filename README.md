@@ -15,7 +15,8 @@ Aplicația este statică, deci nu are nevoie de instalare.
   apoi deschide `http://localhost:8080`.
 
 Pentru acces persistent la un folder de poze folosește Chrome sau Edge pe desktop.
-Modelele de recunoaștere a fețelor sunt incluse în aplicație (`vendor/face-api/`, ~12 MB), deci nu depind de niciun CDN și, după
+Modelele de recunoaștere a fețelor sunt incluse în aplicație (`vendor/face-api/` ~12 MB pentru detectare, `vendor/sface/` ~38 MB pentru recunoaștere,
+`vendor/ort/` ~11 MB pentru rularea modelului; ~60 MB la prima pornire, apoi din memoria browserului), deci nu depind de niciun CDN și, după
 prima deschidere prin `http://localhost` sau `https://`, aplicația merge complet offline. Când `index.html` e deschis direct din folder
 (`file://`), browserul nu permite citirea modelelor locale și aplicația folosește CDN-ul ca plan de rezervă.
 
@@ -39,14 +40,17 @@ discover-me/
 │       ├── settings.js     # Setări (mod, culoare), efecte la atingere
 │       └── backdrop.js     # Fundal animat cu poze și tutorialul de la prima pornire
 │   └── icons/              # Pictogramele aplicației (PWA)
-├── vendor/face-api/        # face-api.js și modelele, incluse local (fără CDN)
+├── vendor/face-api/        # face-api.js și modelele de detectare, incluse local (fără CDN)
+├── vendor/sface/           # modelul de recunoaștere SFace (ONNX, Apache-2.0)
+├── vendor/ort/             # onnxruntime-web (WebAssembly, MIT)
 ├── tests/                  # Teste automate (Node) și test de fum în browser
 └── engine/                 # Motorul (rulează local, în browser)
     ├── config.js           # Versiuni, modele, starea comună
     ├── storage.js          # IndexedDB: index, persoane, setări
     ├── album.js            # Citirea folderelor și a fișierelor imagine
     ├── faces.js            # Detectarea fețelor (face-api) și indiciul de ținută
-    ├── matching.js         # Potrivirea fețelor: distanțe, scor de consens, praguri
+    ├── sface.js            # Amprenta facială SFace: aliniere + model ONNX
+    ├── matching.js         # Potrivirea fețelor: probabilitate (regresie logistică), praguri
     ├── links.js            # Album din linkuri directe către poze
     ├── exif.js             # Data la care a fost făcută poza (EXIF)
     ├── clusters.js         # Gruparea fețelor din album („Cine apare în album?”)
@@ -54,6 +58,7 @@ discover-me/
 manifest.webmanifest        # Instalare ca aplicație
 sw.js                       # Service worker: pornire fără internet
 tools/license/              # Generarea cheilor de licență (rulează doar la tine, cu Node.js)
+tools/bench/                # Benchmark de acuratețe pe poze etichetate (LFW) și test complet în aplicație
 ```
 
 Scripturile sunt încărcate în ordinea din `index.html`: întâi motorul, apoi interfața.
@@ -80,14 +85,27 @@ Pe lângă un folder de pe calculator, albumul poate fi o listă de **linkuri di
 și sunt tratate exact ca un album din folder; lista se păstrează și albumul revine la următoarea deschidere.
 Merge doar cu site-uri care permit descărcarea din alte pagini (CORS); linkurile care nu merg sunt afișate cu motivul.
 
+## Fluxul pentru utilizator (puțini pași)
+
+1. **Începe** (un singur ecran de intro) → **Alege pozele** (galerie pe telefon, folder pe desktop, sau drag & drop).
+2. Pozele se pregătesc singure (ecranul rămâne aprins pe telefon).
+3. **Cine apare?** Apeși **Vezi pozele** sub persoana căutată (numele e opțional) și primești rezultatele. Prima dată apare un singur acord, cu un buton.
+4. Bifezi / descarci. Pe planul Gratuit se vede o persoană; celelalte au lacăt.
+
+Navigare: Căutare · Oameni · Abonament · Setări (Ghidul și Feedback-ul sunt în Setări). Butonul „Înapoi” al telefonului merge între pagini.
+
 ## Cum funcționează căutarea
 
-1. **Indexare.** Fiecare poză din album este analizată o singură dată. Fiecare față primește
-   un descriptor de 128 de valori, salvat în IndexedDB.
-2. **Profil.** Din 3 sau mai multe poze de referință se obțin descriptorii persoanei.
-3. **Potrivire.** O față este considerată sigură doar dacă este apropiată de **cel puțin două**
-   referințe (consens), ceea ce reduce rezultatele greșite.
-4. **Ținuta**, adică culorile hainelor, este doar un indiciu secundar.
+1. **Indexare.** Fiecare poză din album este analizată o singură dată. face-api găsește fețele și reperele lor (inclusiv fețele foarte
+   mari din selfie-uri, prin încercare pe imaginea cu chenar), iar **SFace** (OpenCV Zoo, Apache-2.0, rulat cu onnxruntime-web) dă fiecărei fețe
+   o amprentă de 128 de valori, salvată în IndexedDB.
+2. **Profil.** Din 3 sau mai multe poze de referință se obțin amprentele persoanei.
+3. **Potrivire.** Fiecare față primește o **probabilitate** că e persoana căutată, dintr-o regresie logistică antrenată pe fețe cu
+   identitate cunoscută (distanța până la cele mai apropiate **două** referințe + mărimea feței). „Sigure” = P ≥ 0,95 (mod extins) sau 0,97
+   (mod precis); „de verificat” = P ≥ 0,40 / 0,50. Cifrele măsurate sunt în `tools/bench/README.md`.
+4. **„Cine apare în album?”** grupează fețele pe persoane (regula: aceeași persoană nu apare de două ori în aceeași poză). Planul Gratuit
+   arată o persoană; celelalte apar cu lacăt (fără poză decupată) până la abonare.
+5. **Ținuta**, adică culorile hainelor, este un indiciu secundar, dezactivat implicit (experimental).
    **Extinderea profilului:** fețele foarte sigure găsite în album devin referințe suplimentare, iar restul albumului e rescorat.
    Ce se găsește doar așa (alte unghiuri, altă lumină) apare mereu la „de verificat”, niciodată la „sigure”; lista „sigure” nu se schimbă.
 5. **Învățare.** Când confirmi un rezultat incert („✓ E persoana”), fața este adăugată în profil
@@ -138,10 +156,11 @@ Fără ea nu mai poți emite chei care să funcționeze, iar dacă ajunge la alt
 ## Teste
 
 ```bash
-npm test                 # teste unitare (Node, fără dependențe): potrivire, grupare, EXIF
+npm test                 # teste unitare (Node, fără dependențe): potrivire, grupare, blocare pe plan, aliniere SFace, EXIF
 npm i --no-save puppeteer-core
 PHOTOS=C:/cale/poze npm run test:e2e   # test în Edge/Chrome headless: modele locale, acord, detectare pe poze reale
 node tools/bench-search.js 50000       # cât durează căutarea și gruparea pe 50.000 de poze
+# acuratețea pe poze reale etichetate (LFW): vezi tools/bench/README.md
 ```
 
 Referință de performanță (date sintetice, 50.000 de poze / 85.000 de fețe): căutarea după o persoană ~70 ms,
@@ -152,15 +171,19 @@ Referință de performanță (date sintetice, 50.000 de poze / 85.000 de fețe):
 - **Limita de persoane din abonament se verifică în browser.** Aplicația rulează 100% local, fără server propriu, așa că
   cineva cu cunoștințe tehnice o poate ocoli. Nu poate fi blocat altfel decât cu un server care ține datele; la prețurile
   actuale e un compromis asumat. Cheile sunt verificate criptografic (semnătură ECDSA / Lemon Squeezy), dar asta nu împiedică modificarea codului local.
-- **Acuratețea depinde de modelul face-api (2018).** Pe copii mici, unghiuri laterale și lumină slabă greșește mai des decât modelele noi.
-  Înlocuirea necesită un set etichetat pentru recalibrarea pragurilor din `engine/matching.js`; până atunci pragurile sunt conservatoare
-  (rezultatele incerte merg în „de verificat”).
-- Extinderea profilului și pragurile au fost validate pe date sintetice și pe 6 poze reale, nu pe un set mare etichetat. Dacă apar potriviri greșite la „de verificat”, pragurile `EXPAND` din `engine/matching.js` se pot strânge.
+- **Recunoașterea nu e perfectă.** Pe LFW (poze de presă + degradări simulate) pozele „sigure” sunt corecte în 99,9% din cazuri și se găsesc
+  ~86% din pozele țintă (97% din cele normale; 94% cu „de verificat”). Pe poze foarte mici, de profil, cu ochelari de soare sau cu copii
+  rezultatul e mai slab; de aceea există „de verificat” (✓ / ✗). Pragurile se pot recalibra cu `tools/bench` pe poze proprii etichetate.
+- **Licența modelelor.** SFace (Apache-2.0) și onnxruntime-web (MIT) permit uz comercial; verifică totuși singur condițiile pentru uz
+  comercial ale datelor pe care a fost antrenat SFace înainte de a vinde aplicația. face-api (MIT) folosește modele dlib.
+- **iPhone:** recunoașterea cere WebAssembly SIMD (iOS 16.4+). Pe iOS mai vechi aplicația nu pornește.
+- Profilurile create cu motorul vechi (amprentă dlib) se refac automat din fețele salvate; dacă nu reușește, trebuie adăugate din nou 3 poze.
 - Tutorialul de la prima pornire se arată o dată pe browser și pe adresă (stocarea e separată între Chrome, Edge, `file://` și `localhost`). Cheia `TOUR_KEY` din `backdrop.js` se schimbă când tutorialul se modifică, ca să-l vadă din nou toți.
 - Interfața este doar în română.
 
 ## Tehnologii
 
-- [face-api.js](https://github.com/vladmandic/face-api) (TensorFlow.js) pentru detectarea și recunoașterea fețelor
+- [face-api.js](https://github.com/vladmandic/face-api) (TensorFlow.js) pentru detectarea fețelor și a reperelor
+- [SFace](https://github.com/opencv/opencv_zoo/tree/main/models/face_recognition_sface) (OpenCV Zoo, Apache-2.0) + [onnxruntime-web](https://www.npmjs.com/package/onnxruntime-web) (MIT) pentru recunoaștere
 - IndexedDB și File System Access API pentru stocare locală și acces la foldere
 - JSZip pentru exportul pozelor găsite

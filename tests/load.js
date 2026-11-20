@@ -13,8 +13,10 @@ function load(files, exportNames, globals = {}) {
 function rng(seed) { let s = seed >>> 0; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); }
 function gauss(r) { return Math.sqrt(-2 * Math.log(r() || 1e-9)) * Math.cos(2 * Math.PI * r()); }
 // „Persoană” sintetică: un descriptor de bază de normă ~0.75 (două persoane diferite ajung la ~1.06 distanță).
-function person(seed) { const r = rng(seed), v = Float32Array.from({ length: 128 }, () => gauss(r)); const n = Math.hypot(...v); return v.map(x => x / n * .75); }
+function person(seed, norm = .75) { const r = rng(seed), v = Float32Array.from({ length: 128 }, () => gauss(r)); const n = Math.hypot(...v); return v.map(x => x / n * norm); }
+// Ca amprentele SFace: persoane diferite ajung la ~1,3 distanță (norma 0,92 -> 0,92 * radical din 2).
+const sfacePerson = seed => person(seed, .92);
 // Aceeași persoană în altă poză: baza + zgomot. noise=.019 → distanță ~0.30 între două poze.
 function shot(base, seed, noise = .019) { const r = rng(seed); return Float32Array.from(base, x => x + gauss(r) * noise); }
 
-module.exports = { load, person, shot, rng };
+module.exports = { load, person, sfacePerson, shot, rng };

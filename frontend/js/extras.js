@@ -17,7 +17,7 @@ const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},se
 function rerenderHitsKeepingScroll(){const shown=resultsShown;renderHits();if(shown>resultsShown){appendResultCards($('resultsGrid2'),resultsShown,Math.min(shown,latestHits.length));resultsShown=Math.min(shown,latestHits.length);$('moreWrap2').hidden=resultsShown>=latestHits.length}}
 
 // ===================== „Nu e persoana” =====================
-const NEG_RADIUS=.30;   // fețe foarte apropiate de una respinsă, și doar dintre cele incerte
+const NEG_RADIUS=.55;   // fețe foarte apropiate de una respinsă, și doar dintre cele incerte
 function dropRejected(hits,person){
   if(!person)return hits;
   const keys=new Set(person.rejected||[]),negs=(person.negs||[]).map(toF32);
@@ -144,6 +144,7 @@ async function runGroupSearch(){
   if(chosen.length<2){toast('Alege cel puțin două persoane.');return}
   const st=searchPrerequisiteState();if(st!=='ready'){toast(st==='album'?'Alege mai întâi un album.':'Pregătește albumul înainte de căutare.');return}
   if(chosen.some(p=>!isPersonUnlocked(p.id))){openPaywall();return}
+  if(chosen.some(p=>p.model!=='sface')){toast('Un profil a fost creat cu o versiune veche. Adaugă din nou 3 poze de referință pentru el.');return}
   if(chosen.some(p=>p.descs.length<2)){toast('Unul dintre profiluri are prea puține poze de referință.');return}
   if(busy)return;busy=true;updateSearchControls();
   const started=performance.now(),policy=getMatchPolicy();
@@ -172,12 +173,12 @@ async function runGroupSearch(){
 
 // ===================== „Cine apare în album?” =====================
 let albumGroups=null,albumGroupsRev=-1,albumGroupsShown=24;
-const AF_KNOWN=.45;
+const AF_KNOWN=.90;   // distanța dintre centrul grupului și o referință: sub ea, grupul e persoana salvată (FAR ≈ 1 la 1.000.000)
 function openAlbumFaces(){setTimeout(()=>{$('albumFacesCard').scrollIntoView({behavior:'smooth',block:'start'});if(indexedEntries.length&&(!albumGroups||albumGroupsRev!==indexRevision))runAlbumFaces()},150)}
 function openManualPerson(){setTimeout(()=>{const d=$('manualPerson');if(d)d.open=true;$('personName').scrollIntoView({behavior:'smooth',block:'center'});$('personName').focus({preventScroll:true})},150)}
 function syncAlbumFacesIntro(){
   const n=indexedEntries.length;
-  $('afSub').textContent=n?`Fețele care apar des în cele ${fmt(n)} poze pregătite. Scrie un nume și vezi toate pozele cu persoana.`:'Alege un album: îți arătăm persoanele care apar în el, iar tu doar le dai un nume.';
+  $('afSub').textContent=n?`Apasă „Vezi pozele” sub persoana pe care o cauți (din ${fmt(n)} poze pregătite). Numele îl poți adăuga și după.`:'Alege pozele: îți arătăm persoanele care apar în ele.';
   $('afRun').textContent=!n?'Alege albumul':albumGroups&&albumGroupsRev===indexRevision?'↻ Actualizează':'☺ Arată fețele';
   // fețele apar singure când intri pe pagină (fără să mai apeși un buton)
   if(n&&!afRunning&&(!albumGroups||albumGroupsRev!==indexRevision)&&$('page-people').classList.contains('active'))runAlbumFaces();
@@ -189,22 +190,40 @@ async function runAlbumFaces(){
   const btn=$('afRun');btn.disabled=true;$('afProgress').hidden=false;$('afGrid').replaceChildren();
   const paint=f=>{const p=Math.round(f*100);$('afBar').style.width=p+'%';$('afPct').textContent=p+'%'};
   $('afLabel').textContent=`Grupez fețele din ${fmt(indexedEntries.length)} poze…`;paint(0);
-  try{albumGroups=await clusterAlbumFaces(indexedEntries,paint);albumGroupsRev=indexRevision;albumGroupsShown=24;renderAlbumFaces()}
+  try{albumGroups=await clusterAlbumFacesV2(indexedEntries,paint);albumGroupsRev=indexRevision;albumGroupsShown=24;renderAlbumFaces()}
   catch(e){console.error(e);toast('Nu am putut grupa fețele din album.')}
   finally{afRunning=false;btn.disabled=false;$('afProgress').hidden=true;syncAlbumFacesIntro()}
 }
-function knownPersonFor(g){let best=null,bd=AF_KNOWN;for(const p of people)for(const d of p.descs){const x=descriptorDistance(toF32(d),g.mean);if(x<bd){bd=x;best=p}}return best}
+function knownPersonFor(g){let best=null,bd=AF_KNOWN;for(const p of people){if(p.model!=='sface')continue;for(const d of p.descs){const x=descriptorDistance(toF32(d),g.mean);if(x<bd){bd=x;best=p}}}return best}
 // decupajele se fac pe rând (2 în paralel), ca să nu încarce memoria pe albume mari
 let cropBusy=0;const cropQueue=[];
 function queueCrop(fn){return new Promise(res=>{const run=async()=>{cropBusy++;try{res(await fn())}catch(e){res(null)}cropBusy--;const nx=cropQueue.shift();if(nx)nx()};cropBusy<2?run():cropQueue.push(run)})}
 function groupThumb(g){if(!g.thumbP)g.thumbP=queueCrop(()=>faceCropFromEntry(g.cover.e,g.cover.f,160)).then(u=>(g.thumb=u,u));return g.thumbP}
+// Blocare pe plan: persoanele deja salvate rămân vizibile (dacă intră în plan); din cele NOI din album se văd
+// doar atâtea câte mai încap în plan (cele mai frecvente primele). Restul apar cu lacăt: fără poză, fără nume, fără pozele lor.
+const LOCK_SVG='<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.6v2.2"/></svg>';
+function albumFaceAccess(groups){return lockAlbumGroups(groups,{limit:peopleLimit(),savedCount:people.length,knownFor:knownPersonFor,isUnlocked:p=>isPersonUnlocked(p.id)})}
 function renderAlbumFaces(){
-  const grid=$('afGrid');grid.replaceChildren();
+  const grid=$('afGrid'),note=$('afLockNote');grid.replaceChildren();if(note)note.hidden=true;
   if(!albumGroups?.length){const e=document.createElement('div');e.className='empty';e.textContent='Nu am găsit persoane care să apară în cel puțin 3 poze. Încearcă după ce se pregătește tot albumul.';grid.append(e);return}
-  for(const g of albumGroups.slice(0,albumGroupsShown)){
-    const known=knownPersonFor(g),c=document.createElement('div');c.className='af-card'+(known?' known':'');
-    const im=document.createElement('img');im.alt='';im.className='af-face';groupThumb(g).then(u=>{if(u)im.src=u});
+  const rows=albumFaceAccess(albumGroups),lockedN=rows.filter(r=>r.locked).length;
+  if(note&&lockedN){
+    const lim=peopleLimit(),visible=rows.length-lockedN;
+    $('afLockText').textContent=`În album apar ${fmt(rows.length)} persoane. Planul ${PLANS[license.plan].name} îți arată ${fmt(visible)}; celelalte ${fmt(lockedN)} se deblochează cu un abonament.`;
+    note.hidden=false;
+  }
+  const unlock=()=>openPaywall(`În album apar ${fmt(rows.length)} persoane, dar planul ${PLANS[license.plan].name} include ${personsTxt(peopleLimit()).toLowerCase()}. Abonează-te ca să vezi și să cauți toate persoanele din album. Poți anula oricând.`);
+  for(const {g,known,locked} of rows.slice(0,albumGroupsShown)){
+    const c=document.createElement('div');c.className='af-card'+(known&&!locked?' known':'')+(locked?' locked':'');
     const meta=document.createElement('small');meta.textContent=`în ${fmt(g.photos)} ${g.photos===1?'poză':'poze'}`;
+    if(locked){
+      // Nicio decupare a feței nu se face pentru persoanele blocate.
+      const lk=document.createElement('button');lk.type='button';lk.className='af-lock';lk.setAttribute('aria-label','Persoană blocată. Deblochează cu un abonament');lk.innerHTML=LOCK_SVG;lk.onclick=unlock;
+      const b=document.createElement('b');b.textContent=known?known.name:'Persoană blocată';
+      const go=document.createElement('button');go.type='button';go.className='button soft small';go.textContent='Deblochează';go.onclick=unlock;
+      c.append(lk,meta,b,go);grid.append(c);continue;
+    }
+    const im=document.createElement('img');im.alt='';im.className='af-face';groupThumb(g).then(u=>{if(u)im.src=u});
     c.append(im,meta);
     if(known){
       const b=document.createElement('b');b.textContent=known.name;
@@ -212,15 +231,17 @@ function renderAlbumFaces(){
       go.onclick=()=>{if(groupMode){groupMode=false;groupIds.clear()}selectPerson(known.id);navigate('search');if(searchPrerequisiteState()==='ready')runSearch()};
       c.append(b,go);
     }else{
+      // O singură apăsare: „Vezi pozele” (sau chiar pe poza feței). Numele e opțional și se poate schimba oricând.
       const f=document.createElement('form');f.className='af-name';
-      const inp=document.createElement('input');inp.type='text';inp.maxLength=50;inp.placeholder='Cine e?';inp.setAttribute('aria-label','Numele persoanei');
-      const ok=document.createElement('button');ok.type='submit';ok.className='button primary small';ok.textContent='Salvează';
-      f.onsubmit=async e=>{e.preventDefault();const name=inp.value.trim();if(!name){inp.focus();return}ok.disabled=true;await saveGroupAsPerson(g,name);ok.disabled=false};
+      const inp=document.createElement('input');inp.type='text';inp.maxLength=50;inp.placeholder='Nume';inp.setAttribute('aria-label','Numele persoanei, opțional');
+      const ok=document.createElement('button');ok.type='submit';ok.className='button primary small';ok.textContent='Vezi pozele';
+      f.onsubmit=async e=>{e.preventDefault();const name=inp.value.trim()||`Persoana ${people.length+1}`;ok.disabled=true;await saveGroupAsPerson(g,name);ok.disabled=false};
+      im.classList.add('af-tap');im.title='Vezi pozele cu această persoană';im.onclick=()=>f.requestSubmit();
       f.append(inp,ok);c.append(f);
     }
     grid.append(c);
   }
-  if(albumGroups.length>albumGroupsShown){const more=document.createElement('button');more.type='button';more.className='button soft small af-more';more.textContent=`Arată încă ${fmt(Math.min(24,albumGroups.length-albumGroupsShown))}`;more.onclick=()=>{albumGroupsShown+=24;renderAlbumFaces()};grid.append(more)}
+  if(rows.length>albumGroupsShown){const more=document.createElement('button');more.type='button';more.className='button soft small af-more';more.textContent=`Arată încă ${fmt(Math.min(24,rows.length-albumGroupsShown))}`;more.onclick=()=>{albumGroupsShown+=24;renderAlbumFaces()};grid.append(more)}
 }
 async function saveGroupAsPerson(g,name){
   if(!canAddPerson()){openPaywall();return}
@@ -228,7 +249,7 @@ async function saveGroupAsPerson(g,name){
   const reps=g.reps.slice(0,8),descs=reps.map(r=>Float32Array.from(r.f.d));
   const thumbs=(await Promise.all(reps.slice(0,6).map(r=>queueCrop(()=>faceCropFromEntry(r.e,r.f))))).filter(Boolean);
   const cover=await groupThumb(g)||thumbs[0];
-  const p={id:crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random(),name:name.slice(0,50),thumb:cover,thumbs:thumbs.length?thumbs:[cover],descs,referenceSpread:referenceSpread(descs),createdAt:Date.now(),fromAlbum:true};
+  const p={id:crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random(),name:name.slice(0,50),thumb:cover,thumbs:thumbs.length?thumbs:[cover],descs,referenceSpread:referenceSpread(descs),createdAt:Date.now(),fromAlbum:true,model:'sface'};
   await storePut('people',p);people.push(p);
   selectedPersonId=p.id;referenceDescriptors=p.descs.map(toF32);referenceThumbs=[p.thumb];
   renderPeople();updateSearchControls();renderAlbumFaces();
@@ -236,6 +257,8 @@ async function saveGroupAsPerson(g,name){
   if(returnToSearchAfterPersonCreation){returnToSearchAfterPersonCreation=false;navigate('search');if(searchPrerequisiteState()==='ready')runSearch()}
 }
 $('afRun').onclick=runAlbumFaces;
+$('afUnlock').onclick=()=>navigate('plan');
+$('afLockNote').querySelector('.af-lock-ico').innerHTML=LOCK_SVG;
 
 // ===================== Instalare ca aplicație (PWA) =====================
 if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn('Modul offline nu a pornit',e)));

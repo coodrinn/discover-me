@@ -1,8 +1,8 @@
 // Măsoară cât durează căutarea și gruparea pe albume mari (date sintetice, doar CPU).
 // Rulare: node tools/bench-search.js [nrPoze=50000]
 'use strict';
-const { load, person, shot, rng } = require('../tests/load');
-const m = load(['engine/matching.js', 'engine/clusters.js'], ['faceScoreFast', 'classifyScore', 'matchPolicy', 'clusterAlbumFaces']);
+const { load, sfacePerson: person, shot, rng } = require('../tests/load');
+const m = load(['engine/matching.js', 'engine/clusters.js'], ['faceScoreFast', 'classifyScore', 'matchPolicy', 'clusterAlbumFacesV2']);
 
 const photos = Number(process.argv[2]) || 50000, r = rng(7);
 const people = Array.from({ length: 200 }, (_, i) => person(1000 + i));
@@ -20,6 +20,6 @@ console.log(`căutare după o persoană: ${(performance.now() - t).toFixed(0)} m
 
 (async () => {
   t = performance.now();
-  const groups = await m.clusterAlbumFaces(entries);
+  const groups = await m.clusterAlbumFacesV2(entries);
   console.log(`„Cine apare în album?”: ${(performance.now() - t).toFixed(0)} ms, ${groups.length} grupuri (plafon intern: 6000 fețe)`);
 })();

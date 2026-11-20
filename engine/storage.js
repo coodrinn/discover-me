@@ -9,6 +9,12 @@ async function storeAll(store){const d=await openDB();return idbRequest(d.transa
 async function storePut(store,value){const d=await openDB(),t=d.transaction(store,'readwrite');t.objectStore(store).put(value);await idbDone(t)}
 async function storePutMany(store,values){if(!values.length)return;const d=await openDB(),t=d.transaction(store,'readwrite'),st=t.objectStore(store);for(const value of values)st.put(value);await idbDone(t)}
 async function storeDelete(store,key){const d=await openDB(),t=d.transaction(store,'readwrite');t.objectStore(store).delete(key);await idbDone(t)}
+// Intrările din indexul unui motor mai vechi (cheia nu conține ENGINE_VERSION curent) nu se mai folosesc niciodată: le ștergem.
+async function purgeOldIndex(){
+  const d=await openDB(),keys=await idbRequest(d.transaction('photos').objectStore('photos').getAllKeys()),old=keys.filter(k=>typeof k==='string'&&!k.includes('|'+ENGINE_VERSION+'|'));
+  for(let i=0;i<old.length;i+=500){const t=d.transaction('photos','readwrite'),st=t.objectStore('photos');for(const k of old.slice(i,i+500))st.delete(k);await idbDone(t)}
+  return old.length;
+}
 async function cacheMap(){const rows=await storeAll('photos');return new Map(rows.map(x=>[x.key,x]))}
 function makeLocalId(){return (crypto.randomUUID?crypto.randomUUID():`album-${Date.now()}-${Math.random().toString(36).slice(2)}`)}
 async function rememberAlbumHandle(handle,name,suggestedId=''){
