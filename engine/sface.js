@@ -15,7 +15,13 @@ function loadSFace(onProgress){
   sfaceLoading=(async()=>{
     if(!window.ort)await sfaceLoadScript(ORT_URL);
     ort.env.logLevel='error';
-    ort.env.wasm.wasmPaths=new URL(ORT_BASE,document.baseURI).href;   // adresă absolută: ONNX Runtime o folosește la import()
+    // Adresă absolută: ONNX Runtime o folosește la import(). Din file:// import() din fișiere e interzis, deci dăm blob-uri (vezi engine/offline.js).
+    let paths=new URL(ORT_BASE,document.baseURI).href;
+    if(location.protocol==='file:'){
+      const blob=async(f,t)=>URL.createObjectURL(new Blob([await (await fetch(ORT_BASE+f)).arrayBuffer()],{type:t}));
+      paths={mjs:await blob('ort-wasm-simd-threaded.mjs','text/javascript'),wasm:await blob('ort-wasm-simd-threaded.wasm','application/wasm')};
+    }
+    ort.env.wasm.wasmPaths=paths;
     ort.env.wasm.numThreads=(self.crossOriginIsolated&&navigator.hardwareConcurrency>2)?Math.min(4,navigator.hardwareConcurrency>>1):1;
     const pre=self.dmSfaceFetch;self.dmSfaceFetch=null;                 // descărcarea pornită în timpul intro-ului (fără a doua descărcare)
     let res=pre?await pre:null;if(!res||!res.ok)res=await fetch(SFACE_MODEL);

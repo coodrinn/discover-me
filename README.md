@@ -10,8 +10,9 @@ Alegi un album, adaugi 3 poze clare cu persoana, apeși pe ea și vezi pozele î
 
 Aplicația este statică, deci nu are nevoie de instalare.
 
-**Nu deschide `index.html` direct din folder** (adresa `file://`): browserul nu lasă paginile să citească modelele de recunoaștere
-și apare „Nu s-a putut porni”. Pornește aplicația printr-un server local:
+**Dublu-click pe `index.html` funcționează** dacă există folderul `vendor/offline/` (generat local, ~80 MB, nu e în git):
+`node tools/make-offline.js`. Din `file://` browserul nu lasă paginile să citească fișiere, dar lasă să încarce scripturi; acest pachet
+conține modelele ca scripturi. Fără el apare „Pornește printr-un server”. Alternativ, pornește aplicația printr-un server local:
 
 - **Windows:** dublu-click pe `porneste.bat` (nu instalează nimic; deschide `http://localhost:8080`). Lasă fereastra deschisă cât o folosești.
 - sau, din acest folder: `python -m http.server 8080`, apoi deschide `http://localhost:8080`.

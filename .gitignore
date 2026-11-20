@@ -19,3 +19,6 @@ desktop.ini
 # Benchmark: setul LFW și descriptorii extrași (mari, se refac cu tools/bench/extract.js)
 tools/bench/lfw/
 tools/bench/*.json
+
+# Pachet generat pentru deschiderea din folder (file://); se refac cu: node tools/make-offline.js
+vendor/offline/
