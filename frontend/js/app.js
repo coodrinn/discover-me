@@ -55,7 +55,10 @@ function loadScript(u){return new Promise((res,rej)=>{const s=document.createEle
 function loadFaceApi(){if(window.faceapi)return Promise.resolve();return loadScript(FACEAPI_URL).catch(()=>loadScript(FACEAPI_URL_CDN)).catch(()=>{throw new Error('Biblioteca foto nu s-a încărcat')})}
 // Anunță intro-ul că motorul e gata (sau a eșuat), ca utilizatorul să intre direct în aplicația pregătită.
 function engineSettled(){if(window.dmEngineDone)return;window.dmEngineDone=true;document.dispatchEvent(new Event('dm:engine'))}
-async function initEngine(){try{engineProgress='Descarc componentele de recunoaștere…';renderSearchFlow();await loadFaceApi();performance.mark('dm:faceapi');if(!window.faceapi)throw new Error('Biblioteca foto nu s-a încărcat');
+const FILE_MODE_HELP='Aplicația nu poate rula direct din folder (adresa începe cu file://): browserul nu lasă paginile să citească modelele de recunoaștere. Pornește-o cu dublu-click pe „porneste.bat”, sau rulează „python -m http.server 8080” în folderul aplicației și deschide http://localhost:8080.';
+async function initEngine(){
+  if(location.protocol==='file:'){setEngine(false,'Pornește printr-un server');$('engineNote').textContent=FILE_MODE_HELP;toast('Deschide aplicația prin „porneste.bat” (nu direct din folder).');renderSearchFlow();updateSearchControls();engineSettled();return}
+  try{engineProgress='Descarc componentele de recunoaștere…';renderSearchFlow();await loadFaceApi();performance.mark('dm:faceapi');if(!window.faceapi)throw new Error('Biblioteca foto nu s-a încărcat');
   // Programele pentru placa video sunt refolosite pentru imagini de mărimi diferite: mult mai puține compilări
   // (încălzirea la rece: ~6,5s → ~2,8s pe o placă Intel; și indexarea pozelor de mărimi diferite e mai fluidă).
   try{faceapi.tf.env().set('WEBGL_USE_SHAPES_UNIFORMS',true)}catch(e){}
@@ -236,7 +239,7 @@ function selectPerson(id){
 async function deletePerson(id){if(!confirm('Ștergi acest profil facial de pe dispozitiv?'))return;await storeDelete('people',id);people=people.filter(x=>x.id!==id);if(selectedPersonId===id){selectedPersonId=null;referenceDescriptors=[];referenceThumbs=[]}$('searchPersonSelect').value='';renderPeople();updateSearchControls();toast('Profil șters.')}
 $('searchPersonSelect').onchange=e=>selectPerson(e.target.value);
 function searchPrerequisiteState(){
-  if(!engineReady)return $('engineStatus')?.textContent==='Nu s-a putut porni'?'engineError':'engine';
+  if(!engineReady)return ['Nu s-a putut porni','Pornește printr-un server'].includes($('engineStatus')?.textContent)?'engineError':'engine';
   if(!activeFiles.length)return 'album';          // întâi albumul…
   if(!indexedEntries.length)return 'index';
   if(!people.length)return 'people';              // …apoi alegi persoana dintre fețele din album
@@ -254,7 +257,7 @@ function renderSearchFlow(){
   const setCurrent=key=>steps[key].classList.add('current');
   const config={
     engine:{step:1,current:'album',symbol:'◌',kicker:'PREGĂTIM APLICAȚIA',title:'Mai avem puțin și putem începe',text:'Se încarcă instrumentele necesare pentru pregătirea albumului. Nu trebuie să faci nimic acum.',progress:engineProgress||'Așteaptă câteva momente…',action:'',secondary:''},
-    engineError:{step:1,current:'album',symbol:'↻',kicker:'APLICAȚIA NU A PORNIT',title:'Nu am putut pregăti căutarea',text:'Verifică dacă ai conexiune la internet, apoi reîncarcă aplicația pentru a descărca din nou componentele necesare.',progress:'Fotografiile și profilurile tale locale nu sunt șterse.',action:'Reîncarcă aplicația',secondary:''},
+    engineError:{step:1,current:'album',symbol:'↻',kicker:'APLICAȚIA NU A PORNIT',title:'Nu am putut pregăti căutarea',text:location.protocol==='file:'?FILE_MODE_HELP:'Verifică dacă ai conexiune la internet, apoi reîncarcă aplicația pentru a descărca din nou componentele necesare.',progress:'Fotografiile și profilurile tale locale nu sunt șterse.',action:'Reîncarcă aplicația',secondary:''},
     album:{step:1,current:'album',symbol:'▧',kicker:'PASUL 1 DIN 3',title:IS_TOUCH?'Alege pozele':'Unde sunt pozele?',text:IS_TOUCH?'Alege pozele din galerie (poți bifa mai multe). Le pregătim o singură dată, apoi îți arătăm cine apare în ele.':'Alege folderul cu poze. Îl pregătim o singură dată, apoi îți arătăm cine apare în el.',progress:'Pozele rămân pe dispozitivul tău.',action:IS_TOUCH?'Alege pozele':'Alege albumul',secondary:'🔗 Din linkuri'},
     index:{step:1,current:'album',symbol:'◷',kicker:'PASUL 1 DIN 3',title:'Pregătim pozele…',text:'Căutăm fețele din poze. Când terminăm, îți arătăm cine apare în album.',progress:`${fmt(indexedEntries.length)} din ${fmt(activeFiles.length)} poze pregătite.`,action:'Pregătește albumul',secondary:''},
     people:{step:2,current:'person',symbol:'☺',kicker:'PASUL 2 DIN 3',title:'Pe cine cauți?',text:'Am găsit fețele din poze. Alege persoana și scrie-i numele: durează câteva secunde.',progress:'',action:'☺ Vezi cine apare în album',secondary:'Adaug-o din pozele mele'}

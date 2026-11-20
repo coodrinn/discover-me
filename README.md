@@ -10,15 +10,17 @@ Alegi un album, adaugi 3 poze clare cu persoana, apeși pe ea și vezi pozele î
 
 Aplicația este statică, deci nu are nevoie de instalare.
 
-- Deschide `index.html` în Chrome sau Edge, **sau**
-- pornește un server local din acest folder, de exemplu `python -m http.server 8080`,
-  apoi deschide `http://localhost:8080`.
+**Nu deschide `index.html` direct din folder** (adresa `file://`): browserul nu lasă paginile să citească modelele de recunoaștere
+și apare „Nu s-a putut porni”. Pornește aplicația printr-un server local:
+
+- **Windows:** dublu-click pe `porneste.bat` (nu instalează nimic; deschide `http://localhost:8080`). Lasă fereastra deschisă cât o folosești.
+- sau, din acest folder: `python -m http.server 8080`, apoi deschide `http://localhost:8080`.
+- Pentru utilizatori reali, public-o pe un hosting static cu HTTPS (vezi mai jos).
 
 Pentru acces persistent la un folder de poze folosește Chrome sau Edge pe desktop.
 Modelele de recunoaștere a fețelor sunt incluse în aplicație (`vendor/face-api/` ~12 MB pentru detectare, `vendor/sface/` ~38 MB pentru recunoaștere,
 `vendor/ort/` ~11 MB pentru rularea modelului; ~60 MB la prima pornire, apoi din memoria browserului), deci nu depind de niciun CDN și, după
-prima deschidere prin `http://localhost` sau `https://`, aplicația merge complet offline. Când `index.html` e deschis direct din folder
-(`file://`), browserul nu permite citirea modelelor locale și aplicația folosește CDN-ul ca plan de rezervă.
+prima deschidere prin `http://localhost` sau `https://`, aplicația merge complet offline.
 
 **Instalare și mod offline** funcționează doar când aplicația e servită prin `http://localhost` sau `https://`
 (de ex. GitHub Pages), nu când deschizi `index.html` direct din folder. După prima deschidere, aplicația

@@ -3,7 +3,7 @@
 //  • biblioteca și modelele de recunoaștere de pe CDN au versiune fixă: se descarcă o singură dată și se păstrează
 // Pozele tale nu trec niciodată prin acest fișier: se citesc direct de pe disc.
 'use strict';
-const SHELL_CACHE='dm-shell-v22', CDN_CACHE='dm-cdn-v1';
+const SHELL_CACHE='dm-shell-v23', CDN_CACHE='dm-cdn-v1';
 const SHELL=['./','index.html','manifest.webmanifest','frontend/css/styles.css',
   'frontend/js/theme-init.js','frontend/js/splash.js','frontend/js/helpers.js','frontend/js/extras.js','frontend/js/consent.js','frontend/js/dropfolder.js','frontend/js/app.js','frontend/js/settings.js','frontend/js/backdrop.js','frontend/js/dropdown.js',
   'engine/config.js','engine/storage.js','engine/album.js','engine/heic.js','engine/faces.js','engine/sface.js','engine/matching.js','engine/license.js','engine/links.js','engine/exif.js','engine/clusters.js',
