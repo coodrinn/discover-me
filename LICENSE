@@ -1,0 +1,22 @@
+Copyright (c) 2026 Toia_Codrin. Toate drepturile rezervate.
+Copyright (c) 2026 Toia_Codrin. All rights reserved.
+
+Acest software și fișierele asociate ("Software") sunt proprietatea exclusivă
+a autorului. Codul sursă este public doar pentru consultare. Fără permisiunea
+scrisă prealabilă a autorului, nu ai dreptul să copiezi, modifici, distribui,
+publici, sublicențiezi, vinzi sau folosești Software-ul (în întregime sau parțial),
+inclusiv în scop comercial sau în produse derivate.
+
+This software and associated files (the "Software") are the exclusive property
+of the author. The source code is made publicly visible for viewing only.
+Without prior written permission from the author, you may not copy, modify,
+distribute, publish, sublicense, sell, or use the Software, in whole or in
+part, including for commercial purposes or in derivative works.
+
+SOFTWARE-UL ESTE OFERIT "CA ATARE", FĂRĂ NICIO GARANȚIE. / THE SOFTWARE IS
+PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+Componente terțe / Third-party components:
+Directorul vendor/ conține componente terțe, care rămân sub licențele lor
+originale și nu sunt acoperite de această licență: face-api.js (MIT),
+onnxruntime-web (MIT), modelul SFace din OpenCV Zoo (Apache-2.0).

@@ -335,7 +335,7 @@ $('searchGateSecondary').onclick=()=>{const a=$('searchGateAction').dataset.acti
 $('heroSearch').onclick=()=>navigate('search');$('goPeople').onclick=()=>navigate('people');$('searchPagePeople').onclick=()=>navigate('people');
 $('deepScan').addEventListener('change',async()=>{if(busy)return;await rebuildIndexedEntries();updateSearchControls();setStatusText(indexedEntries.length?`${fmt(indexedEntries.length)} poze sunt deja pregătite cu această setare.`:'Cu această setare albumul trebuie pregătit din nou.');});
 function paintMatchProgress(percent,label){for(const suffix of ['', '2']){const wrap=$('matchProgressWrap'+suffix);if(wrap)wrap.hidden=false;const bar=$('matchProgressBar'+suffix),pct=$('matchProgressPct'+suffix),txt=$('matchProgressLabel'+suffix);if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(txt)txt.textContent=label}}
-// --- Potrivire: scor pe fiecare poză + alegerea rezultatelor (folosite de căutare și de rezultatele live) ---
+// Potrivire: scor pe fiecare poză + alegerea rezultatelor (folosite de căutare și de rezultatele live)
 function scoreEntry(p,refs){const rows=[];for(const face of p.faces||[]){const metric=faceScoreFast(face,refs);if(!metric)continue;rows.push({entry:p,...metric,faceScore:Number(face.s)||0,faceSize:Number(face.m)||0,cloth:face.c||null,d:face.d})}return rows}
 function pickHits(scoreRows,policy,useC){
   const hits=[];
@@ -384,12 +384,11 @@ async function runSearch(){
     latestHits=applyResultView(keepSelections(dropRejected(pickHits(scoreRows,policy,useC),people.find(p=>p.id===selectedPersonId))));
     renderHits();updateStats();
     const strongAll=allHits.filter(x=>x.level==='strong').length,reviewAll=allHits.length-strongAll;
-    const elapsed=((performance.now()-started)/1000).toFixed(1);
     const who=people.find(p=>p.id===selectedPersonId)?.name||'persoana';toast(strongAll||reviewAll?`Am găsit ${fmt(strongAll)} ${strongAll===1?'poză':'poze'} cu ${who}${reviewAll?` (+${fmt(reviewAll)} de verificat)`:''}.`:`Nu am găsit poze cu ${who}.`);
     paintMatchProgress(100,policy.mode==='precise'?'Gata · doar pozele sigure':'Gata · pozele incerte sunt marcate „Poate”');
   }catch(e){console.error(e);toast('Căutarea a întâmpinat o eroare. Reîncearcă.')}finally{busy=false;updateSearchControls()}
 }
-// --- Rezultate live: în timp ce albumul se indexează, pozele cu persoana apar imediat ---
+// Rezultate live: în timp ce albumul se indexează, pozele cu persoana apar imediat
 const live={sig:'',rows:[],seen:new Set(),last:0,count:0};
 function liveAdd(entry){
   if(groupMode||!selectedPersonId||referenceDescriptors.length<2||!isPersonUnlocked(selectedPersonId))return;
@@ -464,10 +463,9 @@ async function migrateLegacyPeople(){try{if((await storeAll('people')).length)re
 async function boot(){if(window.dmIntro)prefetchEngine();try{await openDB();await migrateLegacyPeople();await loadPeople();await loadLicense();await loadConsent();renderPlan();updateSearchControls();await restoreAlbum();if(!activeFiles.length)await restoreLinkAlbum()}catch(e){console.error(e);toast('Stocarea locală nu este disponibilă în acest browser.')}if(window.dmIntroStart)await window.dmIntroStart;initEngine()}
 window.addEventListener('beforeunload',clearObjectUrls);boot();
 
-// ===== Planuri și plată =====
+// Planuri și plată
 let billing='monthly';   // întâi lunar, apoi anual
 const personsTxt=n=>n===Infinity?'Persoane nelimitate':n+(n===1?' persoană':' persoane');
-function planLabel(){const p=PLANS[license.plan]||PLANS.free;return `${p.name} · ${personsTxt(p.people).toLowerCase()}`}
 function renderPlan(){
   const pl=PLANS[license.plan]||PLANS.free,lim=peopleLimit(),used=people.length;
   const until=license.plan!=='free'&&license.expiresAt?` · activ până pe ${fmtDate(license.expiresAt)}`:'';
@@ -527,7 +525,7 @@ $('paywall').addEventListener('click',e=>{if(e.target===$('paywall'))$('paywall'
 if(/[?&]activate=1/.test(location.search))setTimeout(()=>{openPaywall('Mulțumim pentru plată! Lipește cheia primită pe email.');$('paywall').querySelector('.pw-key').open=true;$('pwKey').focus()},600);
 $('pwActivate').onclick=async()=>{if(await activateFrom($('pwKey'),$('pwKeyMsg'),$('pwActivate')))$('paywall').close()};
 
-// ===== Editare persoană: nume, poză de profil, poze de referință =====
+// Editare persoană: nume, poză de profil, poze de referință
 let editingId=null,editThumb=null;
 function faceThumbFromCanvas(canvas,faces){const f=faces.slice().sort((a,b)=>b.w*b.h-a.w*a.h)[0];return f?cropThumb(canvas,f):null}
 function centerThumb(canvas){const side=Math.min(canvas.width,canvas.height),o=document.createElement('canvas');o.width=o.height=128;o.getContext('2d').drawImage(canvas,(canvas.width-side)/2,(canvas.height-side)/2,side,side,0,0,128,128);return o.toDataURL('image/jpeg',.86)}
@@ -584,7 +582,7 @@ $('peRefFiles').addEventListener('change',async e=>{
   renderPersonEditor();
 });
 
-// ===== Album din linkuri directe =====
+// Album din linkuri directe
 let linkAlbumUrls=[];
 function updateLinkCount(){const n=parseLinks($('ldText').value).length;$('ldCount').textContent=`${n} ${n===1?'link':'linkuri'}`;$('ldGo').disabled=!n||busy}
 function openLinkDialog(){

@@ -22,3 +22,6 @@ tools/bench/*.json
 
 # Pachet generat pentru deschiderea din folder (file://); se refac cu: node tools/make-offline.js
 vendor/offline/
+
+# Dependente instalate local pentru testele din browser (npm i --no-save puppeteer-core)
+node_modules/

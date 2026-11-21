@@ -238,7 +238,7 @@ html[data-motion="reduced"] *,html[data-motion="reduced"] *:before,html[data-mot
 @media(max-width:450px){.search-hero-art{display:none}.search-steps li{flex-direction:column;align-items:flex-start}.search-steps small{min-height:22px}.gate-decoration{display:none}.gate-actions .button{width:100%}.search-control-actions .button{flex:1}}
 
 
-/* ===== DESIGN NOU: navigare plutitoare, sticlă, fundaluri animate, efecte ===== */
+/* DESIGN NOU: navigare plutitoare, sticlă, fundaluri animate, efecte */
 :root{--glass:color-mix(in srgb,var(--paper) 74%,transparent);--glass-b:color-mix(in srgb,#fff 60%,var(--line));--ease:cubic-bezier(.2,.8,.2,1);--grad:linear-gradient(135deg,var(--pink),color-mix(in srgb,var(--pink) 58%,var(--plum)))}
 #scene{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:var(--bg);display:none}
 html[data-scene]:not([data-scene="none"]) #scene{display:block}
@@ -277,13 +277,13 @@ html[data-anim="off"] #scene *,html[data-anim="off"] #scene::before,html[data-an
 .scene-choice[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 8px 22px color-mix(in srgb,var(--pink) 30%,transparent)}
 .scene-choice span{display:block;height:56px;border-radius:11px;margin-bottom:6px;border:1px solid var(--line)}.scene-choice b{font-size:12px}
 .scene-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.scene-row label.scene-toggle{display:flex;gap:8px;align-items:center;font-weight:650}
-/* ===== Logo (lupă) ===== */
+/* Logo (lupă) */
 .brand-mark{background:none;box-shadow:none;width:42px;height:42px;padding:0;display:block;font-size:0}
 .brand-mark svg{width:100%;height:100%;display:block;overflow:visible}
 .brand-name{font:800 23px/1 "Trebuchet MS",system-ui,sans-serif;letter-spacing:-.9px}
 @media(max-width:760px){.brand-name{font-size:20px}}
 
-/* ===== Tema implicită discover.me: grafit-verzui + verde frunză ===== */
+/* Tema implicită discover.me: grafit-verzui + verde frunză */
 html[data-skin="spotify"]{
   color-scheme:dark;
   --glass:color-mix(in srgb,var(--s2) 94%,transparent);
@@ -478,7 +478,7 @@ html[data-skin="spotify"] .brand-mark svg path:nth-child(2){fill:var(--accent)}
 @media(max-width:760px){html[data-skin="spotify"] .sidebar{background:color-mix(in srgb,var(--s1) 97%,transparent)}}
 
 
-/* ===== STIL SPOTIFY: negru + verde ===== */
+/* STIL SPOTIFY: negru + verde */
 :root{--bg:#121212;--paper:#181818;--ink:#fff;--line:#2a2a2a;--pink:var(--accent);--pink2:color-mix(in srgb,var(--pink) 16%,var(--paper));--plum:var(--accent);--green:var(--accent);--green-bg:color-mix(in srgb,var(--pink) 16%,var(--paper));--radius:12px;--glow-1:#121212;--glow-2:#121212;--hov:var(--s3)}
 html{color-scheme:dark}
 *{scrollbar-width:thin;scrollbar-color:#535353 transparent}
@@ -524,7 +524,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .preview-stage{background:#000}.preview-nav{background:#181818e6;color:var(--ink);border-color:#333}
 dialog{background:#181818;color:var(--ink);border:1px solid #2a2a2a}
 
-/* ===== TELEFON: bară de navigare jos (stil Spotify), fără panou care acoperă ecranul ===== */
+/* TELEFON: bară de navigare jos (stil Spotify), fără panou care acoperă ecranul */
 @media (max-width:760px){
   html,body{overflow-x:hidden}
   .app{display:block;padding:0;gap:0}
@@ -543,7 +543,7 @@ dialog{background:#181818;color:var(--ink);border:1px solid #2a2a2a}
   .button{min-height:44px}
 }
 
-/* ===== MODURI (întunecat/luminos) + CULORI ===== */
+/* MODURI (întunecat/luminos) + CULORI */
 html[data-mode="dark"]{--s1:#141414;--s2:#252525;--s3:#2c2c2c;--s4:#323232;--s5:#373737;--s-in:#1a1a1a;--line:#444444;--line2:#4e4e4e;--ink:#f5f5ed;--ink-soft:#d4d4d4;--muted:#b4b4b4;--danger-bg:#382328;--danger-line:#63363d;--danger-text:#ffadb5;--shadow:0 12px 34px rgba(0,0,0,.18);color-scheme:dark}
 html[data-mode="light"]{--s1:#f4f5f7;--s2:#ffffff;--s3:#eef0f3;--s4:#e7e9ee;--s5:#dfe2e8;--s-in:#ffffff;--line:#dcdee4;--line2:#c8ccd4;--ink:#16181d;--ink-soft:#33363d;--muted:#5d626b;--danger-bg:#fdecee;--danger-line:#f2c1c7;--danger-text:#b3202f;--shadow:0 10px 30px rgba(20,24,40,.08);color-scheme:light}
 html[data-accent="green"]{--accent:#1ed760;--accent-deep:#128a3e;--accent-h:#3be477;--on-accent:#000}
@@ -591,14 +591,14 @@ html[data-skin="spotify"] .match-tag.review,html[data-skin="spotify"] .result .m
 html[data-skin="spotify"][data-mode="light"] .match-tag.review,html[data-skin="spotify"][data-mode="light"] .result .match-tag.review{background:#fff3df;color:#94651f}
 html[data-skin="spotify"] .preview-nav:hover:not(:disabled){background:var(--s5);color:var(--accent-text)}
 
-/* ===== Flux simplificat ===== */
+/* Flux simplificat */
 html[data-skin="spotify"] .people-help-card,.search-hero,.hero-ornament{display:none}
 html[data-skin="spotify"] .people-create-layout{grid-template-columns:1fr!important}
 .album-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--line);border-radius:16px;background:var(--s2);margin:0 0 16px}
 .album-bar .ab-ico{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--accent-soft);color:var(--accent-text);font-size:18px}
 .ab-text{flex:1;min-width:0}.ab-text b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ab-text small{color:var(--muted)}
 
-/* ===== Performanță: fundal static, fără blur pe carduri, randare leneșă ===== */
+/* Performanță: fundal static, fără blur pe carduri, randare leneșă */
 #scene i{animation:none!important;will-change:auto!important}
 .hero,.hero-ornament{animation:none!important}
 .card,.stat,.manage-card,.appearance-live,.topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
@@ -609,7 +609,7 @@ html[data-lite] *,html[data-lite] *::before,html[data-lite] *::after{transition-
 html[data-lite] .fx-spring{animation-duration:.25s!important}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* ===== Căutare simplificată ===== */
+/* Căutare simplificată */
 #searchSteps{display:none!important}
 .person-chips{display:flex;flex-wrap:wrap;gap:10px}
 .person-chip{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border-radius:999px;border:1px solid var(--line);background:var(--s3,var(--paper));color:var(--ink);cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s,transform .15s}
@@ -629,7 +629,7 @@ main{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 16%,var(-
 html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transparent)}
 #previewTeach{margin-left:auto}
 
-/* ===== Setări: stiluri, comutator ===== */
+/* Setări: stiluri, comutator */
 .setting-col{flex-direction:column;align-items:stretch!important;gap:12px}
 .seg{display:inline-flex;flex-wrap:wrap;gap:2px}
 .dm-switch{position:relative;display:inline-block;width:46px;height:26px;flex:none;cursor:pointer}
@@ -640,7 +640,7 @@ html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transpa
 .dm-switch input:checked+span::after{transform:translateX(20px)}
 .dm-switch input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
 
-/* ===== Efecte la atingere ===== */
+/* Efecte la atingere */
 .fx-host{position:relative}
 .fx-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0}
 .fx-ripple,.fx-glow{position:absolute;border-radius:50%;pointer-events:none}
@@ -652,7 +652,7 @@ html[data-mode=light] .topbar{background:color-mix(in srgb,var(--s2) 85%,transpa
 @keyframes fxSpring{35%{transform:scale(.92)}to{transform:scale(1)}}
 .button:active:not(:disabled),.person-chip:active:not(:disabled),.seg-btn:active{transform:scale(.97)}
 
-/* ===== Variantă: Vibrant ===== */
+/* Variantă: Vibrant */
 html[data-ui=vibrant] .button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-h))!important;color:var(--on-accent)!important;box-shadow:0 8px 26px color-mix(in srgb,var(--accent) 45%,transparent)!important}
 html[data-ui=vibrant] .button.primary:hover:not(:disabled){box-shadow:0 10px 34px color-mix(in srgb,var(--accent) 65%,transparent)!important}
 html[data-ui=vibrant] .card,html[data-ui=vibrant] .album-bar{border-color:color-mix(in srgb,var(--accent) 30%,var(--line))!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 8%,transparent),0 18px 46px color-mix(in srgb,var(--accent) 10%,transparent)!important}
@@ -665,7 +665,7 @@ html[data-mode=light] .fx-glow{mix-blend-mode:multiply;background:radial-gradien
 @media(prefers-reduced-motion:reduce){.fx-ripple,.fx-glow{display:none}.fx-spring{animation:none}}
 
 
-/* ===== Planuri / plată ===== */
+/* Planuri / plată */
 #paywall{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;max-width:min(760px,calc(100vw - 24px));width:100%}
 #paywall::backdrop{background:rgba(0,0,0,.55)}
 .pw{position:relative;padding:26px}
@@ -686,7 +686,7 @@ html[data-mode=light] .fx-glow{mix-blend-mode:multiply;background:radial-gradien
 .pw-key-row input{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--s-in,var(--s1));color:var(--ink);font:13px ui-monospace,monospace}
 @media(max-width:640px){.pw-plans{grid-template-columns:1fr}.pw{padding:20px}}
 
-/* ===== Editare persoană ===== */
+/* Editare persoană */
 #personEditor{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;width:min(520px,calc(100vw - 24px))}
 #personEditor::backdrop{background:rgba(0,0,0,.55)}
 .pe{padding:22px;display:flex;flex-direction:column;gap:16px}
@@ -703,7 +703,7 @@ html[data-mode=light] .fx-glow{mix-blend-mode:multiply;background:radial-gradien
 .chip-edit:hover{background:var(--s4);color:var(--ink)}
 .person-chip{padding-right:8px}
 
-/* ===== Mod luminos: câmpuri și suprafețe care rămăseseră negre ===== */
+/* Mod luminos: câmpuri și suprafețe care rămăseseră negre */
 html[data-mode=light] input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),html[data-mode=light] select,html[data-mode=light] textarea{background:var(--s-in);border-color:var(--line2);color:var(--ink)}
 html[data-mode=light] input::placeholder,html[data-mode=light] textarea::placeholder{color:var(--muted)}
 html[data-mode=light] .folder-drop,html[data-mode=light] .ref-drop{background:var(--s3);border-color:var(--line2)}
@@ -713,7 +713,7 @@ html[data-mode=light] .preview-nav{background:#ffffffe6;color:var(--ink);border-
 html[data-mode=light] .preview-stage{background:#111}
 @media(max-width:760px){html[data-mode=light] .sidebar{border-top-color:var(--line);background:var(--s2)}}
 
-/* ===== Abonamente ===== */
+/* Abonamente */
 .pw-billing{margin:14px 0 4px;background:var(--s3);border-radius:999px;padding:4px}
 .pw-billing .pw-bill{border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer}
 .pw-billing .pw-bill[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
@@ -725,7 +725,7 @@ html[data-mode=light] .preview-stage{background:#111}
 .person-chip.locked img{filter:grayscale(1)}
 .pw-billing{display:inline-flex;gap:2px}
 
-/* ===== Pagina Abonament ===== */
+/* Pagina Abonament */
 #page-plan .pw-plans{margin:16px 0 18px}
 #page-plan .pw-billing{margin-top:4px}
 .plan-status{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px}
@@ -736,9 +736,7 @@ html[data-mode=light] .preview-stage{background:#111}
 .plan-meter-bar{height:10px;border-radius:999px;background:var(--s4);overflow:hidden}
 .plan-meter-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-h));transition:width .4s ease}
 
-/* =====================================================================
-   Fundal spațial + tutorial (stil cinematic)
-   ===================================================================== */
+/* Fundal spațial + tutorial */
 #scene{display:none!important}
 html[data-mode] body{background:var(--s1)!important;background-image:none!important}
 main{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 10%,transparent) 0,transparent 420px),color-mix(in srgb,var(--s1) 55%,transparent)!important}
@@ -791,9 +789,7 @@ html[data-lite] .intro-top{grid-row:1}.intro-progress{grid-row:2;grid-column:1/-
 .intro-btn:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
 @media(max-width:860px){.intro-visual{grid-row:3}.intro-body{grid-row:4}.intro-foot{grid-row:5}}
 
-/* =====================================================================
-   Fundal cu poze care plutesc + teancul de poze din tutorial
-   ===================================================================== */
+/* Fundal cu poze care plutesc + teancul de poze din tutorial */
 #photoBg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 #bgGlow{position:fixed;inset:-15%;z-index:0;pointer-events:none;will-change:transform;
   background:radial-gradient(closest-side at 80% 20%,color-mix(in srgb,var(--accent) 14%,transparent),transparent),radial-gradient(closest-side at 12% 88%,color-mix(in srgb,var(--accent) 8%,transparent),transparent);
@@ -851,7 +847,7 @@ html[data-lite] .focus{opacity:1;transform:translate(-50%,-50%) scale(1)}
 @media(max-width:860px){.intro-visual{grid-column:1;grid-row:3;width:min(70vw,320px)}}
 .focus{top:48%;width:30%}
 
-/* ===== Album din linkuri ===== */
+/* Album din linkuri */
 #linkDialog{border:1px solid var(--line);border-radius:22px;background:var(--s2);color:var(--ink);padding:0;width:min(640px,calc(100vw - 24px))}
 #linkDialog::backdrop{background:rgba(0,0,0,.55)}
 #ldText{width:100%;resize:vertical;min-height:150px;padding:12px;border-radius:12px;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
@@ -861,9 +857,7 @@ html[data-lite] .focus{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .ld-errors span{word-break:break-all}.ld-errors small{color:var(--danger-text,#ffadb5)}
 #albumBar{flex-wrap:wrap}#albumBar .button{flex:0 0 auto}
 
-/* =====================================================================
-   Mod luminos: contrast, umbre curate, fundal discret
-   ===================================================================== */
+/* Mod luminos: contrast, umbre, fundal */
 html[data-mode=light]{--s1:#f3f4f6;--line:#e2e4e9;--line2:#cfd3da;--muted:#555a63;
   --shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.06);
   --accent-lite:color-mix(in srgb,var(--accent-deep) 80%,var(--accent))}
@@ -891,10 +885,7 @@ html[data-mode=light] .soft:hover:not(:disabled){background:var(--s3)}
 html[data-mode=light] .folder-drop,html[data-mode=light] .ref-drop{background:color-mix(in srgb,var(--accent) 4%,var(--s3))}
 html[data-mode=light] .privacy{background:var(--s3);border-color:var(--line)}
 
-/* =====================================================================
-   Intro la pornire: lupa caută prin album, găsește persoana și devine logoul
-   (animat din frontend/js/splash.js; fără JS sau cu „mișcare redusă” rămâne varianta statică)
-   ===================================================================== */
+/* Intro la pornire (animat din frontend/js/splash.js; fără JS sau cu mișcare redusă rămâne varianta statică) */
 html.splash-on body{overflow:hidden}
 .splash{position:fixed;inset:0;z-index:1000;overflow:hidden;cursor:pointer;user-select:none;
   background:radial-gradient(ellipse at 50% 46%,color-mix(in srgb,var(--accent) 9%,var(--s1)) 0,var(--s1) 62%);
@@ -972,9 +963,7 @@ html[data-mode=light] .splash.anim>.sp-grid{opacity:.5}
 .splash:not(.anim) .sp-skip{display:none}
 @media(max-width:640px){.sp-grid{width:92vw;gap:10px}.sp-motto{font-size:11px;letter-spacing:.24em}.sp-tile{border-radius:8px}}
 
-/* =====================================================================
-   Lizibilitate: text minim 12px, rânduri flexibile
-   ===================================================================== */
+/* Lizibilitate: text minim 12px, rânduri flexibile */
 .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .ref-drop>.row>div{flex:1 1 220px;min-width:0}
 .sub,.mini-note,.statusline,.info,.meta-row,.progress-meta,.setting-row p,.privacy p,.nav-copy small,.search-steps small,.person-chip small,
@@ -985,9 +974,7 @@ html[data-mode=light] .splash.anim>.sp-grid{opacity:.5}
 .eyebrow,.nav-label,.version{font-size:11px!important}
 .page-heading{margin-bottom:16px}
 
-/* =====================================================================
-   Funcții noi: grup, „Nu e”, sortare, „Cine apare în album?”
-   ===================================================================== */
+/* Grup, „Nu e”, sortare, „Cine apare în album?” */
 .group-toggle{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--s3);cursor:pointer}
 .group-toggle input{margin-top:3px;accent-color:var(--accent)}
 .group-toggle b{display:block;font-size:13px}.group-toggle small{display:block;color:var(--muted);font-size:12px}
@@ -1014,14 +1001,8 @@ html[data-mode=light] .splash.anim>.sp-grid{opacity:.5}
 #albumFacesCard .progress-wrap{margin-bottom:12px}
 @media(max-width:560px){.af-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.result-select{flex:1 1 140px}}
 
-/* =====================================================================
-   STIL STICLĂ (glassmorphism)
-   Fundal viu (auroră colorată + pozele care plutesc), iar deasupra suprafețe de sticlă mată:
-   semi-transparente, cu blur și saturație, margine luminoasă și umbră moale.
-   • suprafețele mari (meniu, carduri, bara de sus, ferestre) au blur
-   • elementele din interiorul cardurilor sunt doar transparente (fără blur dublu → rapid)
-   • modul economic și browserele fără backdrop-filter primesc sticlă mai opacă, fără blur
-   ===================================================================== */
+/* Stil sticlă: suprafețele mari au blur, elementele din carduri doar transparență;
+   modul economic și browserele fără backdrop-filter primesc sticlă mai opacă, fără blur */
 html[data-mode=dark]{
   --g-bg:rgba(30,32,34,.46);--g-bg-strong:rgba(24,26,28,.66);--g-inner:rgba(255,255,255,.045);--g-inner-hover:rgba(255,255,255,.08);
   --g-line:rgba(255,255,255,.10);--g-line-inner:rgba(255,255,255,.08);--g-hi:rgba(255,255,255,.07);
@@ -1039,7 +1020,7 @@ html[data-lite][data-mode=light]{--g-bg:rgba(255,255,255,.86);--g-bg-strong:rgba
   html[data-mode=dark]{--g-bg:rgba(30,32,34,.86);--g-bg-strong:rgba(26,28,30,.94)}
   html[data-mode=light]{--g-bg:rgba(255,255,255,.86);--g-bg-strong:rgba(255,255,255,.94)}}
 
-/* ---------- fundalul: aurora colorată sub pozele care plutesc ---------- */
+/* fundalul: aurora colorată sub pozele care plutesc */
 html[data-mode] body{background:var(--s1)!important}
 html[data-mode] #bgGlow{z-index:-1!important;opacity:1!important;background:
   radial-gradient(38% 34% at 18% 22%,color-mix(in srgb,var(--accent) var(--au1),transparent),transparent 72%),
@@ -1049,7 +1030,7 @@ html[data-mode] #bgGlow{z-index:-1!important;opacity:1!important;background:
 html[data-mode] #photoBg{opacity:var(--photo-op)!important}
 html[data-mode] main{background:transparent!important}
 
-/* ---------- suprafețele mari: sticlă cu blur ---------- */
+/* suprafețele mari: sticlă cu blur */
 html[data-mode] .sidebar,html[data-mode] .topbar,html[data-mode] .card,html[data-mode] .stat,html[data-mode] .album-bar,
 html[data-mode] .manage-card,html[data-mode] .pw-plan,html[data-mode] .no-results,html[data-mode] .result,
 html[data-mode] dialog{
@@ -1068,7 +1049,7 @@ html[data-mode=light] .hero:before,html[data-mode=light] .hero:after{border-colo
 /* meniul de pe telefon (bara de jos) */
 @media(max-width:760px){html[data-mode] .sidebar{background:var(--g-bg-strong)!important;border:0!important;border-top:1px solid var(--g-line)!important;box-shadow:0 -8px 30px rgba(0,0,0,.12)!important}}
 
-/* ---------- elementele din interiorul cardurilor: transparență, fără blur ---------- */
+/* elementele din interiorul cardurilor: transparență, fără blur */
 html[data-mode] .folder-drop,html[data-mode] .ref-drop,html[data-mode] .info,html[data-mode] .model,html[data-mode] .search-selection-note,
 html[data-mode] .af-card,html[data-mode] .person-chip:not(.on),html[data-mode] .group-toggle:not(:has(input:checked)),html[data-mode] .custom-color-row,
 html[data-mode] .privacy,html[data-mode] .reference-requirement,html[data-mode] .gate-progress-note,html[data-mode] .empty,html[data-mode] .plan-meter-bar,
@@ -1087,14 +1068,12 @@ html[data-mode] .preview-stage{background:rgba(0,0,0,.82)!important}
 html[data-mode] dialog::backdrop{background:rgba(10,14,20,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 html[data-mode] .result-info{background:transparent}
 
-/* ---------- culori mai vii în modul luminos ---------- */
+/* culori mai vii în modul luminos */
 html[data-mode=light] .stat strong{color:var(--accent-deep)!important}
 html[data-mode=light][data-ui=vibrant] .button.primary{box-shadow:0 6px 20px color-mix(in srgb,var(--accent) 40%,transparent),inset 0 1px 0 rgba(255,255,255,.45)!important}
 html[data-mode=light] .eyebrow{color:var(--accent-deep)}
 
-/* =====================================================================
    Pagina „Oameni”: adăugarea manuală (din 3 poze proprii) e o opțiune pliabilă, sub fețele din album
-   ===================================================================== */
 .manual-person{margin-top:18px}
 .manual-person>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-radius:16px;
   border:1px dashed color-mix(in srgb,var(--accent) 40%,var(--line));background:var(--g-inner,var(--s3));color:var(--ink)}
@@ -1107,7 +1086,7 @@ html[data-mode=light] .eyebrow{color:var(--accent-deep)}
 .manual-person[open]>summary{margin-bottom:14px}
 #page-people .section-title{margin-top:22px}
 
-/* ---------- Setări: album și date ---------- */
+/* Setări: album și date */
 #page-settings .setting-row b{font-size:14px}
 #page-settings .setting-row p{font-size:12.5px;line-height:1.45}
 #page-settings .card{margin-bottom:16px}
@@ -1124,20 +1103,20 @@ html[data-mode=light] .eyebrow{color:var(--accent-deep)}
 .danger-zone{border-color:color-mix(in srgb,#ff4d5e 30%,var(--line))}
 @media(max-width:640px){.set-stats{grid-template-columns:repeat(2,1fr)}.set-actions .button{flex:1}#page-settings .setting-row{flex-wrap:wrap}}
 
-/* ---------- Căutare: bara albumului sus ---------- */
+/* Căutare: bara albumului sus */
 .album-bar{flex-wrap:wrap}
 .album-bar .ab-text{flex:1;min-width:140px}
 .album-bar .ab-text b{display:block;font-size:15px;overflow-wrap:anywhere}
 .album-bar .ab-text small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
 .ab-prep{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent-text)}
 @media(max-width:640px){.album-bar .button{flex:1}}
-/* ---------- Feedback ---------- */
+/* Feedback */
 .fb-types{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 #fbText{width:100%;box-sizing:border-box;resize:vertical;min-height:100px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--g-inner,var(--s3));color:var(--ink);font:inherit;font-size:14px}
 .fb-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;flex-wrap:wrap}
 .fb-foot .sub{flex:1;min-width:180px}
 
-/* ---------- text mai mare, mai ușor de citit ---------- */
+/* text mai mare, mai ușor de citit */
 html{font-size:17px}
 body{font-size:16px}
 .sub,.mini-note,.statusline,.info,.meta-row,.progress-meta,.setting-row p,.privacy p,.nav-copy small,.search-steps small,.person-chip small,
@@ -1151,7 +1130,7 @@ body{font-size:16px}
 #page-settings .setting-row p{font-size:14px!important}
 .status-tag{font-size:12px}
 
-/* ---------- Oameni: grilă de fețe ---------- */
+/* Oameni: grilă de fețe */
 .person-manage.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
 .pgrid .empty{grid-column:1/-1}
 .pcard{position:relative;border-radius:20px;border:1px solid var(--line);background:var(--g-inner,var(--s2));transition:transform .2s,border-color .2s}
@@ -1172,7 +1151,7 @@ body{font-size:16px}
 .people-filter{width:100%;box-sizing:border-box;margin:0 0 14px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--g-inner,var(--s3));color:var(--ink);font:inherit;font-size:14px}
 @media(max-width:640px){.person-manage.pgrid{grid-template-columns:repeat(2,1fr);gap:12px}}
 
-/* ---------- Căutare: filtre pe chipuri ---------- */
+/* Căutare: filtre pe chipuri */
 .result-chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
 .result-chips[hidden]{display:none}
 .chip{cursor:pointer;font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--g-inner,var(--s3));color:var(--ink);transition:background .15s,border-color .15s}
@@ -1180,7 +1159,7 @@ body{font-size:16px}
 .chip.on{background:color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent);color:var(--accent-text,var(--ink))}
 .result-actions #resultYear{display:none}
 
-/* ---------- Căutare simplificată când totul e pregătit ---------- */
+/* Căutare simplificată când totul e pregătit */
 #page-search.is-ready #searchSteps,
 #page-search.is-ready #searchSelectionNote,
 #page-search.is-ready .page-heading{display:none}
@@ -1191,7 +1170,7 @@ body{font-size:16px}
 #page-search.is-ready .person-chip>span{font-size:15px;font-weight:700}
 #page-search.is-ready .person-chip.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 20%,transparent)}
 
-/* ---------- Ghid ---------- */
+/* Ghid */
 .guide-steps{display:grid;gap:14px;margin-bottom:16px}
 .guide-step{display:flex;gap:18px;align-items:flex-start}
 .gs-no{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:18px;background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent-text,var(--ink));border:1px solid var(--accent)}
@@ -1214,9 +1193,7 @@ body{font-size:16px}
 .drop-card b{font-size:1.35rem}.drop-card span{opacity:.75}.drop-ico{font-size:2.6rem;line-height:1;color:var(--pink,#43c653)}
 @media(prefers-reduced-motion:no-preference){.drop-overlay.on .drop-card{animation:dropPop .18s ease-out}@keyframes dropPop{from{transform:scale(.94);opacity:0}}}
 
-/* =====================================================================
    TELEFON — corecții finale (suprascriu regulile de mai sus)
-   ===================================================================== */
 @media (max-width:760px){
   /* Bara de jos: 6 butoane egale, etichete scurte, nimic tăiat */
   html[data-mode] .sidebar{padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
@@ -1279,7 +1256,7 @@ body{font-size:16px}
 .nav .ico-svg{width:1em;height:1em;display:block;flex:none}
 .nav button.active .ico-svg{stroke-width:2.2}
 
-/* ---------- „Cine apare în album?”: persoane blocate pe plan ---------- */
+/* „Cine apare în album?”: persoane blocate pe plan */
 .af-lock-note{display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:16px;background:color-mix(in srgb,var(--accent) 10%,var(--s3))}
 .af-lock-note[hidden]{display:none}
 .af-lock-note p{margin:0;flex:1;font-size:14px;line-height:1.5;color:var(--ink)}
@@ -1291,9 +1268,7 @@ body{font-size:16px}
 .af-card.locked b{color:var(--muted)}
 @media(max-width:560px){.af-lock-note{flex-wrap:wrap}.af-lock-note p{flex-basis:calc(100% - 60px)}.af-lock-note .button{width:100%}}
 
-/* =====================================================================
-   SIMPLIFICARE: mai puțini pași și mai puține clickuri
-   ===================================================================== */
+/* Simplificare: mai puțini pași și mai puține clickuri */
 /* Intro cu un singur ecran: fără progres, număr de ecran sau „Sari peste” (butonul „Începe” face același lucru) */
 .intro[data-slides="1"] .intro-progress,.intro[data-slides="1"] #introNum,.intro[data-slides="1"] .intro-skip,.intro[data-slides="1"] .intro-back{display:none!important}
 
@@ -1321,9 +1296,7 @@ body{font-size:16px}
 #page-search .page-heading{display:none}
 .search-controls-card .mini-note{display:none}
 
-/* =====================================================================
    Liste derulante proprii: rotunjite și în culoarea de accent aleasă (vezi frontend/js/dropdown.js)
-   ===================================================================== */
 .dd{position:relative;display:inline-block;vertical-align:middle}
 .dd.block{display:block}
 .dd-native{position:absolute!important;left:0;top:0;width:1px!important;height:1px!important;opacity:0;pointer-events:none;border:0!important;padding:0!important;margin:0!important}
@@ -1347,3 +1320,11 @@ body{font-size:16px}
 @keyframes ddIn{from{opacity:0;transform:translateY(-4px) scale(.97)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.dd-list{animation:none}.dd-chev{transition:none}}
 @media (max-width:560px){.results-head .dd{flex:1 1 150px}.results-head .dd-btn{width:100%}}
+
+/* Linkuri legale */
+.legal-links{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;padding:0 4px}
+.legal-links button{background:none;border:0;padding:2px 0;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.legal-links button:hover,.legal-links button:focus-visible{color:var(--ink)}
+.legal-links.inline{margin:0;padding:0}.legal-links.inline button{font-size:13px}
+.legal-body{max-height:min(60vh,460px);overflow:auto;font-size:14px;line-height:1.55;padding-right:6px}
+.legal-body h4{margin:16px 0 6px;font-size:14px}.legal-body p{margin:8px 0}.legal-body ul{margin:8px 0;padding-left:20px}.legal-body li{margin:5px 0}

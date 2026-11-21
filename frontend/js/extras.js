@@ -16,7 +16,7 @@ const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},se
 // Re-desenează rezultatele păstrând câte erau deja încărcate pe pagină.
 function rerenderHitsKeepingScroll(){const shown=resultsShown;renderHits();if(shown>resultsShown){appendResultCards($('resultsGrid2'),resultsShown,Math.min(shown,latestHits.length));resultsShown=Math.min(shown,latestHits.length);$('moreWrap2').hidden=resultsShown>=latestHits.length}}
 
-// ===================== „Nu e persoana” =====================
+// „Nu e persoana”
 const NEG_RADIUS=.55;   // fețe foarte apropiate de una respinsă, și doar dintre cele incerte
 function dropRejected(hits,person){
   if(!person)return hits;
@@ -40,7 +40,7 @@ async function rejectHit(hit){
   toast(`Am scos poza. Nu o mai arăt pentru „${p.name}”.`);
 }
 
-// ===================== Data pozei: sortare și filtru pe ani =====================
+// Data pozei: sortare și filtru pe ani
 const resultView={sort:store.get('dm-sort')||'match',year:'',level:''};
 // entry.taken: număr = data din EXIF · null = poza nu are dată EXIF · undefined = încă necitită
 function hitDate(h){const e=h.entry;return e.taken||e.modified||e.file?.lastModified||0}
@@ -95,7 +95,7 @@ function renderResultTools(){
 $('resultSort').onchange=e=>{resultView.sort=e.target.value;store.set('dm-sort',resultView.sort);refreshView()};
 $('resultYear').onchange=e=>{resultView.year=e.target.value;refreshView()};
 
-// ===================== Trimitere directă =====================
+// Trimitere directă
 let shareOk=null;
 function canShareFiles(){if(shareOk===null){try{shareOk=!!navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.jpg',{type:'image/jpeg'})]})}catch(e){shareOk=false}}return shareOk}
 const SHARE_MAX=40;
@@ -113,7 +113,7 @@ $('previewShare').onclick=()=>{const h=latestHits[previewIndex];if(h)shareFiles(
 $('previewShare').hidden=!canShareFiles();
 $('previewReject').onclick=()=>rejectHit(latestHits[previewIndex]);
 
-// ===================== Căutare de grup =====================
+// Căutare de grup
 function syncGroupToggle(){
   const t=$('groupMode');if(!t)return;
   const show=people.length>=2;t.closest('label').hidden=!show;
@@ -171,7 +171,7 @@ async function runGroupSearch(){
   finally{busy=false;updateSearchControls()}
 }
 
-// ===================== „Cine apare în album?” =====================
+// „Cine apare în album?”
 let albumGroups=null,albumGroupsRev=-1,albumGroupsShown=24;
 const AF_KNOWN=.90;   // distanța dintre centrul grupului și o referință: sub ea, grupul e persoana salvată (FAR ≈ 1 la 1.000.000)
 function openAlbumFaces(){setTimeout(()=>{$('albumFacesCard').scrollIntoView({behavior:'smooth',block:'start'});if(indexedEntries.length&&(!albumGroups||albumGroupsRev!==indexRevision))runAlbumFaces()},150)}
@@ -260,12 +260,12 @@ $('afRun').onclick=runAlbumFaces;
 $('afUnlock').onclick=()=>navigate('plan');
 $('afLockNote').querySelector('.af-lock-ico').innerHTML=LOCK_SVG;
 
-// ===================== Instalare ca aplicație (PWA) =====================
+// Instalare ca aplicație (PWA)
 if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn('Modul offline nu a pornit',e)));
 let installPrompt=null;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installRow').hidden=false});
 addEventListener('appinstalled',()=>{installPrompt=null;$('installRow').hidden=true;toast('discover.me a fost instalată.')});
 $('installBtn').onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();try{await installPrompt.userChoice}catch(e){}installPrompt=null;$('installRow').hidden=true};
 
-// ===================== Revezi intro-ul =====================
+// Revezi intro-ul
 $('introReplay').onclick=()=>{location.href=location.pathname+'?intro=1'};

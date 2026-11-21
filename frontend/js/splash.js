@@ -40,7 +40,7 @@
   if(reduce||!root.animate){root.classList.add('static');engineGo();later(1300,minReached);later(1300+CAP,close);return}   // varianta statică: logo + nume + moto
   root.classList.add('anim');
 
-  // ---------- scena: albumul ----------
+  // scena: albumul
   const narrow=innerWidth<640,cols=narrow?3:5,rows=narrow?4:3,n=cols*rows;
   const target=narrow?4:7,path=narrow?[0,8,6]:[0,11,3];          // pozele prin care trece lupa înainte s-o găsească
   const grid=root.querySelector('.sp-grid');
@@ -77,7 +77,7 @@
     }
   });
 
-  // ---------- lupa: geometrie ----------
+  // lupa: geometrie
   const lens=root.querySelector('.sp-lens'),glass=lens.querySelector('.sp-glass'),logo=lens.querySelector('.sp-logo');
   const g=grid.getBoundingClientRect(),gx=g.left,gy=g.top;
   const s=th*1.02/25,G=25*s,Z=1.5;                                 // s = px pe unitatea logoului (viewBox 48); G = diametrul lentilei
@@ -89,7 +89,7 @@
   const slot=root.querySelector('.sp-slot').getBoundingClientRect();
   const P=[...path.map(faceAt),faceAt(target)],PF={x:slot.left+slot.width*21/48,y:slot.top+slot.height*21/48},kF=slot.width/48/s;
 
-  // ---------- cronologia (ms) ----------
+  // cronologia (ms)
   const D=2700,DL=250,at=o=>DL+o*D,EASE='cubic-bezier(.65,0,.35,1)';
   const way=[[0,P[0],.7],[.07,P[0],1],[.13,P[0],1],[.27,P[1],1],[.32,P[1],1],[.46,P[2],1],[.51,P[2],1],[.66,P[3],1],[.82,P[3],1],[1,PF,kF]];
   const stops=[[.07,.13],[.27,.32],[.46,.51]],found=at(.66),lockEnd=at(.82),landed=at(1);
@@ -125,7 +125,7 @@
   hud.animate([{opacity:1},{opacity:0}],opt(lockEnd+80,320,{fill:'forwards'}));
   root.querySelector('.sp-glow').animate([{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'none'}],opt(lockEnd,900));
 
-  // ---------- numele și motoul ----------
+  // numele și motoul
   const letters=[...root.querySelectorAll('.sp-word span')];
   letters.forEach((l,i)=>{if(l.classList.contains('sp-dot'))return;
     l.animate([{opacity:0,transform:'translateY(.45em)'},{opacity:1,transform:'none'}],opt(landed-40+i*38,560))});

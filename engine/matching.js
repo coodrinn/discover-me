@@ -1,7 +1,7 @@
 // discover.me — Potrivirea fețelor: distanțe între descriptori, scor de consens, praguri.
 'use strict';
 
-// ===== Potrivirea fețelor pe amprente SFace (vectori cu norma 1; distanța euclidiană între doi vectori) =====
+// Potrivirea fețelor pe amprente SFace (vectori cu norma 1; distanța euclidiană între doi vectori)
 // Decizia „e aceeași persoană?” este o PROBABILITATE dată de o regresie logistică antrenată pe fețe cu identitate cunoscută
 // (LFW: 150 de persoane, ~2.000 de poze + 600 de străini; poze normale și degradate: blur, întuneric, rotite, mici, mască, ochelari, JPEG).
 // Trăsături: d1 = distanța până la cea mai apropiată referință, d2 = până la a doua, q = mărimea feței (log).
@@ -39,7 +39,7 @@ function faceScoreFast(face,refs){
   const best=Math.sqrt(b1),support=Math.sqrt(b2);return {best,support,score:best*.35+support*.65,prob:matchProb(best,support,Number(face.m)||0)};
 }
 
-// ===== Extinderea profilului (query expansion) =====
+// Extinderea profilului (query expansion)
 // Profilul are doar câteva referințe, făcute de obicei în aceeași poză/lumină. Aceeași persoană din alt unghi poate cădea puțin peste prag.
 // După prima trecere, fețele FOARTE sigure găsite în album (praguri strânse) devin referințe suplimentare și se rescorează restul.
 // Garanția de precizie: lista „sigure” nu se schimbă niciodată; ce apare doar datorită extinderii e marcat `expanded` și merge

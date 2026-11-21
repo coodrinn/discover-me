@@ -66,7 +66,7 @@ async function detectFaces(file,deep=true,predecoded=null){
   for(const f of all){const b=faceBox(f);if(!unique.some(q=>overlapRatio(b,faceBox(q))>.5))unique.push(f)}
   return {canvas:c,faces:unique.map(f=>{const b=faceBox(f);return {s:f.detection.score,m:Math.min(b.width,b.height),x:b.x,y:b.y,w:b.width,h:b.height,d:f.descriptor?Float32Array.from(f.descriptor):new Float32Array(0),lm:f.lm5||lm5Of(f)}})}
 }
-// ===== Îmbrăcăminte: histogramă de culoare a zonei de sub față (torace), folosită ca indiciu secundar =====
+// Îmbrăcăminte: histogramă de culoare a zonei de sub față (torace), folosită ca indiciu secundar
 let _hc=null;
 function clothHist(c,f){
   const W=c.width,H=c.height,w=f.w,h=f.h;

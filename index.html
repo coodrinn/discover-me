@@ -39,7 +39,7 @@
       <button data-page="settings" aria-label="Setări" title="Setări"><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span class="nav-copy"><b>Setări</b><small>Album, date, aspect</small></span></button>
     </nav></div>
   </div>
-  <div class="side-bottom"><div class="privacy"><b>♧ Fotografiile rămân la tine</b><p>Albumul este analizat pe acest dispozitiv. Fotografiile nu sunt trimise de aplicație către un server.</p></div></div>
+  <div class="side-bottom"><div class="privacy"><b>♧ Fotografiile rămân la tine</b><p>Albumul este analizat pe acest dispozitiv. Fotografiile nu sunt trimise de aplicație către un server.</p></div><div class="legal-links"><button type="button" data-legal="privacy">Confidențialitate</button><button type="button" data-legal="cookies">Cookie-uri</button><button type="button" data-legal="terms">Termeni</button></div></div>
 </aside>
 <main>
   <header class="topbar"><div><div class="eyebrow">Bine ai revenit în spațiul tău</div><h1 id="pageTitle">Bun venit la discover.me</h1></div><div class="top-right"><span class="engine-pill"><i id="engineDot" class="dot"></i><span id="engineStatus">Pregătesc aplicația…</span></span></div></header>
@@ -228,6 +228,10 @@
       <div class="card-head"><div><h3>Confidențialitate</h3><p class="sub">Fețele sunt procesate doar în browser. Nu există cont și nu se trimit poze pe un server.</p></div><span class="status-tag" id="consentState">Neconfirmat încă</span></div>
       <div class="setting-row"><div><b>Acordul de folosire</b><p>Confirmat o singură dată, înainte de primul profil. Îl poți retrage oricând.</p></div><button class="button soft small" type="button" id="consentWithdraw" hidden>Retrage acordul</button></div>
     </article>
+    <article class="card" id="legalCard">
+      <div class="card-head"><div><h3>Informații legale</h3><p class="sub">Cum sunt tratate datele și ce stochează aplicația.</p></div></div>
+      <div class="legal-links inline"><button type="button" data-legal="privacy">Confidențialitate</button><button type="button" data-legal="cookies">Cookie-uri</button><button type="button" data-legal="terms">Termeni</button></div>
+    </article>
     <article class="card danger-zone">
       <div class="card-head"><div><h3>Ștergere</h3><p class="sub">Pozele tale originale nu sunt atinse niciodată.</p></div></div>
       <div class="setting-row"><div><b>Șterge pregătirea albumului</b><p>Albumul va trebui pregătit din nou. Persoanele salvate rămân.</p></div><button class="button danger small" id="clearIndex" type="button">Șterge pregătirea</button></div>
@@ -286,6 +290,11 @@
   <p class="sub" style="margin:0">Apăsând „Sunt de acord” confirmi că vei folosi aplicația doar în acest fel.</p>
   <div class="pe-actions"><button class="button ghost" type="button" id="consentNo">Anulează</button><span style="flex:1"></span><button class="button primary" type="button" id="consentOk">Sunt de acord</button></div>
 </div></dialog>
+<dialog id="legalDialog" aria-labelledby="legalTitle"><div class="pe">
+  <h3 id="legalTitle"></h3>
+  <div id="legalBody" class="legal-body"></div>
+  <div class="pe-actions"><span style="flex:1"></span><button class="button primary" type="button" id="legalClose">Închide</button></div>
+</div></dialog>
 <dialog id="paywall" aria-labelledby="pwTitle"><div class="pw">
   <button class="button ghost small pw-close" type="button" id="pwClose" aria-label="Închide">✕</button>
   <h3 id="pwTitle">Abonamente discover.me</h3>
@@ -314,6 +323,7 @@
 <script src="engine/exif.js"></script>
 <script src="engine/clusters.js"></script>
 <!-- Interfața -->
+<script src="frontend/js/legal.js"></script>
 <script src="frontend/js/consent.js"></script>
 <script src="frontend/js/extras.js"></script>
 <script src="frontend/js/app.js"></script>

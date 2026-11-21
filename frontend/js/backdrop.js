@@ -12,7 +12,7 @@ const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}},put=(k,v
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)];
 
-// ================= FUNDAL CU POZE =================
+// FUNDAL CU POZE
 const cv=document.createElement('canvas');cv.id='photoBg';cv.setAttribute('aria-hidden','true');
 document.body.prepend(cv);
 const glow=document.createElement('div');glow.id='bgGlow';glow.setAttribute('aria-hidden','true');cv.after(glow);
@@ -118,7 +118,7 @@ new MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['da
 readTheme();resize();start();
 window.backdrop={calm(){targetSpeed=1},lively(){targetSpeed=2.2},nudge(){speed=Math.max(speed,4)}};
 
-// ================= TUTORIAL (prima pornire) =================
+// TUTORIAL (prima pornire)
 const SLIDES=[   // un singur ecran: trei pași, un singur buton
   {kick:'Bine ai venit',title:'Găsește pe oricine în mii de poze',text:'1. Alegi pozele · 2. Vezi cine apare · 3. Descarci pozele cu persoana. Totul rămâne pe dispozitivul tău.',btn:'Începe'}
 ];

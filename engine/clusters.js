@@ -29,7 +29,7 @@ function lockAlbumGroups(groups,{limit,savedCount,knownFor,isUnlocked}){
   });
 }
 
-// ===== V2: „Cine apare în album?” pe amprente SFace (vectori cu norma 1, distanță euclidiană) =====
+// V2: „Cine apare în album?” pe amprente SFace (vectori cu norma 1, distanță euclidiană)
 // Față de V1: (1) o persoană nu apare de două ori în aceeași poză, deci două grupuri care au fețe în aceleași poze NU se unesc;
 // (2) grupurile mici se atașează la cele mari dacă sunt suficient de apropiate (mai puține grupuri duplicate, acoperire mai bună);
 // (3) unirea folosește distanța dintre centre ȘI cea mai mică distanță dintre membri, ca să nu lege persoane diferite printr-o singură față.

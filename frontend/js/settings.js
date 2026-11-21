@@ -89,7 +89,7 @@
     };
   })();
   if($('peopleFilter'))$('peopleFilter').oninput=()=>{if(typeof renderPeople==='function')renderPeople()};
-  // ===== Căutare cu cât mai puține click-uri =====
+  // Căutare cu cât mai puține click-uri
   // intri în Căutare → persoana folosită ultima e aleasă și căutarea pornește singură
   (function(){
     const LAST='dm-last-person';let lastAuto='',timer=0;

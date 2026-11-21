@@ -4,15 +4,14 @@
 // Cheile "DM1-..." sunt emise manual (tools/license/issue.js), semnate cu cheia privată a vânzătorului.
 'use strict';
 
-// ===== PLANURI ȘI PREȚURI (modifică aici) =====
+// PLANURI ȘI PREȚURI (modifică aici)
 const PLANS={
   free:{id:'free',name:'Gratuit',people:1,price:{monthly:'0 €',yearly:'0 €'},note:'Ca să încerci'},
   plus:{id:'plus',name:'Plus',people:3,price:{monthly:'1,99 €',yearly:'14,99 €'},note:'Pentru familie și prieteni'},
   pro:{id:'pro',name:'Pro',people:Infinity,price:{monthly:'3,99 €',yearly:'29,99 €'},note:'Pentru fotografi și evenimente'}
 };
-const YEARLY_SAVING='37%';   // afișat lângă opțiunea anuală
 
-// ===== PLĂȚI: Lemon Squeezy =====
+// PLĂȚI: Lemon Squeezy
 // 1. Creează produsele „discover.me Plus” și „discover.me Pro” ca SUBSCRIPTION, fiecare cu 2 variante: Lunar și Anual,
 //    și cu „License keys” activat.
 // 2. Completează mai jos ID-ul magazinului, ID-urile produselor și linkurile de checkout pentru fiecare variantă.
@@ -59,7 +58,7 @@ function isPersonUnlocked(id){
 }
 function fmtDate(ms){return new Date(ms).toLocaleDateString('ro-RO',{day:'numeric',month:'long',year:'numeric'})}
 
-// ---- Lemon Squeezy License API (public, fără cheie secretă, permis din browser) ----
+// Lemon Squeezy License API (public, fără cheie secretă, permis din browser)
 const LS_API='https://api.lemonsqueezy.com/v1/licenses/';
 async function lsCall(action,params){
   const r=await fetch(LS_API+action,{method:'POST',headers:{Accept:'application/json','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});

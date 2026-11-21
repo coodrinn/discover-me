@@ -1,7 +1,7 @@
 // Test în browser: drag & drop de folder (handle Chrome, webkitGetAsEntry) și de poze, overlay, folder gol. Rulare: npm run test:e2e:drop
 const http=require('http'),fs=require('fs'),path=require('path'),puppeteer=require('puppeteer-core');
 const APP=path.join(__dirname,'..','..');
-const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.webmanifest':'application/manifest+json'};
+const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.webmanifest':'application/manifest+json','.wasm':'application/wasm','.mjs':'text/javascript','.onnx':'application/octet-stream'};
 const server=http.createServer((q,r)=>{const u=decodeURIComponent(q.url.split('?')[0]);fs.readFile(path.join(APP,u==='/'?'index.html':u),(e,d)=>{if(e){r.writeHead(404);r.end();return}r.writeHead(200,{'Content-Type':types[path.extname(u==='/'?'/index.html':u)]||'application/octet-stream'});r.end(d)})}).listen(0);
 (async()=>{
  const b=await puppeteer.launch({executablePath:[process.env.BROWSER,'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe','C:/Program Files/Google/Chrome/Application/chrome.exe','/usr/bin/google-chrome','/usr/bin/chromium'].filter(Boolean).find(fs.existsSync),headless:'new',args:['--no-sandbox','--enable-unsafe-swiftshader','--use-angle=swiftshader']});
